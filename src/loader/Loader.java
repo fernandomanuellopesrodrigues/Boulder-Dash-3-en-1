@@ -10,12 +10,12 @@ import entitees.MurMagique;
 import entitees.Poussiere;
 import entitees.Sortie;
 import entitees.Vide;
+import entitees.abstraites.Entitee;
 import entitees.tickables.Diamant;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
 import entitees.tickables.ennemis.Libellule;
 import entitees.tickables.ennemis.Luciole;
-import entiteesabstraites.Entitee;
 
 public abstract class Loader {
 
@@ -55,7 +55,7 @@ public abstract class Loader {
 			ensemble.setNbNiveaux(ensemble.getNiveaux().size());
 			return ensemble;
 		} catch (Exception e) {
-			System.out.println("Impossible de charger les niveaux.");
+			System.err.println("Impossible de charger les niveaux.");
 			e.printStackTrace();
 			return null;
 		}
@@ -140,9 +140,39 @@ public abstract class Loader {
 		}
 		System.out.println();
 		System.out.println();
-		System.out.println();		
+		System.out.println();
 		return new Niveau(map, caveDelay, cave_time, diamonds_required, diamond_value, diamond_value_bonus, amoeba_time,
 				magic_wall_time);
+	}
+
+	public static String lireInfos(String chemin) {
+		EnsembleDeNiveaux ensemble;
+		String[] niveaux;
+
+		try {
+			// lecture du fichier
+			FileReader lecteur = new FileReader(chemin);
+			BufferedReader in = new BufferedReader(lecteur);
+
+			// r�cup�ration du fichier
+			String ensemble_du_fichier = "";
+			String s;
+			while ((s = in.readLine()) != null) {
+				ensemble_du_fichier += "\n" + s;
+			}
+			in.close();
+			ensemble_du_fichier = ensemble_du_fichier.replace("-", "");
+			ensemble_du_fichier = ensemble_du_fichier.replace("[cave]", "-[cave]");
+
+			niveaux = ensemble_du_fichier.split("-");
+
+			// r�cup�ration des infromations de l'ensemble de niveaux
+			String ensemble_de_niveaux_informations = niveaux[0];
+			return ensemble_de_niveaux_informations;
+		} catch (Exception e) {
+			System.err.println("Impossible de charger le niveau");
+			return "\n";
+		}
 	}
 
 	private static Entitee creerEntitee(char car, int x, int y, int magicWallTime, boolean sortieCacher) {

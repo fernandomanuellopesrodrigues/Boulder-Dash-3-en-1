@@ -1,5 +1,6 @@
 package menu;
 
+import loader.Loader;
 import main.Partie;
 
 public class SousMenu {
@@ -13,7 +14,7 @@ public class SousMenu {
 	}
 
 	public static void lireInfos(String cheminFichierBDCFF) {
-
+		System.out.println(Loader.lireInfos(cheminFichierBDCFF));
 	}
 
 	public static void calculerStrategie(String strategie, String cheminFichierBDCFF, int niveau) {
@@ -23,8 +24,9 @@ public class SousMenu {
 	public static void rejouerNiveau(String cheminFichierDASH, String cheminFichierBDCFF, int niveau) {
 
 	}
-	
-	public static void simulerNiveau(int nombrePartie, String strategie1, String strategie2, String cheminFichierBDCFF, int niveau) {
+
+	public static void simulerNiveau(int nombrePartie, String strategie1, String strategie2, String cheminFichierBDCFF,
+			int niveau) {
 
 	}
 }

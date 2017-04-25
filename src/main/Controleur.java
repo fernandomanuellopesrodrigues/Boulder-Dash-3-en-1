@@ -92,8 +92,8 @@ public class Controleur implements Cloneable {
 			toucheR = true;
 			rInt = max + 1;
 		}
-		//if (tourParTour)
-			//Coeur.tick();
+		if (tourParTour)
+			Partie.tick();
 	}
 
 	public void keyReleased(KeyEvent e) {
