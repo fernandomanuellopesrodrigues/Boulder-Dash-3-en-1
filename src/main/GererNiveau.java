@@ -9,6 +9,7 @@ public class GererNiveau {
 	private Niveau niveau;
 	private boolean finiSuccess;
 	private char toucheClavier;
+	private String trajet = "";
 
 	public GererNiveau(Niveau niveau) {
 		this.niveau = niveau;
@@ -18,7 +19,10 @@ public class GererNiveau {
 	}
 
 	public void tick() {
+		toucheClavier = Coeur.CONTROLEUR.getDirection();
+		trajet += toucheClavier;
 
+		Coeur.CONTROLEUR.tick();
 	}
 
 	public void finNiveau() {

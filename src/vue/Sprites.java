@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import main.Coeur;
+import main.Partie;
 import outils.EnsembleDeSprites;
 import outils.Paire;
 
@@ -55,7 +56,7 @@ public class Sprites {
 				liste.remove(0);
 			}
 		}
-		if (Coeur.ticks < 2) {
+		if (Partie.gererNiveau.getTicks() < 2) {
 			changerDirectionSpriteRockford(' ');
 		} else if (rockford.getDirection() == ' '
 				&& compteurFPS % ((VITESSE_ANIM_ROCKFORD < FPS) ? FPS / (VITESSE_ANIM_ROCKFORD) : 1) == 0) {
