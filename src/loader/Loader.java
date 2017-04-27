@@ -3,19 +3,19 @@ package loader;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import entitees.Amibe;
-import entitees.Mur;
-import entitees.MurEnTitane;
-import entitees.MurMagique;
-import entitees.Poussiere;
-import entitees.Sortie;
-import entitees.Vide;
 import entitees.abstraites.Entitee;
+import entitees.fixes.Amibe;
+import entitees.fixes.Mur;
+import entitees.fixes.MurEnTitane;
+import entitees.fixes.MurMagique;
+import entitees.fixes.Poussiere;
+import entitees.fixes.Sortie;
+import entitees.fixes.Vide;
 import entitees.tickables.Diamant;
+import entitees.tickables.Libellule;
+import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
-import entitees.tickables.ennemis.Libellule;
-import entitees.tickables.ennemis.Luciole;
 
 public abstract class Loader {
 
@@ -195,7 +195,7 @@ public abstract class Loader {
 		} else if (car == 'P') {
 			return new Rockford(x, y);
 		} else if (car == 'X') {
-			return new Sortie(x, y, sortieCacher);
+			return new Sortie(x, y);
 		} else if (car == 'M') {
 			return new MurMagique(x, y, magicWallTime);
 		} else if (car == ' ') {

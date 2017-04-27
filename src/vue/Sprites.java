@@ -1,6 +1,7 @@
 package vue;
 
-import static constantes.Constantes.*;
+import static constantes.Constantes.CHEMIN_DOSSIER_SPRITES;
+import static constantes.Constantes.FPS;
 
 import java.awt.Image;
 import java.io.File;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import main.Coeur;
+import entitees.tickables.Rockford;
 import main.Partie;
 import outils.EnsembleDeSprites;
 import outils.Paire;

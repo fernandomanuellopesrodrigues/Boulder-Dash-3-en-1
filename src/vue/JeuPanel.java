@@ -6,20 +6,21 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import entitees.Amibe;
-import entitees.Mur;
-import entitees.MurEnTitane;
-import entitees.MurMagique;
-import entitees.Poussiere;
-import entitees.Sortie;
+import entitees.abstraites.Entitee;
+import entitees.fixes.Amibe;
+import entitees.fixes.Mur;
+import entitees.fixes.MurEnTitane;
+import entitees.fixes.MurMagique;
+import entitees.fixes.Poussiere;
+import entitees.fixes.Sortie;
 import entitees.tickables.Diamant;
 import entitees.tickables.Explosion;
+import entitees.tickables.Libellule;
+import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
-import entitees.tickables.ennemis.Libellule;
-import entitees.tickables.ennemis.Luciole;
-import entiteesabstraites.Entitee;
 import main.Coeur;
+import main.Partie;
 
 public class JeuPanel extends JPanel {
 
@@ -27,14 +28,14 @@ public class JeuPanel extends JPanel {
 	private long compteurFPS;
 
 	public JeuPanel() {
-		map = Coeur.partieActuelle.getNiveau().getMap();
+		map = Partie.gererNiveau.getNiveau().getMap();
 		compteurFPS = 0;
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		compteurFPS++;
-		Sprites.gererSprites(compteurFPS, Coeur.partieActuelle.getNiveau().getRockford());
+		Sprites.gererSprites(compteurFPS, Partie.gererNiveau.getNiveau().getRockford());
 		int largeur_case;
 		int hauteur_case;
 		largeur_case = getWidth() / map.length;
@@ -44,10 +45,6 @@ public class JeuPanel extends JPanel {
 		for (int i = 0; i < map[0].length; i++) {
 			for (int j = 0; j < map.length; j++) {
 				Image image = getSprite(map[j][i]);
-				if(map[j][i].getClass().equals(Luciole.class)){
-					g.setColor(Color.white);
-					g.drawString(map[j][i].toString(), (j-10) * largeur_case, (i) * hauteur_case);
-				}
 				if (image != null) {
 					g.drawImage(image, (j) * largeur_case, (i) * hauteur_case, largeur_case, hauteur_case, this);
 				}

@@ -22,3 +22,49 @@ public class GraphiqueConsole {
 		System.out.println("\n");
 	}
 }
+/*	private String toStringNiveau(){
+String s="";
+for(int i=0; i<map[0].length; i++){
+	for(int j=0; j<map.length; j++){
+		Class l = map[j][i].getClass();
+		if(l.equals(Rockford.class)){
+			s+='P';
+		}
+		else if(l.equals(Mur.class)){
+			s+='w';
+		}
+		else if(l.equals(Diamant.class)){
+			s+='d';
+		}
+		else if(l.equals(Amibe.class)){
+			s+='a';
+		}
+		else if(l.equals(Luciole.class)){
+			s+='q';
+		}
+		else if(l.equals(Libellule.class)){
+			s+='o';
+		}
+		else if(l.equals(MurEnTitane.class)){
+			s+='W';
+		}
+		else if(l.equals(Pierre.class)){
+			s+='r';
+		}
+		else if(l.equals(Poussiere.class)){
+			s+='.';
+		}
+		else if(l.equals(Sortie.class)){
+			s+='X';
+		}
+		else if(l.equals(MurMagique.class)){
+			s+='M';
+		}
+		else if(l.equals(Vide.class)){
+			s+=' ';
+		}
+	}
+	s+="\n";
+}
+return s;
+}*/

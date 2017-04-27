@@ -1,24 +1,17 @@
 package loader;
 
+import static entitees.abstraites.Entitee.Entitees.Vide;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import entitees.Amibe;
-import entitees.Mur;
-import entitees.MurEnTitane;
-import entitees.MurMagique;
-import entitees.Poussiere;
-import entitees.Sortie;
-import entitees.Vide;
-import entitees.tickables.Diamant;
-import entitees.tickables.Pierre;
+import entitees.abstraites.Entitee;
+import entitees.abstraites.Entitee.Entitees;
+import entitees.abstraites.Tickable;
+import entitees.fixes.Amibe;
+import entitees.fixes.Sortie;
 import entitees.tickables.Rockford;
-import entitees.tickables.ennemis.Libellule;
-import entitees.tickables.ennemis.Luciole;
-import entiteesabstraites.Entitee;
-import entiteesabstraites.Tickable;
-import main.Partie;
 
 public class Niveau implements Cloneable {
 
@@ -67,67 +60,25 @@ public class Niveau implements Cloneable {
 		return null;
 	}
 
-	@Override
-	public String toString() {
-		String s = "Cave_time=" + cave_time + ", diamonds_required=" + diamonds_required + ", diamond_value="
-				+ diamond_value + ", diamond_value_bonus=" + diamond_value_bonus + ", amoeba_time=" + amoeba_time
-				+ ", magic_wall_time=" + magic_wall_time + "\n\n";
-
-		 s += toStringNiveau();
-		return toStringNiveau();
-	}
-	private String toStringNiveau(){
-		String s="";
-		for(int i=0; i<map[0].length; i++){
-			for(int j=0; j<map.length; j++){
-				Class l = map[j][i].getClass();
-				if(l.equals(Rockford.class)){
-					s+='P';
-				}
-				else if(l.equals(Mur.class)){
-					s+='w';
-				}
-				else if(l.equals(Diamant.class)){
-					s+='d';
-				}
-				else if(l.equals(Amibe.class)){
-					s+='a';
-				}
-				else if(l.equals(Luciole.class)){
-					s+='q';
-				}
-				else if(l.equals(Libellule.class)){
-					s+='o';
-				}
-				else if(l.equals(MurEnTitane.class)){
-					s+='W';
-				}
-				else if(l.equals(Pierre.class)){
-					s+='r';
-				}
-				else if(l.equals(Poussiere.class)){
-					s+='.';
-				}
-				else if(l.equals(Sortie.class)){
-					s+='X';
-				}
-				else if(l.equals(MurMagique.class)){
-					s+='M';
-				}
-				else if(l.equals(Vide.class)){
-					s+=' ';
-				}
-			}
-			s+="\n";
+	public boolean placerEntitee(Entitee e) {
+		if (map[e.getX()][e.getY()].isDestructible()) {
+			map[e.getX()][e.getY()].mourir();
+			map[e.getX()][e.getY()] = e;
+			return true;
 		}
-		return s;
+		return false;
 	}
 
-	public void initialiserEntitees(Partie p) {
-		for (int i = 0; i < map.length; i++) {
-			for (int j = map[i].length - 1; j >= 0; j--) {
-				map[i][j].initialiser(p);
-			}
+	public boolean testEntitee(int x, int y, Entitees enumeration) {
+		Class classe = null;
+		if (enumeration == Vide) {
+			classe = Vide.getClass();
+		}
+
+		if (map[x][y].getClass().equals(classe)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -143,25 +94,6 @@ public class Niveau implements Cloneable {
 		return listeAmibes;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Niveau other = (Niveau) obj;
-		for (int i = 0; i < other.map.length; i++) {
-			for (int j = 0; j < other.map[i].length; j++) {
-				if (!other.map[i][j].equals(map[i][j])) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
 	public Niveau clone() {
 		Entitee[][] newmap = new Entitee[map.length][map[0].length];
 		for (int i = 0; i < map.length; i++) {
@@ -173,7 +105,7 @@ public class Niveau implements Cloneable {
 				amoeba_time, magic_wall_time);
 	}
 
-	public List<Tickable> getListeTickable(){
+	public List<Tickable> getListeTickable() {
 		List<Tickable> listeTickable = new ArrayList<Tickable>();
 		for (int i = 0; i < getMap().length; i++) {
 			for (int j = getMap()[i].length - 1; j >= 0; j--) {
