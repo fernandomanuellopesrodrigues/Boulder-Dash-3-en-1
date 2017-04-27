@@ -108,7 +108,7 @@ public class Controleur {
 			basInt = max + 1;
 		}
 		if (e.getKeyChar() == ' ') {
-			space = true;
+			Partie.gererNiveau.setDemandeReset(true);
 		}
 		if (Partie.gererNiveau.isTourParTour())
 			Partie.tick();

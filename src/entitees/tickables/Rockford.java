@@ -11,7 +11,6 @@ import static entitees.abstraites.Entitee.Entitees.Vide;
 
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
-import main.Coeur;
 import main.Partie;
 
 public class Rockford extends Tickable {
@@ -62,7 +61,7 @@ public class Rockford extends Tickable {
 		} else if (entitee.is(Sortie)) {
 			if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {
 				Partie.gererNiveau.setFiniSuccess(true);
-				Partie.finNiveau();
+				Partie.gererNiveau.setDemandeFin(true);
 				return 1;
 			}
 			return 0;
@@ -90,7 +89,7 @@ public class Rockford extends Tickable {
 
 	public boolean mourir() {
 		super.mourir();
-		Partie.resetNiveau();
+		Partie.gererNiveau.setDemandeReset(true);
 		return true;
 	}
 

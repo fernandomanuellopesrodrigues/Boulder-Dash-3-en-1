@@ -1,7 +1,5 @@
 package loader;
 
-import static entitees.abstraites.Entitee.Entitees.Vide;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,9 +8,18 @@ import entitees.abstraites.Entitee;
 import entitees.abstraites.Entitee.Entitees;
 import entitees.abstraites.Tickable;
 import entitees.fixes.Amibe;
+import entitees.fixes.Mur;
+import entitees.fixes.MurEnTitane;
+import entitees.fixes.MurMagique;
+import entitees.fixes.Poussiere;
 import entitees.fixes.Sortie;
+import entitees.fixes.Vide;
+import entitees.tickables.Diamant;
+import entitees.tickables.Explosion;
+import entitees.tickables.Libellule;
+import entitees.tickables.Luciole;
+import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
-import main.Partie;
 
 public class Niveau implements Cloneable {
 
@@ -61,23 +68,34 @@ public class Niveau implements Cloneable {
 		return null;
 	}
 
-	public boolean placerEntitee(Entitee e) {
-		if (map[e.getX()][e.getY()].isDestructible()) {
-			map[e.getX()][e.getY()] = e;
-			if (e instanceof Amibe) {
-				Partie.gererNiveau.ajouterAmibe(((Amibe) e));
-			} else if (e instanceof Tickable) {
-				Partie.gererNiveau.ajouterTickable((Tickable) e);
-			}
-			return true;
-		}
-		return false;
-	}
-
 	public boolean testEntitee(int x, int y, Entitees enumeration) {
 		Class classe = null;
-		if (enumeration == Vide) {
-			classe = Vide.getClass();
+		if (enumeration == entitees.abstraites.Entitee.Entitees.Vide) {
+			classe = Vide.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Poussiere) {
+			classe = Poussiere.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Mur) {
+			classe = Mur.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.MurMagique) {
+			classe = MurMagique.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.MurEnTitane) {
+			classe = MurEnTitane.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Luciole) {
+			classe = Luciole.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Libellule) {
+			classe = Libellule.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Rockford) {
+			classe = Rockford.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Amibe) {
+			classe = Amibe.class;
+		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Sortie) {
+			classe = Sortie.class;
+		}else if (enumeration == entitees.abstraites.Entitee.Entitees.Diamant) {
+			classe = Diamant.class;
+		}else if (enumeration == entitees.abstraites.Entitee.Entitees.Explosion) {
+			classe = Explosion.class;
+		}else if (enumeration == entitees.abstraites.Entitee.Entitees.Pierre) {
+			classe = Pierre.class;
 		}
 
 		if (map[x][y].getClass().equals(classe)) {

@@ -15,7 +15,7 @@ Caves=20
 [cave]
 Name=Cave 1
 CaveDelay=6
-CaveTime=150
+CaveTime=2
 DiamondsRequired=3
 DiamondValue=30 15
 AmoebaTime=135
@@ -24,23 +24,23 @@ Colors=Black Black Red Blue Green
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WP............wwcccccccccww.........raaW
-Wd..............wcccccccw...........raaW
-Wd...............wcccccw............raaW
-Wd................wcccw.............raaW
-W.................wcccw.............raaW
-W..................wcw..............rrrW
-W..................wcw.................W
-W..................wcw.................W
-Wrr r ..............w..................W
-W..   ..............w..................W
-W.. r ..............X..................W
+WP............wwcccccccccww......... aaW
+Wd....... ......wcccccccw........... aaW
+Wd....... .......wcccccw............ aaW
+Wd......   q......wcccw............. aaW
+W.................wcccw............. aaW
+W..................wcw..............   W
+W............ .....wcw.................W
+W............ .....wcw.................W
+W   d ....... ......w..................W
+W..   .......q......w..................W
+W..   ..............X..................W
 WMMMMM..............w..................W
 W     .............wqw.................W
-W   q .............wqw.................W
-W..................wqw.................W
-W.................wqqqw................W
-W.................wqqqw................W
+W     .... ........wqw.................W
+W...a..... ........wqw.................W
+W......... .......wqqqw................W
+W.........a.......wqqqw................W
 W................wqqqqqw...............W
 W...............wqqqqqqqw..............W
 W.............wwqqqqqqqqqww............W
@@ -283,7 +283,7 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 [cave]
 Name=Cave 9
-CaveDelay=70
+CaveDelay=200
 CaveTime=150
 DiamondsRequired=75
 DiamondValue=4 12

@@ -33,24 +33,31 @@ public class JeuPanel extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		compteurFPS++;
-		Sprites.gererSprites(compteurFPS, Partie.gererNiveau.getNiveau().getRockford());
-		int largeur_case;
-		int hauteur_case;
-		largeur_case = getWidth() / map.length;
-		hauteur_case = getHeight() / map[0].length;
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		for (int i = 0; i < map[0].length; i++) {
-			for (int j = 0; j < map.length; j++) {
-				Image image = getSprite(map[j][i]);
-				if (image != null) {
-					g.drawImage(image, (j) * largeur_case, (i) * hauteur_case, largeur_case, hauteur_case, this);
-				}
+		if (Partie.gererNiveau != null) {
+			compteurFPS++;
+			Sprites.gererSprites(compteurFPS, Partie.gererNiveau.getNiveau().getRockford());
+			int largeur_case;
+			int hauteur_case;
+			largeur_case = getWidth() / map.length;
+			hauteur_case = getHeight() / map[0].length;
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			for (int i = 0; i < map[0].length; i++) {
+				for (int j = 0; j < map.length; j++) {
+					if (Partie.gererNiveau.isDemandeReset()) {
+						break;
+					}
+					Image image = getSprite(map[j][i]);
+					if (image != null) {
+						g.drawImage(image, (j) * largeur_case, (i) * hauteur_case, largeur_case, hauteur_case, this);
+					}
 
+				}
+				if (Partie.gererNiveau.isDemandeReset()) {
+					break;
+				}
 			}
 		}
-
 	}
 
 	private Image getSprite(Entitee e) {

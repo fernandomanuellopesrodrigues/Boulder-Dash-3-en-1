@@ -35,7 +35,10 @@ public class Amibe extends Entitee {
 		}
 		if (!points.isEmpty()) {
 			int rng = (int) (Math.random() * points.size());
-			Partie.gererNiveau.getNiveau().placerEntitee(new Amibe(points.get(rng).x, points.get(rng).y));
+			Partie.gererNiveau.getNiveau().getMap()[points.get(rng).x][points.get(rng).y] = new Amibe(points.get(rng).x,
+					points.get(rng).y);
+			Partie.gererNiveau.ajouterAmibe(
+					((Amibe) Partie.gererNiveau.getNiveau().getMap()[points.get(rng).x][points.get(rng).y]));
 			checkDetruireAmibes();
 			return true;
 		} else {
@@ -46,17 +49,25 @@ public class Amibe extends Entitee {
 	private void checkDetruireAmibes() {
 		if (Partie.gererNiveau.getListeAmibes().size() >= 200) {
 			for (Amibe amibe : Partie.gererNiveau.getListeAmibes()) {
-				Partie.gererNiveau.getNiveau().placerEntitee(new Pierre(amibe.getX(), amibe.getY()));
+				Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()] = new Pierre(amibe.getX(),
+						amibe.getY());
 			}
-			Partie.gererNiveau.getListeAmibes().removeAll(Partie.gererNiveau.getListeAmibes());
+			for (Amibe amibe : Partie.gererNiveau.getListeAmibesAjout()) {
+				Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()] = new Pierre(amibe.getX(),
+						amibe.getY());
+			}
+			Partie.gererNiveau.getListeAmibes().clear();
+			Partie.gererNiveau.getListeAmibesAjout().clear();
 		}
 	}
 
 	public void transformerTousLesAmibesEnDiamant() {
 		for (Amibe amibe : Partie.gererNiveau.getListeAmibes()) {
-			Partie.gererNiveau.getNiveau().placerEntitee(new Diamant(amibe.getX(), amibe.getY()));
+			Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()] = new Diamant(amibe.getX(),
+					amibe.getY());
 		}
-		Partie.gererNiveau.getListeAmibes().removeAll(Partie.gererNiveau.getListeAmibes());
+		Partie.gererNiveau.getListeAmibes().clear();
+		Partie.gererNiveau.getListeAmibesAjout().clear();
 	}
 
 	public boolean mourir() {

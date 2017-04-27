@@ -7,10 +7,17 @@ import static entitees.abstraites.Entitee.Entitees.Luciole;
 import static entitees.abstraites.Entitee.Entitees.MurMagique;
 import static entitees.abstraites.Entitee.Entitees.Pierre;
 import static entitees.abstraites.Entitee.Entitees.Rockford;
+import static entitees.abstraites.Entitee.Entitees.Vide;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
+import main.Partie;
+
 public class Pierre extends Tickable {
+	private List<Entitees> deplacementsPossiblesChute = new ArrayList<Entitees>();
 
 	public Pierre(int x, int y) {
 		super(x, y);
@@ -21,36 +28,37 @@ public class Pierre extends Tickable {
 		getDeplacementsPossibles().add(Amibe);
 		getDeplacementsPossibles().add(MurMagique);
 		getDeplacementsPossibles().add(Explosion);
-		enumeration=Pierre;
+		deplacementsPossiblesChute.add(Vide);
+		enumeration = Pierre;
 	}
 
 	public void tick() {
-		gererChute();
+		if (!bloque || chute) {
+			gererChute();
+		}
+		bloquer();
 	}
 
 	@Override
 	protected int contactAutreEntitee(Entitee entitee) {
+		
 		setDirection('b');
 		if (entitee.is(Rockford)) {
 			seDeplacer();
 			exploser(false);
 			return 0;
 		} else if (entitee.is(MurMagique)) {
-			// ((MurMagique) entitee).traverser();
-		} else if (entitee.is(Libellule)) {
-			seDeplacer();
-			exploser(false);
 			return 0;
-		} else if (entitee.is(Luciole)) {
-			seDeplacer();
+		} else if (entitee.is(Libellule)) {
 			exploser(true);
 			return 0;
+		} else if (entitee.is(Luciole)) {
+			exploser(false);
+			return 0;
 		} else if (entitee.is(Amibe)) {
-			seDeplacer();
 			exploser(true);
 			return 0;
 		} else if (entitee.is(Explosion)) {
-			seDeplacer();
 			exploser(false);
 			return 0;
 		}
@@ -58,4 +66,34 @@ public class Pierre extends Tickable {
 
 	}
 
+	protected void exploser(boolean popDiamants) {
+		for (int i = -1; i < 2; i++) {
+			for (int j = 0; j <= 2; j++) {
+				if (Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir()) {
+					if (popDiamants)
+						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i,
+								getY() + j);
+					else {
+						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
+								getY() + j);
+					}
+					Partie.gererNiveau.ajouterTickable(
+							(Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
+				}
+			}
+		}
+	}
+
+	protected void bloquer() {
+		bloque = !(placeLibreChute(getX(), getY() + 1));
+	}
+
+	protected boolean placeLibreChute(int x, int y) {
+		for (Entitees e : deplacementsPossiblesChute) {
+			if (Partie.gererNiveau.getNiveau().getMap()[x][y].getEnumeration().equals(e)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -15,8 +15,11 @@ public class Libellule extends Ennemi {
 
 	@Override
 	public void tick() {
-		iASetDirection();
-		seDeplacer();
+		if (!bloque) {
+			iASetDirection();
+			seDeplacer();
+		}
+		bloquer();
 	}
 
 	protected void iASetDirection() {

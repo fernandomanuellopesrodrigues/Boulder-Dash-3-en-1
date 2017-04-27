@@ -1,10 +1,17 @@
 package entitees.fixes;
 
-import entitees.abstraites.Entitee;
-import main.Partie;
-import static entitees.abstraites.Entitee.Entitees.*;
+import static entitees.abstraites.Entitee.Entitees.Diamant;
+import static entitees.abstraites.Entitee.Entitees.MurMagique;
+import static entitees.abstraites.Entitee.Entitees.Pierre;
+import static entitees.abstraites.Entitee.Entitees.Vide;
 
-public class MurMagique extends Entitee {
+import entitees.abstraites.Entitee;
+import entitees.abstraites.Tickable;
+import entitees.tickables.Diamant;
+import entitees.tickables.Pierre;
+import main.Partie;
+
+public class MurMagique extends Tickable {
 
 	private int magicWallTime;
 
@@ -23,8 +30,41 @@ public class MurMagique extends Entitee {
 		magicWallTime--;
 		if (magicWallTime <= 0) {
 			mourir();
-			Partie.gererNiveau.getNiveau().placerEntitee(new Mur(getX(), getY()));
+			Partie.gererNiveau.getNiveau().getMap()[getX()][getY()] = new Mur(getX(), getY());
 		}
 	}
-	
+
+	public boolean traverser() {
+		if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1].is(Vide)) {
+			if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].is(Diamant)) {
+				Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].mourir();
+				Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1] = new Pierre(getX(), getY() + 1);
+				Partie.gererNiveau
+						.ajouterTickable((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1]);
+				decrementerMagicWallTime();
+				return true;
+			} else if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].is(Pierre)) {
+				Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].mourir();
+				Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1] = new Diamant(getX(), getY() + 1);
+				Partie.gererNiveau
+						.ajouterTickable((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1]);
+				((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1]).setChute(true);
+				decrementerMagicWallTime();
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	@Override
+	protected int contactAutreEntitee(Entitee entitee) {
+		return 0;
+	}
+
+	@Override
+	public void tick() {
+		traverser();
+	}
+
 }

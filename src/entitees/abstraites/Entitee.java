@@ -36,17 +36,21 @@ public abstract class Entitee implements Cloneable {
 
 	protected Entitees enumeration;
 	private int x, y;
+	private long id;
 	private boolean destructible, mort;
+	public static long idTotal = 0;
 
 	protected Entitee(int x, int y) {
 		this.x = x;
 		this.y = y;
 		enumeration = Vide;
+		id = idTotal;
+		idTotal++;
 	}
 
 	public boolean mourir() {
 		if (destructible) {
-			Partie.gererNiveau.getNiveau().placerEntitee(new Vide(x, y));
+			Partie.gererNiveau.getNiveau().getMap()[x][y] = new Vide(x, y);
 			mort = true;
 		}
 		return mort;
@@ -144,6 +148,14 @@ public abstract class Entitee implements Cloneable {
 
 	public Entitees getEnumeration() {
 		return enumeration;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

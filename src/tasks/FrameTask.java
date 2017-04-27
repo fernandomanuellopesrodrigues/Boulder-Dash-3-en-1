@@ -10,7 +10,6 @@ public class FrameTask implements Runnable {
 			try {
 				Coeur.FENETRE.repaint();
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}

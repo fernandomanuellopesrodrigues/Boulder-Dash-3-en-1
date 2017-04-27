@@ -17,11 +17,12 @@ import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
 import main.Partie;
 
-public abstract class Tickable extends Entitee implements Comparable<Tickable>{
-	private boolean chute;
+public abstract class Tickable extends Entitee implements Comparable<Tickable> {
+	protected boolean chute;
 	private char direction;
 	private List<Entitees> deplacementsPossibles = new ArrayList<Entitees>();
 	private boolean actionEffectue;
+	protected boolean bloque = true;
 
 	protected Tickable(int x, int y) {
 		super(x, y);
@@ -50,10 +51,10 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable>{
 			int contact = contactAutreEntitee(Partie.gererNiveau.getNiveau().getMap()[getX() + x][getY() + y]);
 			if (contact == 1) {
 				Partie.gererNiveau.getNiveau().getMap()[getX() + x][getY() + y].mourir();
-				Partie.gererNiveau.getNiveau().placerEntitee(new Vide(getX(), getY()));
+				Partie.gererNiveau.getNiveau().getMap()[getX()][getY()] = new Vide(getX(), getY());
 				setX(getX() + x);
 				setY(getY() + y);
-				Partie.gererNiveau.getNiveau().placerEntitee(this);
+				Partie.gererNiveau.getNiveau().getMap()[getX()][getY()] = this;
 			} else if (contact == -1) {
 				mourir();
 			}
@@ -78,13 +79,13 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable>{
 	}
 
 	protected void gererChute() {
-
 		if (chute && placeLibre(getX(), getY() + 1)) {
 			direction = 'b';
 			seDeplacer();
 		} else if (Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, Vide)
 				|| (Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, MurMagique)
 						&& Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 2, Vide))) {
+
 			chute = true;
 			gererChute();
 		} else {
@@ -99,11 +100,16 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable>{
 	protected void exploser(boolean popDiamants) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir();
-				if (popDiamants)
-					Partie.gererNiveau.getNiveau().placerEntitee(new Diamant(getX() + i, getY() + j));
-				else {
-					Partie.gererNiveau.getNiveau().placerEntitee(new Explosion(getX() + i, getY() + j));
+				if (Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir()) {
+					if (popDiamants)
+						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i,
+								getY() + j);
+					else {
+						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
+								getY() + j);
+					}
+					Partie.gererNiveau.ajouterTickable(
+							(Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
 				}
 			}
 		}
@@ -156,4 +162,12 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable>{
 		return deplacementsPossibles;
 	}
 
+	protected void bloquer() {
+		bloque = !(placeLibre(getX() + 1, getY()) || placeLibre(getX(), getY() + 1) || placeLibre(getX(), getY() - 1)
+				|| placeLibre(getX() - 1, getY()));
+	}
+
+	public void setChute(boolean chute) {
+		this.chute = chute;
+	}
 }

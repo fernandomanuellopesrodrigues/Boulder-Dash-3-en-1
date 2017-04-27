@@ -31,7 +31,7 @@ public class Diamant extends Tickable {
 			((Rockford) entitee).ramasserDiamant();
 			return -1;
 		} else if (entitee.is(MurMagique)) {
-			// ((MurMagique) entitee).traverser();
+			return 0;
 		} else if (entitee.is(Libellule)) {
 			seDeplacer();
 			exploser(false);

@@ -4,6 +4,7 @@ import static entitees.abstraites.Entitee.Entitees.Amibe;
 import static entitees.abstraites.Entitee.Entitees.Rockford;
 
 public abstract class Ennemi extends Tickable {
+
 	protected Ennemi(int x, int y) {
 		super(x, y);
 		getDeplacementsPossibles().add(Rockford);
@@ -20,6 +21,8 @@ public abstract class Ennemi extends Tickable {
 		}
 		return 1;
 	}
+
+	
 
 	protected boolean isToutDroitLibre() {
 		switch (getDirection()) {

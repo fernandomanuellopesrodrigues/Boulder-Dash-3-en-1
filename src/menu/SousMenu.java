@@ -6,7 +6,7 @@ import main.Partie;
 public class SousMenu {
 
 	public static void lancerNiveau(String cheminFichierBDCFF, int niveau) {
-		// on doit tester si le chemin et le niveau sont bien
+		Partie.commencerPartie(cheminFichierBDCFF, niveau);
 	}
 
 	public static void lancerTousLesNiveaux(String cheminFichierBDCFF) {
