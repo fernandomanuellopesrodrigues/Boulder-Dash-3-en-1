@@ -39,6 +39,7 @@ public class Rockford extends Tickable {
 			Partie.gererNiveau
 					.setScore(Partie.gererNiveau.getScore() + Partie.gererNiveau.getNiveau().getDiamond_value());
 		}
+		Partie.gererNiveau.incrementerNbDiamants();
 	}
 
 	@Override

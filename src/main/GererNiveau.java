@@ -10,7 +10,7 @@ import loader.Niveau;
 
 public class GererNiveau {
 
-	private boolean tourParTour;
+	private boolean tourParTour = true;
 	private int score, nbDiamants, tempsRestant, compteurTicks;
 	private Niveau niveau;
 	private boolean finiSuccess;
@@ -18,32 +18,45 @@ public class GererNiveau {
 	private String trajet = "";
 	private List<Amibe> listeAmibes = new ArrayList<Amibe>();
 	private List<Tickable> listeTickable = new ArrayList<Tickable>();
+	private List<Amibe> listeAmibesAjout = new ArrayList<Amibe>();
+	private List<Tickable> listeTickableAjout = new ArrayList<Tickable>();
 
 	public GererNiveau(Niveau niveau) {
 		this.niveau = niveau;
-		if (niveau.getCaveDelay() >= 1) {
-			tourParTour = true;
+		if (niveau.getCaveDelay() >= 1 && Coeur.tempsReel) {
+			tourParTour = false;
 		}
-		for (Tickable t : listeTickable) {
-			this.listeTickable.add((Tickable) t);
+
+		for (int i = 0; i < niveau.getMap().length; i++) {
+			for (int j = 0; j < niveau.getMap()[i].length; j++) {
+				if (niveau.getMap()[i][j] instanceof Tickable) {
+					listeTickable.add((Tickable) niveau.getMap()[i][j]);
+				}
+			}
 		}
+		for (int i = 0; i < niveau.getMap().length; i++) {
+			for (int j = 0; j < niveau.getMap()[i].length; j++) {
+				if (niveau.getMap()[i][j] instanceof Amibe) {
+					listeAmibes.add((Amibe) niveau.getMap()[i][j]);
+				}
+			}
+		}
+		Collections.sort(listeTickable);
+		Collections.shuffle(listeAmibes);
 	}
 
 	public void tick() {
 		toucheClavier = Coeur.CONTROLEUR.getDirection();
 		trajet += toucheClavier;
 		gererLesTickables();
+		gererLesAmibes();
 		Coeur.CONTROLEUR.tick();
+		ajouterAll();
 		compteurTicks++;
 	}
 
 	public void gererLesTickables() {
-		List<Tickable> listeTickable2 = new ArrayList<Tickable>();
 		for (Tickable t : listeTickable) {
-			listeTickable2.add(t);
-		}
-
-		for (Tickable t : listeTickable2) {
 			t.tick();
 		}
 	}
@@ -58,6 +71,27 @@ public class GererNiveau {
 			}
 			listeAmibes.get(0).transformerTousLesAmibesEnDiamant();
 		}
+	}
+
+	public void ajouterAmibe(Amibe e) {
+		listeAmibesAjout.add(e);
+	}
+
+	public void ajouterTickable(Tickable e) {
+		listeTickableAjout.add(e);
+	}
+
+	public void ajouterAll() {
+		listeAmibes.addAll(listeAmibesAjout);
+		listeAmibesAjout.clear();
+		Collections.shuffle(listeAmibes);
+		listeTickable.addAll(listeTickable);
+		listeTickableAjout.clear();
+		Collections.sort(listeTickable);
+	}
+
+	public void incrementerNbDiamants() {
+		nbDiamants++;
 	}
 
 	public void setFiniSuccess(boolean finiSuccess) {

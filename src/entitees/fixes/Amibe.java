@@ -36,8 +36,6 @@ public class Amibe extends Entitee {
 		if (!points.isEmpty()) {
 			int rng = (int) (Math.random() * points.size());
 			Partie.gererNiveau.getNiveau().placerEntitee(new Amibe(points.get(rng).x, points.get(rng).y));
-			Partie.gererNiveau.getListeAmibes()
-					.add(((Amibe) Partie.gererNiveau.getNiveau().getMap()[points.get(rng).x][points.get(rng).y]));
 			checkDetruireAmibes();
 			return true;
 		} else {

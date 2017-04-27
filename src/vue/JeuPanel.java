@@ -19,7 +19,6 @@ import entitees.tickables.Libellule;
 import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
-import main.Coeur;
 import main.Partie;
 
 public class JeuPanel extends JPanel {
@@ -74,7 +73,12 @@ public class JeuPanel extends JPanel {
 		} else if (e.getClass().equals(Rockford.class)) {
 			return Sprites.spriteRockford;
 		} else if (e.getClass().equals(Sortie.class)) {
-			return Sprites.SPRITES_SORTIE.get(0);
+			if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {
+				return Sprites.SPRITES_SORTIE.get(1);
+			} else {
+				return Sprites.SPRITES_SORTIE.get(0);
+			}
+
 		} else if (e.getClass().equals(MurMagique.class)) {
 			return Sprites.SPRITES_MURS_MAGIQUES.get(0);
 		} else if (e.getClass().equals(Explosion.class)) {

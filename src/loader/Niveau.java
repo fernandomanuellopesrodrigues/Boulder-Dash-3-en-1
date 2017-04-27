@@ -12,6 +12,7 @@ import entitees.abstraites.Tickable;
 import entitees.fixes.Amibe;
 import entitees.fixes.Sortie;
 import entitees.tickables.Rockford;
+import main.Partie;
 
 public class Niveau implements Cloneable {
 
@@ -62,8 +63,12 @@ public class Niveau implements Cloneable {
 
 	public boolean placerEntitee(Entitee e) {
 		if (map[e.getX()][e.getY()].isDestructible()) {
-			map[e.getX()][e.getY()].mourir();
 			map[e.getX()][e.getY()] = e;
+			if (e instanceof Amibe) {
+				Partie.gererNiveau.ajouterAmibe(((Amibe) e));
+			} else if (e instanceof Tickable) {
+				Partie.gererNiveau.ajouterTickable((Tickable) e);
+			}
 			return true;
 		}
 		return false;

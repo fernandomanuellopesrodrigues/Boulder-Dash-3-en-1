@@ -2,11 +2,10 @@ package main;
 
 import java.awt.event.KeyEvent;
 
-public class Controleur implements Cloneable {
-	private boolean haut, bas, gauche, droite, space, toucheR, hautwas, baswas, gauchewas, droitewas, rwas;
+public class Controleur {
+	private boolean haut, bas, gauche, droite, space, hautwas, baswas, gauchewas, droitewas;
 	private int hautInt, basInt, gaucheInt, droiteInt, rInt;
 	private int toucheHaut, toucheBas, toucheGauche, toucheDroite, toucheNext;
-	private boolean tourParTour;
 
 	public Controleur(int toucheHaut, int toucheGauche, int toucheBas, int toucheDroite, int toucheNext) {
 		this.toucheNext = toucheNext;
@@ -41,19 +40,42 @@ public class Controleur implements Cloneable {
 		} else {
 			droitewas = true;
 		}
-		if (!toucheR) {
-			rInt = 0;
-		} else {
-			rwas = true;
-		}
 	}
 
 	public char getDirection() {
+
 		if (getMax() == 0) {
 			return ' ';
 		}
-		if (rInt == getMax() && (!rwas || toucheR)) {
-			return 'r';
+		int x = Partie.gererNiveau.getNiveau().getRockford().getX();
+		int y = Partie.gererNiveau.getNiveau().getRockford().getY();
+		if (hautInt == getMax() && (!hautwas || haut)) {
+			if (Partie.gererNiveau.getNiveau().getRockford().placeLibre(x, y - 1)) {
+				return 'h';
+			} else {
+				return get2eme();
+			}
+		}
+		if (droiteInt == getMax() && (!droitewas || droite)) {
+			if (Partie.gererNiveau.getNiveau().getRockford().placeLibre(x + 1, y)) {
+				return 'd';
+			} else {
+				return get2eme();
+			}
+		}
+		if (gaucheInt == getMax() && (!gauchewas || gauche)) {
+			if (Partie.gererNiveau.getNiveau().getRockford().placeLibre(x - 1, y)) {
+				return 'g';
+			} else {
+				return get2eme();
+			}
+		}
+		if (basInt == getMax() && (!baswas || bas)) {
+			if (Partie.gererNiveau.getNiveau().getRockford().placeLibre(x, y + 1)) {
+				return 'b';
+			} else {
+				return get2eme();
+			}
 		}
 		if (getMax() != 0) {
 			resetMax();
@@ -63,7 +85,7 @@ public class Controleur implements Cloneable {
 	}
 
 	public void keyTyped(KeyEvent e) {
-
+		keyPressed(e);
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -88,11 +110,7 @@ public class Controleur implements Cloneable {
 		if (e.getKeyChar() == ' ') {
 			space = true;
 		}
-		if (e.getKeyCode() == toucheNext) {
-			toucheR = true;
-			rInt = max + 1;
-		}
-		if (tourParTour)
+		if (Partie.gererNiveau.isTourParTour())
 			Partie.tick();
 	}
 
@@ -111,9 +129,6 @@ public class Controleur implements Cloneable {
 		}
 		if (e.getKeyChar() == ' ') {
 			space = false;
-		}
-		if (e.getKeyCode() == toucheNext) {
-			toucheR = false;
 		}
 	}
 
@@ -181,10 +196,6 @@ public class Controleur implements Cloneable {
 		return max2c;
 	}
 
-	public Controleur clone() {
-		return new Controleur(toucheHaut, toucheGauche, toucheBas, toucheDroite, toucheNext);
-	}
-
 	public boolean isSpace() {
 		return space;
 	}
@@ -193,11 +204,4 @@ public class Controleur implements Cloneable {
 		this.space = space;
 	}
 
-	public boolean isToucheR() {
-		return toucheR;
-	}
-
-	public void setTourParTour(boolean tourParTour) {
-		this.tourParTour = tourParTour;
-	}
 }

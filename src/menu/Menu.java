@@ -42,10 +42,10 @@ public class Menu {
 	}
 
 	public static void jouer(String[] args) {
-		modeGraphique();
+		options();
 		if (args.length == 2) {
 			SousMenu.lancerTousLesNiveaux(args[1]);
-		} else if (args.length == 4 && args[2].equals("-niveau.")) {
+		} else if (args.length == 4 && args[2].equals("-niveau")) {
 			int niveau = -1;
 			try {
 				niveau = Integer.valueOf(args[3]);
@@ -77,7 +77,7 @@ public class Menu {
 	}
 
 	public static void rejouer(String[] args) {
-		modeGraphique();
+		options();
 		if (args.length == 5) {
 			int niveau = -1;
 			try {
@@ -111,7 +111,7 @@ public class Menu {
 		}
 	}
 
-	public static void modeGraphique() {
+	public static void options() {
 
 		Scanner sc;
 		String reponse = "a";
@@ -121,11 +121,25 @@ public class Menu {
 			reponse = sc.nextLine().toUpperCase();
 		} while (!reponse.equals("O") && !reponse.equals("N"));
 		if (reponse.equals("O")) {
+			reponse = "a";
+			do {
+				System.out.println("Voulez-vous activer le mode temps reel ? (O/N)");
+				sc = new Scanner(System.in);
+				reponse = sc.nextLine().toUpperCase();
+			} while (!reponse.equals("O") && !reponse.equals("N"));
+			if (reponse.equals("O")) {
+				Coeur.tempsReel = true;
+			} else {
+				Coeur.tempsReel = false;
+			}
 			Coeur.graphique = true;
 			Coeur.FENETRE.setVisible(true);
+			
+			
 		} else {
 			Coeur.graphique = false;
 			Coeur.FENETRE.setVisible(false);
 		}
+
 	}
 }

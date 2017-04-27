@@ -50,7 +50,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable>{
 			int contact = contactAutreEntitee(Partie.gererNiveau.getNiveau().getMap()[getX() + x][getY() + y]);
 			if (contact == 1) {
 				Partie.gererNiveau.getNiveau().getMap()[getX() + x][getY() + y].mourir();
-				Partie.gererNiveau.getNiveau().placerEntitee(new Vide(x, y));
+				Partie.gererNiveau.getNiveau().placerEntitee(new Vide(getX(), getY()));
 				setX(getX() + x);
 				setY(getY() + y);
 				Partie.gererNiveau.getNiveau().placerEntitee(this);
