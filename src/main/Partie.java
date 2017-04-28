@@ -11,6 +11,7 @@ import java.util.List;
 import constantes.Constantes;
 import loader.EnsembleDeNiveaux;
 import loader.Loader;
+import outils.IaRandom;
 import vue.FinPanel;
 import vue.GraphiqueConsole;
 import vue.JeuPanel;
@@ -23,6 +24,8 @@ public class Partie {
     public static GererNiveau gererNiveau;
     public static boolean tousLesNiveaux;
     public static boolean IA;
+    public static boolean lecture;
+    public static String parcours;
     static DateFormat df = new SimpleDateFormat("dd:MM:yyyy_HH:mm:ss");
     static Date today = Calendar.getInstance().getTime();
     static String dateDebut = df.format(today);
@@ -41,15 +44,25 @@ public class Partie {
         lancerNiveau();
     }
 
+    public static void jouerFichier(String chemin, int niveau, String parcours) {
+        ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(chemin);
+        tousLesNiveaux = false;
+        Partie.niveau = niveau;
+        lecture = true;
+        Partie.parcours = parcours;
+        lancerNiveau();
+    }
+
     public static void finNiveau() {
         Coeur.running = false;
-        String essai="Trajet : "+gererNiveau.getTrajet() +"\nScore : " + gererNiveau.getScore() + "     Diamants : " + gererNiveau.getNbDiamants()+"      Temps : ";
-        if(gererNiveau.isTourParTour()){
-            essai+=(gererNiveau.getCompteurTicks()+" tours\n");
-        }else{
-            essai+=(((double)gererNiveau.getCompteurTicks())/((double)gererNiveau.getNiveau().getCaveDelay()))+" secondes\n";
+        String essai = "Trajet : " + gererNiveau.getTrajet() + "\nScore : " + gererNiveau.getScore() + "     Diamants : " + gererNiveau.getNbDiamants() + "      Temps : ";
+        if (gererNiveau.isTourParTour()) {
+            essai += (gererNiveau.getCompteurTicks() + " tours\n");
+        } else {
+            essai += (((double) gererNiveau.getCompteurTicks()) / ((double) gererNiveau.getNiveau().getCaveDelay())) + " secondes\n";
         }
-        enregistrerEssai(essai);
+        if (!lecture)
+            enregistrerEssai(essai);
         if (tousLesNiveaux) {
             SCORES.add(gererNiveau.getScore());
         }
@@ -98,7 +111,17 @@ public class Partie {
         if (!Coeur.graphique) {
             GraphiqueConsole.afficher(gererNiveau.getNiveau());
         }
-        gererNiveau.tick();
+        if (lecture) {
+            if (parcours.length() > 0) {
+                gererNiveau.tickLecture(parcours.charAt(0));
+                parcours = parcours.substring(1, parcours.length());
+            } else {
+                gererNiveau.tickLecture(IaRandom.directionRandom());
+            }
+        } else {
+            gererNiveau.tick();
+        }
+
     }
 
     public static void preparerFenetre() {

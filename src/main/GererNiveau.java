@@ -56,9 +56,17 @@ public class GererNiveau {
     public void tick() {
         toucheClavier = Coeur.CONTROLEUR.getDirection();
         trajet += toucheClavier == ' ' ? 'a' : toucheClavier;
+        tickInterne();
+    }
+
+    public void tickLecture(char diretion) {
+        toucheClavier = diretion;
+        tickInterne();
+    }
+
+    public void tickInterne() {
         gererLesTickables();
         gererLesAmibes();
-        Coeur.CONTROLEUR.tick();
         ajouterAll();
         compteurTicks++;
         if (demandeReset) {

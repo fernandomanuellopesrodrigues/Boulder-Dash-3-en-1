@@ -2,6 +2,7 @@ package menu;
 
 import loader.Loader;
 import main.Partie;
+import outils.Ecrivain;
 
 public class SousMenu {
 
@@ -22,7 +23,7 @@ public class SousMenu {
 	}
 
 	public static void rejouerNiveau(String cheminFichierDASH, String cheminFichierBDCFF, int niveau) {
-
+		Partie.jouerFichier(cheminFichierBDCFF,niveau,Ecrivain.lireParcours(cheminFichierDASH));
 	}
 
 	public static void simulerNiveau(int nombrePartie, String strategie1, String strategie2, String cheminFichierBDCFF,

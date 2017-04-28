@@ -77,7 +77,9 @@ public class Menu {
 	}
 
 	public static void rejouer(String[] args) {
-		options();
+		Coeur.graphique = true;
+		Coeur.FENETRE.setVisible(true);
+		Coeur.tempsReel = true;
 		if (args.length == 5) {
 			int niveau = -1;
 			try {

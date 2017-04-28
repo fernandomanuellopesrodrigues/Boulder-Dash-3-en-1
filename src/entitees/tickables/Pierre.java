@@ -44,7 +44,6 @@ public class Pierre extends Tickable {
 		
 		setDirection('b');
 		if (entitee.is(Rockford)) {
-			seDeplacer();
 			exploser(false);
 			return 0;
 		} else if (entitee.is(MurMagique)) {
@@ -69,17 +68,7 @@ public class Pierre extends Tickable {
 	protected void exploser(boolean popDiamants) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = 0; j <= 2; j++) {
-				if (Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir()) {
-					if (popDiamants)
-						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i,
-								getY() + j);
-					else {
-						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
-								getY() + j);
-					}
-					Partie.gererNiveau.ajouterTickable(
-							(Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
-				}
+				explosion(i,j,popDiamants);
 			}
 		}
 	}

@@ -15,7 +15,7 @@ Caves=20
 [cave]
 Name=Cave 1
 CaveDelay=6
-CaveTime=2
+CaveTime=150
 DiamondsRequired=3
 DiamondValue=30 15
 AmoebaTime=135

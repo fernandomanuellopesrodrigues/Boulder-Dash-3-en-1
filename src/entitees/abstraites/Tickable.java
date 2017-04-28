@@ -100,18 +100,21 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 	protected void exploser(boolean popDiamants) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if (Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir()) {
-					if (popDiamants)
-						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i,
-								getY() + j);
-					else {
-						Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
-								getY() + j);
-					}
-					Partie.gererNiveau.ajouterTickable(
-							(Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
-				}
+				explosion(i,j,popDiamants);
 			}
+		}
+	}
+	protected void explosion(int i,int j,boolean popDiamants){
+		if (Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir()) {
+			if (popDiamants)
+				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i,
+						getY() + j);
+			else {
+				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
+						getY() + j);
+			}
+			Partie.gererNiveau.ajouterTickable(
+					(Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
 		}
 	}
 

@@ -1,6 +1,8 @@
 package outils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.PrintWriter;
 
 public class Ecrivain {
@@ -16,6 +18,30 @@ public class Ecrivain {
             ecrivain.close();
         } catch (Exception e) {
             System.err.println("Impossible d'enregistrer le chemin parcouru");
+        }
+    }
+
+    public static String lireParcours(String cheminFichierBD) {
+        try {
+            FileReader lecteur = new FileReader(cheminFichierBD);
+            BufferedReader in = new BufferedReader(lecteur);
+
+            // r�cup�ration du fichier
+            String ensemble_du_fichier = "";
+            String s;
+
+            while ((s = in.readLine()) != null) {
+                ensemble_du_fichier += "\n" + s;
+            }
+            in.close();
+            ensemble_du_fichier = ensemble_du_fichier.replace("Trajet : ", "-");
+            ensemble_du_fichier = ensemble_du_fichier.replace("\nScore :", "-");
+            String[] parcours;
+            parcours = ensemble_du_fichier.split("-");
+            return parcours[1];
+        } catch (Exception e) {
+            System.err.println("Impossible d'enregistrer le chemin parcouru");
+            return "";
         }
     }
 }
