@@ -33,11 +33,9 @@ public class Diamant extends Tickable {
 		} else if (entitee.is(MurMagique)) {
 			return 0;
 		} else if (entitee.is(Libellule)) {
-			seDeplacer();
 			exploser(false);
 			return 0;
 		} else if (entitee.is(Luciole)) {
-			seDeplacer();
 			exploser(true);
 			return 0;
 		} else if (entitee.is(Explosion)) {

@@ -76,6 +76,7 @@ public class GererNiveau {
             Partie.finNiveau();
         }
         gererTemps();
+        Coeur.CONTROLEUR.tick();
     }
 
     public void gererLesTickables() {
