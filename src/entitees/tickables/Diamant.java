@@ -51,7 +51,14 @@ public class Diamant extends Tickable {
 		rockfordEndessous();
 		gererChute();
 	}
-
+	protected void exploser(boolean popDiamants) {
+		sons.jouerSon1("explosion.wav", 1);
+		for (int i = -1; i < 2; i++) {
+			for (int j = 0; j <= 2; j++) {
+				explosion(i,j,popDiamants);
+			}
+		}
+	}
 	private void rockfordEndessous() {
 		if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1].is(Rockford)) {
 			setChute(true);

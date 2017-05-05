@@ -4,6 +4,7 @@ import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
 import main.Coeur;
 import main.Partie;
+import outils.SonToolKit;
 
 import static entitees.abstraites.Entitee.Entitees.*;
 
@@ -12,7 +13,6 @@ import constantes.Constantes;
 public class Rockford extends Tickable {
 
 	private char ancienneDirection = 'd';
-
 	private int nombreDeBombe = Constantes.NOMBRE_DE_BOMBES;
 	private boolean bombeAPoser = false;
 
@@ -134,6 +134,7 @@ public class Rockford extends Tickable {
 	private boolean deplacement() {
 		setDirection(Partie.gererNiveau.getToucheClavier());
 		if (getDirection() != ' ') {
+			sons.jouerSon1("walk_earth.wav", 1);
 			seDeplacer();
 			return true;
 		}
@@ -142,6 +143,7 @@ public class Rockford extends Tickable {
 
 	public boolean mourir() {
 		super.mourir();
+		sons.jouerSon2("mortRockford.wav", 1);
 		Partie.gererNiveau.setDemandeReset(true);
 		return true;
 	}

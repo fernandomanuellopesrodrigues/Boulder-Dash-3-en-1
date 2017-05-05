@@ -28,12 +28,13 @@ import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
 import main.Partie;
+import outils.SonToolKit;
 
 public abstract class Entitee implements Cloneable {
 	public enum Entitees {
 		Vide, Amibe, Mur, MurEnTitane, MurMagique, Poussiere, Sortie, Diamant, Explosion, Pierre, Rockford, Libellule, Luciole, Bombe;
 	}
-
+	protected SonToolKit sons = new SonToolKit();
 	protected Entitees enumeration;
 	private int x, y;
 	private long id;

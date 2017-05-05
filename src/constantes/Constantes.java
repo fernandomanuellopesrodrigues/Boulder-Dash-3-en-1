@@ -7,9 +7,10 @@ public class Constantes {
 	public static final int WIDTH_FENETRE = 850;
 	public static final int HEIGHT_FENETRE = 650;
 	public static final String TITRE_FENETRE = "Boulder Dash 3 en 1";
-	public static final String CHEMIN_DOSSIER_SPRITES = "images";
+	public static final String CHEMIN_DOSSIER_SPRITES = "ressources/images";
+	public static final String CHEMIN_DOSSIER_SONS = "ressources/sons";
 	public static final double VITESSE_JEU_TEMPS_REEL = 1.3;
-	public static final int NOMBRE_DE_SPRITES = 66;
+	public static final int NOMBRE_DE_SPRITES = 67;
 	public static final int BOOM = 20;
 	public static final int NOMBRE_DE_BOMBES = 5;
 	public static final int SCORE_BONUS_PAR_BOMBE = 50;

@@ -43,7 +43,7 @@ public class MurMagique extends Tickable {
 						.ajouterTickable((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1]);
 				decrementerMagicWallTime();
 				return true;
-			} else if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].is(Pierre)) {
+			} else if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1] instanceof Pierre) {
 				Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].mourir();
 				Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1] = new Diamant(getX(), getY() + 1);
 				Partie.gererNiveau

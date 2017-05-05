@@ -5,6 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import constantes.Constantes;
+import outils.SonToolKit;
 import tasks.FrameTask;
 import tasks.TickTask;
 import vue.Fenetre;
@@ -17,11 +18,13 @@ public class Coeur {
 	public static boolean running = false;
 	public static boolean graphique;
 	public static boolean tempsReel;
+	public static final SonToolKit SONS = new SonToolKit();
 	static {
 		if (Constantes.FPS >= 1 && Constantes.FPS <= 120)
 			FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / Constantes.FPS, TimeUnit.MILLISECONDS);
 		else
 			FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / 30, TimeUnit.MILLISECONDS);
+		
 	}
 
 	public static void setTicks(int ticks) {

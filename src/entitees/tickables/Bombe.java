@@ -34,8 +34,7 @@ public class Bombe extends Tickable {
 	public boolean mourir() {
 		if (tempsRestantAvantExplosion > 0) {
 			tempsRestantAvantExplosion = -1;
-			exploser(false);
-			
+			exploser(false);			
 		}
 		return true;
 	}

@@ -21,6 +21,7 @@ import entitees.tickables.Libellule;
 import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
+import main.Coeur;
 import main.Partie;
 
 public class JeuPanel extends JPanel {
@@ -35,7 +36,7 @@ public class JeuPanel extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		if (Partie.gererNiveau != null) {
+		if (Coeur.running) {
 			compteurFPS++;
 			Sprites.gererSprites(compteurFPS, Partie.gererNiveau.getNiveau().getRockford());
 			int largeur_case;
@@ -53,7 +54,6 @@ public class JeuPanel extends JPanel {
 					if (image != null) {
 						g.drawImage(image, (j) * largeur_case, (i) * hauteur_case, largeur_case, hauteur_case, this);
 					}
-
 				}
 				if (Partie.gererNiveau.isDemandeReset()) {
 					break;
@@ -81,7 +81,7 @@ public class JeuPanel extends JPanel {
 			return Sprites.SPRITES_POUSSIERES.get(0);
 		} else if (e.getClass().equals(Rockford.class)) {
 			if (Partie.gererNiveau.getNiveau().getRockford().getEnumeration() == Entitee.Entitees.Pierre) {
-				return Sprites.SPRITES_PIERRES.get(0);
+				return Sprites.SPRITES_CAMOUFLAGE.get(0);
 			}
 			return Sprites.spriteRockford;
 		} else if (e.getClass().equals(Sortie.class)) {

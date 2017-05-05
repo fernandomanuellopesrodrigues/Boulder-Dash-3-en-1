@@ -37,7 +37,7 @@ public class Sprites {
     public static final List<Image> SPRITES_ROCKFORD_GAUCHE = new ArrayList<Image>();
     public static final List<Image> SPRITES_SORTIE = new ArrayList<Image>();
     public static final List<Image> SPRITES_BOMBE = new ArrayList<Image>();
-    
+    public static final List<Image> SPRITES_CAMOUFLAGE = new ArrayList<Image>();
     public static Image spriteRockford;
     public static final int VITESSE_ANIM_AMIBES = 20;
     public static final int VITESSE_ANIM_LUCIOLES = 10;
@@ -111,6 +111,7 @@ public class Sprites {
         chargerSpritesSortie();
         chargerSpritesExplosions();
         chargerSpritesBombe();
+        chargerSpritesCamouflage();
     }
 
     public static void cacherSortie() {
@@ -120,7 +121,10 @@ public class Sprites {
     public static void devoilerSortie() {
         Sprites.SPRITES_SORTIE.set(0, CHARGEMENT_SPRITES.get("sortie.png"));
     }
-
+    private static void chargerSpritesCamouflage() {
+    	SPRITES_CAMOUFLAGE.add(CHARGEMENT_SPRITES.get("camouflage.png"));
+       
+    }
     private static void chargerSpritesLibellules() {
         SPRITES_LIBELLULES.add(CHARGEMENT_SPRITES.get("libellule1.png"));
         SPRITES_LIBELLULES.add(CHARGEMENT_SPRITES.get("libellule2.png"));
