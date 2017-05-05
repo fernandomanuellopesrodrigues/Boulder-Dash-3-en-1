@@ -345,7 +345,7 @@ WWWWWWWWWWWWWWWWWWWW
 Name=Cave 11
 CaveDelay=7
 CaveTime=150
-DiamondsRequired=99
+DiamondsRequired=20
 DiamondValue=5 10
 Colors=Black Black LightGreen LightBlue Blue
 
@@ -486,7 +486,7 @@ Name=Cave 15
 Intermission=true
 CaveDelay=4
 CaveTime=30
-DiamondsRequired=45
+DiamondsRequired=25
 DiamondValue=10 99
 Colors=Black Black Brown Green Cyan
 

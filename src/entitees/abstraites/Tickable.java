@@ -90,7 +90,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 			gererChute();
 		} else {
 			if (!placeLibre(getX(), getY() + 1)) {
-				if(enumeration==Pierre){
+				if (enumeration == Pierre) {
 					sons.jouerSon1("stone.wav", 1);
 				}
 				chute = false;
@@ -101,25 +101,27 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 	}
 
 	protected void exploser(boolean popDiamants) {
-		sons.jouerSon1("explosion.wav", 1);
+		if (popDiamants)
+			sons.jouerSon1("explosionDiamant.wav", 1);
+		else
+			sons.jouerSon1("explosion.wav", 1);
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				explosion(i,j,popDiamants);
+				explosion(i, j, popDiamants);
 			}
 		}
 	}
-	protected void explosion(int i,int j,boolean popDiamants){
+
+	protected void explosion(int i, int j, boolean popDiamants) {
 		if (Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir()) {
 			if (popDiamants)
-				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i,
-						getY() + j);
+				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i, getY() + j);
 			else {
-				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
-						getY() + j);
+				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i, getY() + j);
 			}
-		
-			Partie.gererNiveau.ajouterTickable(
-					(Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
+
+			Partie.gererNiveau
+					.ajouterTickable((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
 		}
 	}
 
