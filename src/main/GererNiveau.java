@@ -55,7 +55,7 @@ public class GererNiveau {
 
     public void tick() {
         toucheClavier = Coeur.CONTROLEUR.getDirection();
-        trajet += toucheClavier == ' ' ? 'a' : toucheClavier;
+        trajet += niveau.getRockford().getDirection() == ' ' ? 'a' : niveau.getRockford().getDirection();
         tickInterne();
     }
 

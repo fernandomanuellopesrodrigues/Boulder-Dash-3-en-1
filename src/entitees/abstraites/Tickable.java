@@ -61,7 +61,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 		}
 	}
 
-	private void glisser() {
+	protected void glisser() {
 		if (Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, Pierre)
 				|| Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, Diamant)
 				|| Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, Mur)

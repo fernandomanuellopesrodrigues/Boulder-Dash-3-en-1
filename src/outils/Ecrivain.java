@@ -40,7 +40,7 @@ public class Ecrivain {
             parcours = ensemble_du_fichier.split("-");
             return parcours[1];
         } catch (Exception e) {
-            System.err.println("Impossible d'enregistrer le chemin parcouru");
+            System.err.println("Impossible de lire le fichier indiqué, mode aléatoire lancé.");
             return "";
         }
     }

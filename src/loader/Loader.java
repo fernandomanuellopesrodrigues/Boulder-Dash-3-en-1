@@ -46,12 +46,12 @@ public abstract class Loader {
 			int nombre_de_niveaux = Integer.valueOf(getStr(ensemble_de_niveaux_informations, "Caves=", "\n"));
 			ensemble = new EnsembleDeNiveaux(nombre_de_niveaux);
 			// r�cup�ration des niveaux
-
 			for (int i = 1; i <= ensemble.getNombre_de_niveaux(); i++) {
 				Niveau niveau = charger_niveau(niveaux[i]);
 				if (!niveau.equals(null))
 					ensemble.ajouterNiveau(niveau);
 			}
+
 			ensemble.setNbNiveaux(ensemble.getNiveaux().size());
 			return ensemble;
 		} catch (Exception e) {
@@ -64,6 +64,7 @@ public abstract class Loader {
 
 	private static Niveau charger_niveau(String niveau) {
 		String diamond;
+
 		try {
 			diamond = getStr(niveau, "DiamondValue=", "\n");
 		} catch (Exception e) {
@@ -138,9 +139,6 @@ public abstract class Loader {
 				map[i][j] = creerEntitee(ligne[i], i, j, magic_wall_time, sortieCacher);
 			}
 		}
-		System.out.println();
-		System.out.println();
-		System.out.println();
 		return new Niveau(map, caveDelay, cave_time, diamonds_required, diamond_value, diamond_value_bonus, amoeba_time,
 				magic_wall_time);
 	}

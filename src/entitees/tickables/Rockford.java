@@ -2,6 +2,7 @@ package entitees.tickables;
 
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
+import main.Coeur;
 import main.Partie;
 
 import static entitees.abstraites.Entitee.Entitees.*;
@@ -76,7 +77,30 @@ public class Rockford extends Tickable {
 
     @Override
     public void tick() {
-        deplacement();
+
+        checkCamouflage();
+        if (enumeration == Rockford)
+            deplacement();
+        else if (enumeration == Pierre) {
+            gererChute();
+        }
+        orienterDirectionPourSauvegarde();
+    }
+
+    protected void gererChute() {
+        if (chute && placeLibre(getX(), getY() + 1)) {
+            setDirection('b');
+            seDeplacer();
+        } else if (Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, Vide)) {
+            chute = true;
+            gererChute();
+        } else {
+            if (!placeLibre(getX(), getY() + 1)) {
+                chute = false;
+            }
+            glisser();
+        }
+
     }
 
     private void deplacement() {
@@ -90,6 +114,49 @@ public class Rockford extends Tickable {
         super.mourir();
         Partie.gererNiveau.setDemandeReset(true);
         return true;
+    }
+
+    public void checkCamouflage() {
+        //si on est en mode lecteur
+        if (Partie.lecture) {
+            if (Partie.gererNiveau.getToucheClavier() == 'p' && enumeration == Rockford) {
+                seCamoufler();
+            } else if (enumeration == Pierre && Partie.gererNiveau.getToucheClavier() != 'p') {
+                seDecamoufler();
+            }
+        } else {
+            if (Coeur.CONTROLEUR.isPierre() && enumeration == Rockford) {
+                seCamoufler();
+            } else if (enumeration == Pierre && !Coeur.CONTROLEUR.isPierre()) {
+                seDecamoufler();
+            }
+        }
+    }
+
+    private void seCamoufler() {
+        enumeration = Pierre;
+        getDeplacementsPossibles().remove(Poussiere);
+        getDeplacementsPossibles().remove(Diamant);
+        getDeplacementsPossibles().remove(Sortie);
+        getDeplacementsPossibles().add(Luciole);
+        getDeplacementsPossibles().add(Libellule);
+        getDeplacementsPossibles().add(Amibe);
+    }
+
+    private void seDecamoufler() {
+        enumeration = Rockford;
+        getDeplacementsPossibles().add(Poussiere);
+        getDeplacementsPossibles().add(Diamant);
+        getDeplacementsPossibles().add(Sortie);
+        getDeplacementsPossibles().remove(Luciole);
+        getDeplacementsPossibles().remove(Libellule);
+        getDeplacementsPossibles().remove(Amibe);
+    }
+
+    public void orienterDirectionPourSauvegarde() {
+        if (enumeration == Pierre) {
+            setDirection('p');
+        }
     }
 
     public char getAncienneDirection() {
