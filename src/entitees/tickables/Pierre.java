@@ -35,6 +35,8 @@ public class Pierre extends Tickable {
 	public void tick() {
 		if (!bloque || chute) {
 			gererChute();
+		}else{
+			glisser();
 		}
 		bloquer();
 	}

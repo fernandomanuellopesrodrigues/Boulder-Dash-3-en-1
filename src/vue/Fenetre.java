@@ -18,6 +18,7 @@ public class Fenetre extends JFrame implements KeyListener{
 		this.setResizable(true);
 		this.addKeyListener(this);
 		this.setVisible(false);
+		this.setAlwaysOnTop(true);
 	}
 
 	@Override

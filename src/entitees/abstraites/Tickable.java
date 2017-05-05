@@ -113,6 +113,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
 						getY() + j);
 			}
+		
 			Partie.gererNiveau.ajouterTickable(
 					(Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
 		}

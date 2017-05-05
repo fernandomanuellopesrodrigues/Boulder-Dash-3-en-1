@@ -32,7 +32,7 @@ W.................wcccw............. aaW
 W..................wcw..............   W
 W............ .....wcw.................W
 W............ .....wcw.................W
-W   d ....... ......w..................W
+W     ....... ......w..................W
 W..   .......q......w..................W
 W..   ..............X..................W
 WMMMMM..............w..................W
@@ -251,7 +251,7 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 Name=Cave 8
 CaveDelay=9
 CaveTime=250
-DiamondsRequired=50
+DiamondsRequired=0
 DiamondValue=14 18
 Colors=Black Black Brown Brown Green
 
@@ -283,7 +283,7 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 [cave]
 Name=Cave 9
-CaveDelay=200
+CaveDelay=9
 CaveTime=150
 DiamondsRequired=75
 DiamondValue=4 12

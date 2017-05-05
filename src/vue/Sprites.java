@@ -36,6 +36,8 @@ public class Sprites {
     public static final List<Image> SPRITES_ROCKFORD_DROITE = new ArrayList<Image>();
     public static final List<Image> SPRITES_ROCKFORD_GAUCHE = new ArrayList<Image>();
     public static final List<Image> SPRITES_SORTIE = new ArrayList<Image>();
+    public static final List<Image> SPRITES_BOMBE = new ArrayList<Image>();
+    
     public static Image spriteRockford;
     public static final int VITESSE_ANIM_AMIBES = 20;
     public static final int VITESSE_ANIM_LUCIOLES = 10;
@@ -108,6 +110,7 @@ public class Sprites {
         chargerSpritesPierres();
         chargerSpritesSortie();
         chargerSpritesExplosions();
+        chargerSpritesBombe();
     }
 
     public static void cacherSortie() {
@@ -229,6 +232,11 @@ public class Sprites {
 
     private static void chargerSpritesPoussieres() {
         SPRITES_POUSSIERES.add(CHARGEMENT_SPRITES.get("poussiere.png"));
+    }
+    
+    private static void chargerSpritesBombe() {
+    	SPRITES_BOMBE.add(CHARGEMENT_SPRITES.get("Bombe.png"));
+    	SPRITES_BOMBE.add(CHARGEMENT_SPRITES.get("BombeRouge.png"));
     }
 
     private static void changerDirectionSpriteRockford(char directionDeRockford) {

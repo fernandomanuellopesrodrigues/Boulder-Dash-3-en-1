@@ -69,36 +69,7 @@ public class Niveau implements Cloneable {
 	}
 
 	public boolean testEntitee(int x, int y, Entitees enumeration) {
-		Class classe = null;
-		if (enumeration == entitees.abstraites.Entitee.Entitees.Vide) {
-			classe = Vide.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Poussiere) {
-			classe = Poussiere.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Mur) {
-			classe = Mur.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.MurMagique) {
-			classe = MurMagique.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.MurEnTitane) {
-			classe = MurEnTitane.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Luciole) {
-			classe = Luciole.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Libellule) {
-			classe = Libellule.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Rockford) {
-			classe = Rockford.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Amibe) {
-			classe = Amibe.class;
-		} else if (enumeration == entitees.abstraites.Entitee.Entitees.Sortie) {
-			classe = Sortie.class;
-		}else if (enumeration == entitees.abstraites.Entitee.Entitees.Diamant) {
-			classe = Diamant.class;
-		}else if (enumeration == entitees.abstraites.Entitee.Entitees.Explosion) {
-			classe = Explosion.class;
-		}else if (enumeration == entitees.abstraites.Entitee.Entitees.Pierre) {
-			classe = Pierre.class;
-		}
-
-		if (map[x][y].getClass().equals(classe)) {
+		if (map[x][y].getEnumeration().equals(enumeration)) {
 			return true;
 		} else {
 			return false;

@@ -17,7 +17,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	protected void paintComponent(Graphics g) {
-		if (Partie.gererNiveau != null) {
+		if (Coeur.running) {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			g.setColor(Color.white);
