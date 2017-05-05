@@ -71,7 +71,7 @@ public class Partie {
 		if (tousLesNiveaux) {
 			SCORES.add(gererNiveau.getScore());
 		}
-		if (tousLesNiveaux && niveau <= ensembleDeNiveau.getNombre_de_niveaux()) {
+		if (tousLesNiveaux && niveau < ensembleDeNiveau.getNombre_de_niveaux()) {
 			niveau++;
 			lancerNiveau();
 		} else {
