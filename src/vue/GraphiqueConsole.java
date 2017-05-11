@@ -33,7 +33,7 @@ public class GraphiqueConsole {
 		s+="\n\n";
 		for (int i = 0; i < map[0].length; i++) {
 			for (int j = 0; j < map.length; j++) {
-				Class l = map[j][i].getClass();
+				Class<? extends Entitee> l = map[j][i].getClass();
 				if (l.equals(Rockford.class)) {
 					s += 'P';
 				} else if (l.equals(Mur.class)) {

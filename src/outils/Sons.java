@@ -7,12 +7,13 @@ import java.io.InputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import constantes.Constantes;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
 
 public class Sons {
-    private static final String PATH = "ressources/sons/";
+    private static final String PATH = Constantes.CHEMIN_DOSSIER_SONS;
     private boolean desactive;
     private AudioStream audioStream;
 

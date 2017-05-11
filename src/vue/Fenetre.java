@@ -5,13 +5,18 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import static constantes.Constantes.*;
-import static  main.Coeur.CONTROLEUR;
+import constantes.Constantes;
 
-public class Fenetre extends JFrame implements KeyListener{
-	
+import static constantes.Constantes.*;
+import static main.Coeur.CONTROLEUR;
+
+public class Fenetre extends JFrame implements KeyListener {
+
+	private int TPS, FPS;
+
 	public Fenetre() {
-		this.setTitle(TITRE_FENETRE);
+		this.setTitle(Constantes.TITRE_FENETRE);
+		this.setTitre();
 		this.setSize(WIDTH_FENETRE, HEIGHT_FENETRE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -19,7 +24,16 @@ public class Fenetre extends JFrame implements KeyListener{
 		this.addKeyListener(this);
 		this.setVisible(false);
 		this.setAlwaysOnTop(true);
-		this.requestFocus();
+	}
+
+	public void setTitre() {
+		if (Constantes.SYSOUT_FPS && Constantes.SYSOUT_TPS) {
+			this.setTitle("[" + FPS + " FPS , " + TPS + " TPS] " + Constantes.TITRE_FENETRE);
+		} else if (Constantes.SYSOUT_FPS) {
+			this.setTitle("[" + FPS + " FPS] " + Constantes.TITRE_FENETRE);
+		} else if (Constantes.SYSOUT_TPS) {
+			this.setTitle("[" + TPS + " TPS] " + Constantes.TITRE_FENETRE);
+		}
 	}
 
 	@Override
@@ -35,5 +49,13 @@ public class Fenetre extends JFrame implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		CONTROLEUR.keyReleased(e);
+	}
+
+	public void setTPS(int tPS) {
+		TPS = tPS;
+	}
+
+	public void setFPS(int fPS) {
+		FPS = fPS;
 	}
 }

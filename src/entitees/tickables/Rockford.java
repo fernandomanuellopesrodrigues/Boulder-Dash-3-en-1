@@ -25,6 +25,8 @@ public class Rockford extends Tickable {
 		getDeplacementsPossibles().add(Pierre);
 		getDeplacementsPossibles().add(Sortie);
 		getDeplacementsPossibles().add(Amibe);
+		getDeplacementsPossibles().add(Libellule);
+		getDeplacementsPossibles().add(Luciole);
 		getDeplacementsPossibles().add(Explosion);
 		enumeration = Rockford;
 	}
@@ -91,8 +93,6 @@ public class Rockford extends Tickable {
 			if (deplacement()) {
 				checkBombe();
 			}
-		} else if (enumeration == Pierre) {
-			// gererChute();
 		}
 		orienterDirectionPourSauvegarde();
 	}
@@ -134,16 +134,16 @@ public class Rockford extends Tickable {
 	private boolean deplacement() {
 		setDirection(Partie.gererNiveau.getToucheClavier());
 		if (getDirection() != ' ') {
-			sons.jouerSon1("walk_earth.wav", 1);
-			seDeplacer();
-			return true;
+			//sons.jouerSon1("walk_earth.wav", 1);
+			if (seDeplacer())
+				return true;
 		}
 		return false;
 	}
 
 	public boolean mourir() {
 		super.mourir();
-		sons.jouerSon2("mortRockford.wav", 1);
+		//sons.jouerSon2("mortRockford.wav", 1);
 		Partie.gererNiveau.setDemandeReset(true);
 		return true;
 	}

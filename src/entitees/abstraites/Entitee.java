@@ -34,7 +34,8 @@ public abstract class Entitee implements Cloneable {
 	public enum Entitees {
 		Vide, Amibe, Mur, MurEnTitane, MurMagique, Poussiere, Sortie, Diamant, Explosion, Pierre, Rockford, Libellule, Luciole, Bombe;
 	}
-	protected SonToolKit sons = new SonToolKit();
+
+	// protected SonToolKit sons = new SonToolKit();
 	protected Entitees enumeration;
 	private int x, y;
 	private long id;
@@ -47,6 +48,7 @@ public abstract class Entitee implements Cloneable {
 		enumeration = Vide;
 		id = idTotal;
 		idTotal++;
+
 	}
 
 	public boolean mourir() {

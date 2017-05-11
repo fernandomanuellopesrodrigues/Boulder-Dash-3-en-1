@@ -23,6 +23,7 @@ import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
 import main.Coeur;
 import main.Partie;
+import tasks.FrameTask;
 
 public class JeuPanel extends JPanel {
 
@@ -37,6 +38,7 @@ public class JeuPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		if (Coeur.running) {
+			
 			compteurFPS++;
 			Sprites.gererSprites(compteurFPS, Partie.gererNiveau.getNiveau().getRockford());
 			int largeur_case;
@@ -47,55 +49,51 @@ public class JeuPanel extends JPanel {
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			for (int i = 0; i < map[0].length; i++) {
 				for (int j = 0; j < map.length; j++) {
-					if (Partie.gererNiveau.isDemandeReset()) {
-						break;
-					}
 					Image image = getSprite(map[j][i]);
 					if (image != null) {
 						g.drawImage(image, (j) * largeur_case, (i) * hauteur_case, largeur_case, hauteur_case, this);
 					}
 				}
-				if (Partie.gererNiveau.isDemandeReset()) {
-					break;
-				}
 			}
+			
 		}
 	}
 
 	private Image getSprite(Entitee e) {
-		if (e.getClass().equals(Mur.class)) {
+		Class<? extends Entitee> classe =e.getClass();
+		if (classe.equals(Mur.class)) {
 			return Sprites.SPRITES_MURS.get(0);
-		} else if (e.getClass().equals(Diamant.class)) {
+		} else if (classe.equals(Diamant.class)) {
 			return Sprites.SPRITES_DIAMANTS.get(0);
-		} else if (e.getClass().equals(Amibe.class)) {
+		} else if (classe.equals(Amibe.class)) {
 			return Sprites.SPRITES_AMIBES.get(0);
-		} else if (e.getClass().equals(Luciole.class)) {
+		} else if (classe.equals(Luciole.class)) {
 			return Sprites.SPRITES_LUCIOLES.get(0);
-		} else if (e.getClass().equals(Libellule.class)) {
+		} else if (classe.equals(Libellule.class)) {
 			return Sprites.SPRITES_LIBELLULES.get(0);
-		} else if (e.getClass().equals(MurEnTitane.class)) {
+		} else if (classe.equals(MurEnTitane.class)) {
 			return Sprites.SPRITES_MURS_EN_TITANE.get(0);
-		} else if (e.getClass().equals(Pierre.class)) {
+		} else if (classe.equals(Pierre.class)) {
 			return Sprites.SPRITES_PIERRES.get(0);
-		} else if (e.getClass().equals(Poussiere.class)) {
+		} else if (classe.equals(Poussiere.class)) {
 			return Sprites.SPRITES_POUSSIERES.get(0);
-		} else if (e.getClass().equals(Rockford.class)) {
+		} else if (classe.equals(Rockford.class)) {
 			if (Partie.gererNiveau.getNiveau().getRockford().getEnumeration() == Entitee.Entitees.Pierre) {
 				return Sprites.SPRITES_CAMOUFLAGE.get(0);
 			}
 			return Sprites.spriteRockford;
-		} else if (e.getClass().equals(Sortie.class)) {
+		} else if (classe.equals(Sortie.class)) {
 			if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {
 				return Sprites.SPRITES_SORTIE.get(1);
 			} else {
 				return Sprites.SPRITES_SORTIE.get(0);
 			}
 
-		} else if (e.getClass().equals(MurMagique.class)) {
+		} else if (classe.equals(MurMagique.class)) {
 			return Sprites.SPRITES_MURS_MAGIQUES.get(0);
-		} else if (e.getClass().equals(Explosion.class)) {
+		} else if (classe.equals(Explosion.class)) {
 			return Sprites.SPRITES_EXPLOSIONS.get(0);
-		} else if (e.getClass().equals(Bombe.class)) {
+		} else if (classe.equals(Bombe.class)) {
 			if (e.isMort()) {
 				return Sprites.SPRITES_BOMBE.get(0);
 			}

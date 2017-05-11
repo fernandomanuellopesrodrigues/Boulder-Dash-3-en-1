@@ -13,6 +13,7 @@ import loader.EnsembleDeNiveaux;
 import loader.Loader;
 import outils.IaRandom;
 import outils.SonToolKit;
+import tasks.TickTask;
 import vue.FinPanel;
 import vue.GraphiqueConsole;
 import vue.JeuPanel;
@@ -27,7 +28,7 @@ public class Partie {
 	public static boolean IA;
 	public static boolean lecture;
 	public static String parcours;
-	public static SonToolKit sons = new SonToolKit();
+	//public static SonToolKit sons = new SonToolKit();
 	static DateFormat df = new SimpleDateFormat("dd:MM:yyyy_HH:mm:ss");
 	static Date today = Calendar.getInstance().getTime();
 	static String dateDebut = df.format(today);
@@ -56,7 +57,7 @@ public class Partie {
 	}
 
 	public static void finNiveau() {
-		sons.stopAll();
+		//sons.stopAll();
 		Coeur.running = false;
 		String essai = "Trajet : " + gererNiveau.getTrajet() + "\nScore : " + gererNiveau.getScore()
 				+ "     Diamants : " + gererNiveau.getNbDiamants() + "      Temps : ";
@@ -102,6 +103,7 @@ public class Partie {
 		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
 		Coeur.setTicks((int) (ensembleDeNiveau.getNiveaux().get(niveau - 1).getCaveDelay()
 				* Constantes.VITESSE_JEU_TEMPS_REEL));
+		
 		if (Coeur.graphique) {
 			preparerFenetre();
 		}

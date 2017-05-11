@@ -17,7 +17,7 @@ Caves=20
 Name=Cave 1
 CaveDelay=8
 CaveTime=120
-DiamondsRequired=20
+DiamondsRequired=-1
 DiamondValue=15 20
 Colors=Black Black Gray1 LightGreen Yellow
 
@@ -84,7 +84,7 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 [cave]
 Name=Cave 3
-CaveDelay=8
+CaveDelay=4
 CaveTime=180
 DiamondsRequired=32
 DiamondValue=20
@@ -92,9 +92,9 @@ Colors=Black Black LightBlue Orange White
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W..              qd..dq              ..W
+W......................................W
 W.. ................................ ..W
-W.. ..            d..d            .. ..W
+W.. ..  ddd       d..d            ..d..W
 W.. .. .......................... .. ..W
 W.. .. ..        qd..dq        .. .. ..W
 W.. .. .. .................... .. .. ..W
@@ -109,8 +109,8 @@ W......................................W
 W......................................W
 W..    ..    ..    ..    ..    ..    ..W
 W.. .. .. .. .. .. .. .. .. .. .. .. ..W
-W.. .. .. .. .. .. .. .. .. .. .. .. ..W
 W.. ..q.. ..q.. ..q.. ..q.. ..q.. ..q..W
+W......................................W
 W..d..d..d..d..d..d..d..d..d..d..d..d..W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]

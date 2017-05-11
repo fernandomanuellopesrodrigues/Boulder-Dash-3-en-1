@@ -35,7 +35,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 
 	public abstract void tick();
 
-	public void seDeplacer() {
+	public boolean seDeplacer() {
 		int x = 0;
 		int y = 0;
 		if (direction == 'h') {
@@ -55,10 +55,12 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 				setX(getX() + x);
 				setY(getY() + y);
 				Partie.gererNiveau.getNiveau().getMap()[getX()][getY()] = this;
+				return true;
 			} else if (contact == -1) {
 				mourir();
 			}
 		}
+		return false;
 	}
 
 	protected void glisser() {
@@ -91,7 +93,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 		} else {
 			if (!placeLibre(getX(), getY() + 1)) {
 				if (enumeration == Pierre) {
-					sons.jouerSon1("stone.wav", 1);
+				//	sons.jouerSon1("stone.wav", 1);
 				}
 				chute = false;
 			}
@@ -101,10 +103,10 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 	}
 
 	protected void exploser(boolean popDiamants) {
-		if (popDiamants)
+	/*if (popDiamants)
 			sons.jouerSon1("explosionDiamant.wav", 1);
 		else
-			sons.jouerSon1("explosion.wav", 1);
+			sons.jouerSon1("explosion.wav", 1);*/
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				explosion(i, j, popDiamants);
