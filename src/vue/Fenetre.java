@@ -24,6 +24,9 @@ public class Fenetre extends JFrame implements KeyListener {
 		this.addKeyListener(this);
 		this.setVisible(false);
 		this.setAlwaysOnTop(true);
+		this.requestFocusInWindow();
+		this.toFront();
+		this.setState(this.NORMAL);
 	}
 
 	public void setTitre() {

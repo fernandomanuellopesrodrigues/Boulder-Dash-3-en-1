@@ -134,7 +134,7 @@ public class Rockford extends Tickable {
 	private boolean deplacement() {
 		setDirection(Partie.gererNiveau.getToucheClavier());
 		if (getDirection() != ' ') {
-			//sons.jouerSon1("walk_earth.wav", 1);
+			sons.jouerSon1("walk_earth.wav", 1);
 			if (seDeplacer())
 				return true;
 		}
@@ -143,7 +143,7 @@ public class Rockford extends Tickable {
 
 	public boolean mourir() {
 		super.mourir();
-		//sons.jouerSon2("mortRockford.wav", 1);
+		sons.jouerSon2("mortRockford.wav", 1);
 		Partie.gererNiveau.setDemandeReset(true);
 		return true;
 	}

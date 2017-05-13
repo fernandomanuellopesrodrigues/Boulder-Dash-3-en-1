@@ -68,7 +68,7 @@ public class Pierre extends Tickable {
 	}
 
 	protected void exploser(boolean popDiamants) {
-		//sons.jouerSon1("explosion.wav", 1);
+		sons.jouerSon1("explosion.wav", 1);
 		for (int i = -1; i < 2; i++) {
 			for (int j = 0; j <= 2; j++) {
 				explosion(i,j,popDiamants);

@@ -35,7 +35,7 @@ public abstract class Entitee implements Cloneable {
 		Vide, Amibe, Mur, MurEnTitane, MurMagique, Poussiere, Sortie, Diamant, Explosion, Pierre, Rockford, Libellule, Luciole, Bombe;
 	}
 
-	// protected SonToolKit sons = new SonToolKit();
+	protected SonToolKit sons = new SonToolKit();
 	protected Entitees enumeration;
 	private int x, y;
 	private long id;

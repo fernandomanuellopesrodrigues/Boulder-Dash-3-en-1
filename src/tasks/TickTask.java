@@ -23,6 +23,7 @@ public class TickTask implements Runnable {
 					compteur2 = System.nanoTime();
 					compteur3 = 0;
 				}
+				Coeur.FENETRE.repaint();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

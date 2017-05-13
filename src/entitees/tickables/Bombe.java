@@ -19,7 +19,6 @@ public class Bombe extends Tickable {
 
 	@Override
 	protected int contactAutreEntitee(Entitee entitee) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
