@@ -89,10 +89,10 @@ public class GererNiveau {
 	public void gererLesAmibes() {
 		//son
 		if (listeAmibes.isEmpty()) {
-			//Partie.sons.stopSon1();
+			Partie.sons.stopSon1();
 		}
 		if (!getListeAmibes().isEmpty()) {
-			//Partie.sons.jouerSon1("amoeba.wav", 965);
+			Partie.sons.jouerSon1("amoeba.wav", 965);
 		}
 		//fin son
 		if (listeAmibes.size() > 0 && niveau.getAmoeba_time() != -1 && compteurTicks % niveau.getAmoeba_time() == 0) {

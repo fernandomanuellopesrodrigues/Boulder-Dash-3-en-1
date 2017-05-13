@@ -191,6 +191,10 @@ public class Rockford extends Tickable {
 		}
 	}
 
+	public boolean camouflageActif() {
+		return getEnumeration() == Entitee.Entitees.Pierre;
+	}
+
 	public void orienterDirectionPourSauvegarde() {
 		if (enumeration == Pierre) {
 			setDirection('p');

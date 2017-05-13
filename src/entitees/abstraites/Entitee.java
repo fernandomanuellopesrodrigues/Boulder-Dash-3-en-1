@@ -1,17 +1,5 @@
 package entitees.abstraites;
 
-import static entitees.abstraites.Entitee.Entitees.Amibe;
-import static entitees.abstraites.Entitee.Entitees.Diamant;
-import static entitees.abstraites.Entitee.Entitees.Explosion;
-import static entitees.abstraites.Entitee.Entitees.Libellule;
-import static entitees.abstraites.Entitee.Entitees.Luciole;
-import static entitees.abstraites.Entitee.Entitees.Mur;
-import static entitees.abstraites.Entitee.Entitees.MurEnTitane;
-import static entitees.abstraites.Entitee.Entitees.MurMagique;
-import static entitees.abstraites.Entitee.Entitees.Pierre;
-import static entitees.abstraites.Entitee.Entitees.Poussiere;
-import static entitees.abstraites.Entitee.Entitees.Rockford;
-import static entitees.abstraites.Entitee.Entitees.Sortie;
 import static entitees.abstraites.Entitee.Entitees.Vide;
 
 import entitees.fixes.Amibe;

@@ -112,6 +112,7 @@ public class Niveau implements Cloneable {
 		return listeTickable;
 	}
 
+	
 	public int getCave_time() {
 		return cave_time;
 	}
