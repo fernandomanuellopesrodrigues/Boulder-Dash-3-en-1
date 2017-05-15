@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 import constantes.Constantes;
+import ia.IaRandom;
 import loader.EnsembleDeNiveaux;
 import loader.Loader;
-import outils.IaRandom;
 import outils.SonToolKit;
 import tasks.TickTask;
 import vue.FinPanel;

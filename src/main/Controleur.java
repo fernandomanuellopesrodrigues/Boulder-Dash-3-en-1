@@ -3,7 +3,7 @@ package main;
 import java.awt.event.KeyEvent;
 
 public class Controleur {
-	private boolean haut, bas, gauche, droite, space, hautwas, baswas, gauchewas, droitewas, pierre;
+	private boolean haut, bas, gauche, droite, space, hautwas, baswas, gauchewas, droitewas, pierre, bombe;
 	private int hautInt, basInt, gaucheInt, droiteInt, rInt;
 	private int toucheHaut, toucheBas, toucheGauche, toucheDroite, toucheNext, touchePierre, toucheBombe;
 
@@ -47,6 +47,13 @@ public class Controleur {
 
 	public char getDirection() {
 
+		if (pierre) {
+			return 'p';
+		}
+		if (bombe) {
+			bombe = false;
+			return 'B';
+		}
 		if (getMax() == 0) {
 			return ' ';
 		}
@@ -89,8 +96,6 @@ public class Controleur {
 	}
 
 	public void keyTyped(KeyEvent e) {
-
-		keyPressed(e);
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -119,10 +124,11 @@ public class Controleur {
 			pierre = true;
 		}
 		if (e.getKeyCode() == toucheBombe) {
-			Partie.gererNiveau.getNiveau().getRockford().poserBombe();
+			bombe = true;
 		}
-		if (Partie.gererNiveau.isTourParTour() && e.getKeyChar() != touchePierre)
+		if (Partie.gererNiveau.isTourParTour()) {
 			Partie.tick();
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {

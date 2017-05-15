@@ -87,14 +87,16 @@ public class Rockford extends Tickable {
 
 	@Override
 	public void tick() {
-
+		setDirection(Partie.gererNiveau.getToucheClavier());
 		checkCamouflage();
 		if (enumeration == Rockford) {
-			if (deplacement()) {
+			if(getDirection()=='B'){
+				poserBombe();
+			}
+			else if (deplacement()) {
 				checkBombe();
 			}
 		}
-		orienterDirectionPourSauvegarde();
 	}
 
 	private void checkBombe() {
@@ -132,7 +134,6 @@ public class Rockford extends Tickable {
 	}
 
 	private boolean deplacement() {
-		setDirection(Partie.gererNiveau.getToucheClavier());
 		if (getDirection() != ' ') {
 			sons.jouerSon1("walk_earth.wav", 1);
 			if (seDeplacer())
@@ -149,20 +150,11 @@ public class Rockford extends Tickable {
 	}
 
 	public void checkCamouflage() {
-		// si on est en mode lecteur
-		if (Partie.lecture) {
 			if (Partie.gererNiveau.getToucheClavier() == 'p' && enumeration == Rockford) {
 				seCamoufler();
 			} else if (enumeration == Pierre && Partie.gererNiveau.getToucheClavier() != 'p') {
 				seDecamoufler();
 			}
-		} else {
-			if (Coeur.CONTROLEUR.isPierre() && enumeration == Rockford) {
-				seCamoufler();
-			} else if (enumeration == Pierre && !Coeur.CONTROLEUR.isPierre()) {
-				seDecamoufler();
-			}
-		}
 	}
 
 	private void seCamoufler() {
@@ -193,12 +185,6 @@ public class Rockford extends Tickable {
 
 	public boolean camouflageActif() {
 		return getEnumeration() == Entitee.Entitees.Pierre;
-	}
-
-	public void orienterDirectionPourSauvegarde() {
-		if (enumeration == Pierre) {
-			setDirection('p');
-		}
 	}
 
 	public char getAncienneDirection() {

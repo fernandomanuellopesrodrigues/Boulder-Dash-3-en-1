@@ -1,4 +1,4 @@
-package outils;
+package ia;
 
 import java.util.Random;
 

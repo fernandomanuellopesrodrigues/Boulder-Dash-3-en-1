@@ -127,7 +127,7 @@ public class JeuPanel extends JPanel {
 	 */
 	private Image getSprite(Entitee e) {
 
-		// Get de la classe.
+		// Get de la classe de l'entitée.
 		Class<? extends Entitee> classe = e.getClass();
 
 		// Comparaison de la classe avec les classes des entitées existantes,

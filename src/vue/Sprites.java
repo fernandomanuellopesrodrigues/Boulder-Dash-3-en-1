@@ -63,6 +63,11 @@ public class Sprites {
 		chargerSprites(CHEMIN_DOSSIER_SPRITES);
 	}
 
+	/**
+	 * 
+	 * @param compteurFPS
+	 * @param rockford
+	 */
 	public static void oneFrame(long compteurFPS, Rockford rockford) {
 		for (Paire<Integer, List<Image>> map : SPRITES_ANIMES.get()) {
 			Integer vitesse = map.getLeft();
