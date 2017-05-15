@@ -56,7 +56,6 @@ public abstract class Loader {
 			return ensemble;
 		} catch (Exception e) {
 			System.err.println("Impossible de charger les niveaux.");
-			e.printStackTrace();
 			return null;
 		}
 

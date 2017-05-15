@@ -77,10 +77,10 @@ public class Menu {
 	}
 
 	public static void rejouer(String[] args) {
-		Coeur.graphique = true;
-		Coeur.FENETRE.setVisible(true);
-		Coeur.tempsReel = true;
 		if (args.length == 5) {
+			Coeur.graphique = true;
+			Coeur.FENETRE.setVisible(true);
+			Coeur.tempsReel = true;
 			int niveau = -1;
 			try {
 				niveau = Integer.valueOf(args[4]);

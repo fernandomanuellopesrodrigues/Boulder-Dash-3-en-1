@@ -6,8 +6,8 @@ import java.util.List;
 
 import entitees.abstraites.Tickable;
 import entitees.fixes.Amibe;
+import ia.Ia;
 import loader.Niveau;
-import tasks.TickTask;
 
 public class GererNiveau {
 
@@ -22,6 +22,8 @@ public class GererNiveau {
 	private boolean finiSuccess;
 	private char toucheClavier;
 	private String trajet = "";
+	private long compteursTicks = 0;
+	private static long compteurReset = 0;
 
 	private List<Amibe> listeAmibes = new ArrayList<Amibe>();
 	private List<Tickable> listeTickable = new ArrayList<Tickable>();
@@ -53,8 +55,27 @@ public class GererNiveau {
 		Collections.shuffle(listeAmibes);
 	}
 
+	public boolean tickIa(Ia ia) {
+		while (!finiSuccess) {
+			compteurTicks++;
+			toucheClavier = ia.direction(niveau.getMap());
+			trajet += toucheClavier;
+			if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
+				compteurReset++;
+				Partie.resetNiveau();
+				break;
+			}
+			tickInterne();
+		}
+		if (!finiSuccess) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public void tick() {
-		toucheClavier = Coeur.CONTROLEUR.getDirection();          
+		toucheClavier = Coeur.CONTROLEUR.getDirection();
 		trajet += toucheClavier;
 		tickInterne();
 	}
@@ -75,7 +96,8 @@ public class GererNiveau {
 		if (demandeFin) {
 			Partie.finNiveau();
 		}
-		gererTemps();
+		if (Coeur.tempsReel)
+			gererTemps();
 		Coeur.CONTROLEUR.tick();
 	}
 
@@ -87,14 +109,14 @@ public class GererNiveau {
 	}
 
 	public void gererLesAmibes() {
-		//son
+		// son
 		if (listeAmibes.isEmpty()) {
 			Partie.sons.stopSon1();
 		}
 		if (!getListeAmibes().isEmpty()) {
 			Partie.sons.jouerSon1("amoeba.wav", 965);
 		}
-		//fin son
+		// fin son
 		if (listeAmibes.size() > 0 && niveau.getAmoeba_time() != -1 && compteurTicks % niveau.getAmoeba_time() == 0) {
 			Collections.shuffle(listeAmibes);
 			for (Amibe amibe : listeAmibes) {
@@ -246,5 +268,16 @@ public class GererNiveau {
 	public int getCompteurTicks() {
 		return compteurTicks;
 	}
-	
+
+	public void incrCompteurReset() {
+		compteurReset++;
+	}
+
+	public void resetCompteurTicks() {
+		compteurTicks = 0;
+	}
+
+	public void resetTrajet() {
+		trajet = "";
+	}
 }

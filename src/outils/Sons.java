@@ -19,10 +19,10 @@ public class Sons {
 
    
     private void charger(String nom) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        String gongFile = PATH + nom;
+        /*String gongFile = PATH + nom;
         InputStream in = new FileInputStream(gongFile);
         audioStream = new AudioStream(in);
-        AudioPlayer.player.start(audioStream);
+        AudioPlayer.player.start(audioStream);*/
     }
 
 
@@ -32,7 +32,7 @@ public class Sons {
             if (!desactive || audioStream == null) {
                 charger(son);
             } else if(!AudioPlayer.player.isDaemon()) {
-                AudioPlayer.player.start(audioStream);
+              //  AudioPlayer.player.start(audioStream);
             }
         } catch (Exception e) {
             e.printStackTrace();

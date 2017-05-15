@@ -99,35 +99,38 @@ public class Controleur {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		int max = getMax();
-		if (e.getKeyCode() == toucheHaut) {
-			haut = true;
-			hautInt = max + 1;
+		if (!Partie.IA && Partie.lecture) {
 
-		}
-		if (e.getKeyCode() == toucheDroite) {
-			droite = true;
-			droiteInt = max + 1;
-		}
-		if (e.getKeyCode() == toucheGauche) {
-			gauche = true;
-			gaucheInt = max + 1;
-		}
-		if (e.getKeyCode() == toucheBas) {
-			bas = true;
-			basInt = max + 1;
-		}
-		if (e.getKeyChar() == ' ') {
-			Partie.gererNiveau.setDemandeReset(true);
-		}
-		if (e.getKeyCode() == touchePierre) {
-			pierre = true;
-		}
-		if (e.getKeyCode() == toucheBombe) {
-			bombe = true;
-		}
-		if (Partie.gererNiveau.isTourParTour()) {
-			Partie.tick();
+			int max = getMax();
+			if (e.getKeyCode() == toucheHaut) {
+				haut = true;
+				hautInt = max + 1;
+
+			}
+			if (e.getKeyCode() == toucheDroite) {
+				droite = true;
+				droiteInt = max + 1;
+			}
+			if (e.getKeyCode() == toucheGauche) {
+				gauche = true;
+				gaucheInt = max + 1;
+			}
+			if (e.getKeyCode() == toucheBas) {
+				bas = true;
+				basInt = max + 1;
+			}
+			if (e.getKeyChar() == ' ') {
+				Partie.gererNiveau.setDemandeReset(true);
+			}
+			if (e.getKeyCode() == touchePierre) {
+				pierre = true;
+			}
+			if (e.getKeyCode() == toucheBombe) {
+				bombe = true;
+			}
+			if (Partie.gererNiveau.isTourParTour()) {
+				Partie.tick();
+			}
 		}
 	}
 

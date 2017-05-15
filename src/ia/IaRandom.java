@@ -2,14 +2,16 @@ package ia;
 
 import java.util.Random;
 
+import entitees.abstraites.Entitee;
+
 /**
  * Created by celso on 28/04/17.
  */
-public class IaRandom {
-
-	public static char directionRandom() {
+public class IaRandom extends Ia {
+	@Override
+	public char direction(Entitee[][] map) {
 		Random r = new Random();
-		int random = 1 + r.nextInt(5);
+		int random = 1 + r.nextInt(6);
 
 		switch (random) {
 		case 1:

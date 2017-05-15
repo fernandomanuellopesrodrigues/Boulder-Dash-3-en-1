@@ -144,7 +144,7 @@ public class Rockford extends Tickable {
 
 	public boolean mourir() {
 		super.mourir();
-		sons.jouerSon2("mortRockford.wav", 1);
+		sons.jouerSon3("mortRockford.wav", 1);
 		Partie.gererNiveau.setDemandeReset(true);
 		return true;
 	}
