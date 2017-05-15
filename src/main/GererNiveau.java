@@ -7,6 +7,7 @@ import java.util.List;
 import entitees.abstraites.Tickable;
 import entitees.fixes.Amibe;
 import ia.Ia;
+import ia.IaEvolue;
 import loader.Niveau;
 
 public class GererNiveau {
@@ -16,13 +17,12 @@ public class GererNiveau {
 	}
 
 	private boolean tourParTour = true, demandeReset, demandeFin;
-	private int score, nbDiamants, tempsRestant, tempsDispo, compteurTicks;
+	private int score, nbDiamants, tempsRestant, tempsTotal, compteurTicks;
 	private long tempsAuDebut = System.currentTimeMillis();
 	private Niveau niveau;
 	private boolean finiSuccess;
 	private char toucheClavier;
 	private String trajet = "";
-	private long compteursTicks = 0;
 	private static long compteurReset = 0;
 
 	private List<Amibe> listeAmibes = new ArrayList<Amibe>();
@@ -36,7 +36,7 @@ public class GererNiveau {
 			tourParTour = false;
 		}
 		tempsRestant = niveau.getCave_time();
-		tempsDispo = tempsRestant;
+		tempsTotal = tempsRestant;
 		for (int i = 0; i < niveau.getMap().length; i++) {
 			for (int j = 0; j < niveau.getMap()[i].length; j++) {
 				if (niveau.getMap()[i][j] instanceof Tickable) {
@@ -60,14 +60,22 @@ public class GererNiveau {
 			compteurTicks++;
 			toucheClavier = ia.direction(niveau.getMap());
 			trajet += toucheClavier;
+			
+			
 			if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
 				compteurReset++;
+				if(ia.getClass().equals(IaEvolue.class)){
+					((IaEvolue)ia).ajouterScore();
+				}
 				Partie.resetNiveau();
 				break;
 			}
 			tickInterne();
 		}
-		if (!finiSuccess) {
+	    if (!finiSuccess) {
+			if(ia.getClass().equals(IaEvolue.class)){
+				((IaEvolue)ia).ajouterScore();
+			}
 			return false;
 		} else {
 			return true;
@@ -130,10 +138,10 @@ public class GererNiveau {
 
 	public void gererTemps() {
 		long temps = System.currentTimeMillis();
-		if (temps - tempsAuDebut > tempsDispo * 1000) {
+		if (temps - tempsAuDebut > tempsTotal * 1000) {
 			demandeReset = true;
 		}
-		tempsRestant = (int) (tempsDispo - ((temps - tempsAuDebut) / 1000));
+		tempsRestant = (int) (tempsTotal - ((temps - tempsAuDebut) / 1000));
 	}
 
 	public void ajouterAmibe(Amibe e) {
@@ -279,5 +287,13 @@ public class GererNiveau {
 
 	public void resetTrajet() {
 		trajet = "";
+	}
+
+	public void setTrajet(String trajet) {
+		this.trajet = trajet;
+	}
+
+	public void setTourParTour(boolean tourParTour) {
+		this.tourParTour = tourParTour;
 	}
 }

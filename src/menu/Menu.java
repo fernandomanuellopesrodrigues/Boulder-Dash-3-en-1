@@ -71,6 +71,19 @@ public class Menu {
 			if (niveau > -1) {
 				SousMenu.calculerStrategie(args[1], args[2], niveau);
 			}
+		}
+		if (args.length == 6 && ( args[1].equals("-evolue"))) {
+			int niveau = -1;
+			int nb = -1;
+			try {
+				niveau = Integer.valueOf(args[5]);
+				nb = Integer.valueOf(args[2]);
+			} catch (Exception e) {
+				System.err.println("Le 6eme et le 3eme argument doit �tre un entier.");
+			}
+			if (niveau > -1) {
+				SousMenu.calculerStrategieEvol(args[1], nb, args[3], niveau);
+			}
 		} else {
 			System.err.println("Argument(s) invalide(s).");
 		}
@@ -136,8 +149,7 @@ public class Menu {
 			}
 			Coeur.graphique = true;
 			Coeur.FENETRE.setVisible(true);
-			
-			
+
 		} else {
 			Coeur.graphique = false;
 			Coeur.FENETRE.setVisible(false);

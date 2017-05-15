@@ -10,6 +10,8 @@ import java.util.List;
 
 import constantes.Constantes;
 import ia.Ia;
+import ia.IaDirective;
+import ia.IaEvolue;
 import ia.IaRandom;
 import loader.EnsembleDeNiveaux;
 import loader.Loader;
@@ -22,13 +24,15 @@ import vue.ScorePanel;
 
 public class Partie {
 	public static final List<Integer> SCORES = new ArrayList<Integer>();
+	public static String cheminFichier;
+	public static boolean finiEvolution;
 	public static EnsembleDeNiveaux ensembleDeNiveau;
 	public static int niveau;
 	public static GererNiveau gererNiveau;
 	public static boolean tousLesNiveaux;
 	public static boolean IA;
 	public static Ia ia;
-	public static boolean lecture,simulation;
+	public static boolean lecture, simulation;
 	public static String parcours;
 	public static SonToolKit sons = new SonToolKit();
 	static DateFormat df = new SimpleDateFormat("dd:MM:yyyy_HH:mm:ss");
@@ -49,8 +53,9 @@ public class Partie {
 		lancerNiveau();
 	}
 
-	public static void jouerFichier(String chemin, int niveau, String parcours) {
-		ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(chemin);
+	public static void jouerFichier(String cheminFichierBDCFF, int niveau, String parcours) {
+		ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
+		cheminFichier = cheminFichierBDCFF;
 		tousLesNiveaux = false;
 		Partie.niveau = niveau;
 		lecture = true;
@@ -58,17 +63,49 @@ public class Partie {
 		lancerNiveau();
 	}
 
+	public static Score jouerFichierScore(String chemin, int niveau, String parcours) {
+		ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(chemin);
+		cheminFichier = chemin;
+		tousLesNiveaux = false;
+		Partie.niveau = niveau;
+		lecture = true;
+		Partie.parcours = parcours;
+		String parcours2=parcours;
+		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
+		Score s;
+		String parcoursParcouru="";
+		while (parcours.length() > 0 && !gererNiveau.isDemandeReset() && !gererNiveau.isDemandeFin()) {
+			char direction = parcours.charAt(0);
+			parcours = parcours.substring(1, parcours.length());
+			gererNiveau.tickLecture(direction);
+			parcoursParcouru+=direction;
+			if(gererNiveau.getNiveau().getRockford().isMort()){
+				
+			}
+		}
+		s=new Score(gererNiveau.getScore(),parcoursParcouru.length());
+		s.setChemin(parcoursParcouru);
+		if (gererNiveau.isDemandeFin()) {
+			s.setFini(true);
+		} else {
+			s.setFini(false);
+		}
+		return s;
+	}
+
 	public static Score calculerStrategie(String strategie, String cheminFichierBDCFF, int niveau) {
 		IA = true;
 
+		ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
+		Partie.niveau = niveau;
+		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
 		if (strategie.equals("-simplet")) {
 			ia = new IaRandom();
+		} else if (strategie.equals("-directif")) {
+			ia = new IaDirective();
 		}
 
 		if (ia != null) {
-			ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
-			Partie.niveau = niveau;
-			gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
 			while (!gererNiveau.tickIa(ia))
 				;
 		}
@@ -77,8 +114,29 @@ public class Partie {
 		return score;
 	}
 
+	public static Score calculerStrategieEvolue(String strategie, int nbGenerations, String cheminFichierBDCFF,
+			int niveau) {
+		IA = true;
+		Partie.cheminFichier = cheminFichierBDCFF;
+		ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
+		Partie.niveau = niveau;
+		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
+
+		if (strategie.equals("-evolue")) {
+			ia = new IaEvolue(nbGenerations);
+		}
+
+		/*
+		 * if (ia != null) { while (!gererNiveau.tickIa(ia)) ; }
+		 */
+
+		Score score = new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks());
+		return score;
+	}
+
 	public static void finNiveau() {
 		sons.stopAll();
+		finiEvolution = true;
 		Coeur.running = false;
 		String essai = "Trajet : " + gererNiveau.getTrajet() + "\nScore : " + gererNiveau.getScore()
 				+ "     Diamants : " + gererNiveau.getNbDiamants() + "      Temps : ";
@@ -88,7 +146,7 @@ public class Partie {
 			essai += (((double) gererNiveau.getCompteurTicks()) / ((double) gererNiveau.getNiveau().getCaveDelay()))
 					+ " secondes\n";
 		}
-		if (!lecture&&!simulation)
+		if (!lecture && !simulation)
 			enregistrerEssai(essai);
 		if (tousLesNiveaux) {
 			SCORES.add(gererNiveau.getScore());
@@ -107,7 +165,7 @@ public class Partie {
 			Coeur.FENETRE.getContentPane().add(new FinPanel());
 			Coeur.FENETRE.getContentPane().validate();
 			Coeur.FENETRE.repaint();
-		} else if(!simulation) {
+		} else if (!simulation) {
 			if (tousLesNiveaux) {
 				GraphiqueConsole.afficherScoreTousLesNiveaux(SCORES);
 
@@ -132,7 +190,8 @@ public class Partie {
 	public static void resetNiveau() {
 		if (IA) {
 			gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
-			ia.reset();
+			if (ia != null)
+				ia.reset();
 		} else if (lecture) {
 			System.out.println("Mort de Rockford. Mauvais parcours. Fin du Programme.");
 		} else {
@@ -151,8 +210,12 @@ public class Partie {
 				gererNiveau.tickLecture(parcours.charAt(0));
 				parcours = parcours.substring(1, parcours.length());
 			} else {
-				System.err.println("Chemin du fichier terminé or le niveau n'est pas fini, fermeture du programme.");
-				System.exit(0);
+				finiEvolution = true;
+				if (!IA) {
+					System.err
+							.println("Chemin du fichier terminé or le niveau n'est pas fini, fermeture du programme.");
+					System.exit(0);
+				}
 			}
 		} else {
 			gererNiveau.tick();

@@ -15,7 +15,7 @@ public class Comparaison {
 			tempsDepart = System.currentTimeMillis();
 			first = false;
 		}
-		this.tours = this.tours + tours;
+		this.tours = this.tours + distance;
 		this.score = this.score + score;
 		this.nombreTrys++;
 	}
