@@ -22,7 +22,7 @@ public abstract class Ia {
 		reset = true;
 	}
 
-	public static char tickStatic() {
+	public static char directionRandom() {
 		int random = 1 + (int) (Math.random() * 5);
 
 		switch (random) {

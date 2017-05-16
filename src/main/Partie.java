@@ -70,20 +70,22 @@ public class Partie {
 		Partie.niveau = niveau;
 		lecture = true;
 		Partie.parcours = parcours;
-		String parcours2=parcours;
+		String parcours2 = parcours;
 		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
 		Score s;
-		String parcoursParcouru="";
+		String parcoursParcouru = "";
 		while (parcours.length() > 0 && !gererNiveau.isDemandeReset() && !gererNiveau.isDemandeFin()) {
 			char direction = parcours.charAt(0);
+			
 			parcours = parcours.substring(1, parcours.length());
-			gererNiveau.tickLecture(direction);
-			parcoursParcouru+=direction;
-			if(gererNiveau.getNiveau().getRockford().isMort()){
+			parcoursParcouru += direction;
+			if (gererNiveau.tickLecture(direction)||gererNiveau.getNiveau().getRockford().isMort()) {
 				
+				break;
 			}
 		}
-		s=new Score(gererNiveau.getScore(),parcoursParcouru.length());
+		
+		s = new Score(gererNiveau.getScore(), parcoursParcouru.length());
 		s.setChemin(parcoursParcouru);
 		if (gererNiveau.isDemandeFin()) {
 			s.setFini(true);
@@ -91,6 +93,20 @@ public class Partie {
 			s.setFini(false);
 		}
 		return s;
+	}
+
+	public static void resetNiveau() {
+		if (IA) {
+			gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
+			if (ia != null)
+				ia.reset();
+		} else if (lecture) {
+			System.out.println("Mort de Rockford. Mauvais parcours. Fin du Programme.");
+		} else {
+			Coeur.running = false;
+			lancerNiveau();
+		}
+
 	}
 
 	public static Score calculerStrategie(String strategie, String cheminFichierBDCFF, int niveau) {
@@ -125,12 +141,8 @@ public class Partie {
 		if (strategie.equals("-evolue")) {
 			ia = new IaEvolue(nbGenerations);
 		}
-
-		/*
-		 * if (ia != null) { while (!gererNiveau.tickIa(ia)) ; }
-		 */
-
-		Score score = new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks());
+		Score score = ((IaEvolue) ia).debut();
+		System.out.println(score.getChemin().substring(0,score.getParcours()));
 		return score;
 	}
 
@@ -185,20 +197,6 @@ public class Partie {
 			preparerFenetre();
 		}
 		Coeur.running = true;
-	}
-
-	public static void resetNiveau() {
-		if (IA) {
-			gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
-			if (ia != null)
-				ia.reset();
-		} else if (lecture) {
-			System.out.println("Mort de Rockford. Mauvais parcours. Fin du Programme.");
-		} else {
-			Coeur.running = false;
-			lancerNiveau();
-		}
-
 	}
 
 	public static void tick() {

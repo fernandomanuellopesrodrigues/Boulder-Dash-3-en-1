@@ -99,7 +99,7 @@ public class Controleur {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (!Partie.IA && Partie.lecture) {
+		if (!Partie.IA && !Partie.lecture) {
 
 			int max = getMax();
 			if (e.getKeyCode() == toucheHaut) {

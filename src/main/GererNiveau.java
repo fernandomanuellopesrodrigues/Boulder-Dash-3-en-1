@@ -60,21 +60,20 @@ public class GererNiveau {
 			compteurTicks++;
 			toucheClavier = ia.direction(niveau.getMap());
 			trajet += toucheClavier;
-			
-			
+
 			if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
 				compteurReset++;
-				if(ia.getClass().equals(IaEvolue.class)){
-					((IaEvolue)ia).ajouterScore();
+				if (ia.getClass().equals(IaEvolue.class)) {
+					((IaEvolue) ia).ajouterScore();
 				}
 				Partie.resetNiveau();
 				break;
 			}
 			tickInterne();
 		}
-	    if (!finiSuccess) {
-			if(ia.getClass().equals(IaEvolue.class)){
-				((IaEvolue)ia).ajouterScore();
+		if (!finiSuccess) {
+			if (ia.getClass().equals(IaEvolue.class)) {
+				((IaEvolue) ia).ajouterScore();
 			}
 			return false;
 		} else {
@@ -88,25 +87,29 @@ public class GererNiveau {
 		tickInterne();
 	}
 
-	public void tickLecture(char diretion) {
+	public boolean tickLecture(char diretion) {
 		toucheClavier = diretion;
-		tickInterne();
+		return tickInterne();
 	}
 
-	public void tickInterne() {
+	public boolean tickInterne() {
 		gererLesTickables();
 		gererLesAmibes();
 		ajouterAll();
 		compteurTicks++;
 		if (demandeReset) {
 			Partie.resetNiveau();
+			return true;
 		}
 		if (demandeFin) {
 			Partie.finNiveau();
+			return true;
+
 		}
 		if (Coeur.tempsReel)
 			gererTemps();
 		Coeur.CONTROLEUR.tick();
+		return false;
 	}
 
 	public void gererLesTickables() {

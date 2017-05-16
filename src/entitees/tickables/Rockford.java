@@ -61,9 +61,6 @@ public class Rockford extends Tickable {
 			return 1;
 		} else if (entitee.is(Sortie)) {
 			if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {
-				if (!Partie.gererNiveau.isTourParTour())
-					Partie.gererNiveau
-							.setScore(Partie.gererNiveau.getScore() + nombreDeBombe * Constantes.SCORE_BONUS_PAR_BOMBE);
 				Partie.gererNiveau.setFiniSuccess(true);
 				Partie.gererNiveau.setDemandeFin(true);
 				return 1;

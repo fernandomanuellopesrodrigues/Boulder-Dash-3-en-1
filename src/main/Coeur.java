@@ -33,6 +33,6 @@ public class Coeur {
 		if (TICK_TASK != null)
 			TICK_TASK.shutdown();
 		TICK_TASK = Executors.newScheduledThreadPool(1);
-		TICK_TASK.scheduleAtFixedRate(new TickTask(), 0, 1000 / ticks, TimeUnit.MILLISECONDS);
+		TICK_TASK.scheduleAtFixedRate(new TickTask(), 0, (long) (1000000000 / (double)ticks), TimeUnit.NANOSECONDS);
 	}
 }
