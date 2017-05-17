@@ -75,7 +75,7 @@ public class IaEvolue extends Ia {
 				Partie.finiEvolution = false;
 				String chemin = "";
 				for (int j = 0; j < (Partie.gererNiveau.getNiveau().getCaveDelay()
-						* Partie.gererNiveau.getNiveau().getCave_time()); j++) {
+						* Partie.gererNiveau.getNiveau().getCave_time()*Constantes.VITESSE_JEU_TEMPS_REEL); j++) {
 					chemin += Ia.directionRandom();
 				}
 				Score s;

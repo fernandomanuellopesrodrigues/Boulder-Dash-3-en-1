@@ -76,17 +76,17 @@ public class Partie {
 		String parcoursParcouru = "";
 		while (parcours.length() > 0 && !gererNiveau.isDemandeReset() && !gererNiveau.isDemandeFin()) {
 			char direction = parcours.charAt(0);
-			
+
 			parcours = parcours.substring(1, parcours.length());
 			parcoursParcouru += direction;
-			if (gererNiveau.tickLecture(direction)||gererNiveau.getNiveau().getRockford().isMort()) {
-				
+			if (gererNiveau.tickLecture(direction) || gererNiveau.getNiveau().getRockford().isMort()) {
+
 				break;
 			}
 		}
-		
+
 		s = new Score(gererNiveau.getScore(), parcoursParcouru.length());
-		s.setChemin(parcoursParcouru);
+		s.setChemin(parcours2);
 		if (gererNiveau.isDemandeFin()) {
 			s.setFini(true);
 		} else {
@@ -142,7 +142,7 @@ public class Partie {
 			ia = new IaEvolue(nbGenerations);
 		}
 		Score score = ((IaEvolue) ia).debut();
-		System.out.println(score.getChemin().substring(0,score.getParcours()));
+		System.out.println(score.getChemin().substring(0, score.getParcours()));
 		return score;
 	}
 
@@ -164,6 +164,9 @@ public class Partie {
 			SCORES.add(gererNiveau.getScore());
 		}
 		if (tousLesNiveaux && niveau < ensembleDeNiveau.getNombre_de_niveaux()) {
+			if(!Coeur.graphique){
+				ControleurConsole.prochainNiveau(niveau, gererNiveau.getScore());
+			}
 			niveau++;
 			lancerNiveau();
 		} else {
@@ -172,6 +175,7 @@ public class Partie {
 	}
 
 	public static void fin() {
+		Coeur.running = false;
 		if (Coeur.graphique) {
 			Coeur.FENETRE.getContentPane().removeAll();
 			Coeur.FENETRE.getContentPane().add(new FinPanel());
@@ -191,12 +195,16 @@ public class Partie {
 		if (gererNiveau != null)
 			gererNiveau.stop();
 		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
-		Coeur.setTicks((int) (ensembleDeNiveau.getNiveaux().get(niveau - 1).getCaveDelay()
-				* Constantes.VITESSE_JEU_TEMPS_REEL));
-		if (Coeur.graphique) {
-			preparerFenetre();
-		}
 		Coeur.running = true;
+		if (Coeur.graphique) {
+			Coeur.setTicks((int) (ensembleDeNiveau.getNiveaux().get(niveau - 1).getCaveDelay()
+					* Constantes.VITESSE_JEU_TEMPS_REEL));
+			preparerFenetre();
+		
+		} else {
+			Coeur.CONTROLEUR_CONSOLE.run(gererNiveau);
+		}
+
 	}
 
 	public static void tick() {

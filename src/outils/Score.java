@@ -40,9 +40,9 @@ public class Score implements Comparable<Score> {
 			return -1;
 		} else {
 			if (o.getParcours() > getParcours()) {
-				return 1;
-			} else if (getParcours() > o.getParcours()) {
 				return -1;
+			} else if (getParcours() > o.getParcours()) {
+				return 1;
 			} else {
 				return 0;
 			}

@@ -1,6 +1,7 @@
 package vue;
 
 import java.util.List;
+import java.util.Scanner;
 
 import entitees.abstraites.Entitee;
 import entitees.fixes.Amibe;
@@ -18,8 +19,8 @@ import loader.Niveau;
 import main.Partie;
 
 /**
- * La classe GraphiqueConsole n'est jamais instanciée, elle sert uniquement à
- * stocker des méthodes en rapport avec l'affichage du jeu en mode console.
+ * La classe GraphiqueConsole n'est jamais instanciï¿½e, elle sert uniquement ï¿½
+ * stocker des mï¿½thodes en rapport avec l'affichage du jeu en mode console.
  * 
  * @author Murloc
  *
@@ -30,23 +31,23 @@ public class GraphiqueConsole {
 	 * Affiche un niveau en mode console.
 	 * 
 	 * @param niveau
-	 *            Le niveau à afficher.
+	 *            Le niveau ï¿½ afficher.
 	 */
 	public static void afficher(Niveau niveau) {
 		// Get la map du niveau.
 		Entitee[][] map = niveau.getMap();
 
 		/*
-		 * Initialise un string auquel va être concaténé la représentation du
-		 * niveau, ce string sera affiché à la fin de la méthode.
+		 * Initialise un string auquel va ï¿½tre concatï¿½nï¿½ la reprï¿½sentation du
+		 * niveau, ce string sera affichï¿½ ï¿½ la fin de la mï¿½thode.
 		 */
 		String s = "";
 
-		// Concatène beaucoup de retours à la ligne pour un meilleur rendu.
+		// Concatï¿½ne beaucoup de retours ï¿½ la ligne pour un meilleur rendu.
 		s += "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
 		/*
-		 * Concatène diverses informations.
+		 * Concatï¿½ne diverses informations.
 		 */
 		s += ("Diamants : " + Partie.gererNiveau.getNbDiamants() + "/"
 				+ Partie.gererNiveau.getNiveau().getDiamonds_required() + "\n");
@@ -60,7 +61,7 @@ public class GraphiqueConsole {
 		// Parcours de toutes les entitees de la map.
 		for (int i = 0; i < map[0].length; i++) {
 			for (int j = 0; j < map.length; j++) {
-				// Concatène un caractère spécifique suivant l'entitée.
+				// Concatï¿½ne un caractï¿½re spï¿½cifique suivant l'entitï¿½e.
 				s += getCharDeEntitee(map[j][i]);
 			}
 			s += "\n";
@@ -70,22 +71,22 @@ public class GraphiqueConsole {
 	}
 
 	/**
-	 * Retourne un caractère spéficique suivant l'entitée en paramètre.
+	 * Retourne un caractï¿½re spï¿½ficique suivant l'entitï¿½e en paramï¿½tre.
 	 * 
 	 * @param e
-	 *            L'entitée dont on veut le caractère.
-	 * @return Le caractère propre à l'entitée. Renvoie ' ' si l'entiée est
-	 *         inconnue (ou si c'est l'entitée Vide).
+	 *            L'entitï¿½e dont on veut le caractï¿½re.
+	 * @return Le caractï¿½re propre ï¿½ l'entitï¿½e. Renvoie ' ' si l'entiï¿½e est
+	 *         inconnue (ou si c'est l'entitï¿½e Vide).
 	 */
 	public static char getCharDeEntitee(Entitee e) {
-		// Get la classe de l'entitée.
+		// Get la classe de l'entitï¿½e.
 		Class<? extends Entitee> l = e.getClass();
 
-		// Crée le char qui va être renvoyé.
+		// Crï¿½e le char qui va ï¿½tre renvoyï¿½.
 		char s = ' ';
 
 		/*
-		 * Compare la classe avec les classes des entitées, puis affecte le char
+		 * Compare la classe avec les classes des entitï¿½es, puis affecte le char
 		 * correspondant au string.
 		 */
 		if (l.equals(Rockford.class)) {
@@ -107,7 +108,11 @@ public class GraphiqueConsole {
 		} else if (l.equals(Poussiere.class)) {
 			s = '.';
 		} else if (l.equals(Sortie.class)) {
-			s = 'X';
+			if (((Sortie) e).isOuvert()) {
+				s = 'X';
+			} else {
+				s = 'W';
+			}
 		} else if (l.equals(MurMagique.class)) {
 			s = 'M';
 		}
@@ -115,22 +120,22 @@ public class GraphiqueConsole {
 	}
 
 	/**
-	 * Affiche le score à la fin d'un niveau.
+	 * Affiche le score ï¿½ la fin d'un niveau.
 	 * 
 	 * @param niveau
 	 *            Le niveau fini.
 	 * @param score
-	 *            Le score à afficher.
+	 *            Le score ï¿½ afficher.
 	 */
 	public static void afficherScoreUnNiveau(int niveau, int score) {
 		System.out.println("FIN DU JEU , SCORE DU NIVEAU " + niveau + " : " + score + ".\n");
 	}
 
 	/**
-	 * Affiche les scores à la fin d'une suite de niveaux.
+	 * Affiche les scores ï¿½ la fin d'une suite de niveaux.
 	 * 
 	 * @param scores
-	 *            La liste des scores à afficher.
+	 *            La liste des scores ï¿½ afficher.
 	 */
 	public static void afficherScoreTousLesNiveaux(List<Integer> scores) {
 		System.out.println("FIN DU JEU , SCORE DES NIVEAUX : \n");
@@ -139,4 +144,6 @@ public class GraphiqueConsole {
 		}
 		System.out.println("\n");
 	}
+
+	
 }

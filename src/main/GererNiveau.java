@@ -87,6 +87,12 @@ public class GererNiveau {
 		tickInterne();
 	}
 
+	public void tickConsole(char touche) {
+		toucheClavier = touche;
+		trajet += toucheClavier;
+		tickInterne();
+	}
+
 	public boolean tickLecture(char diretion) {
 		toucheClavier = diretion;
 		return tickInterne();
@@ -106,8 +112,7 @@ public class GererNiveau {
 			return true;
 
 		}
-		if (Coeur.tempsReel)
-			gererTemps();
+		gererTemps();
 		Coeur.CONTROLEUR.tick();
 		return false;
 	}

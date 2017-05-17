@@ -13,6 +13,7 @@ import vue.Fenetre;
 public class Coeur {
 	public static final Fenetre FENETRE = new Fenetre();
 	public static final Controleur CONTROLEUR = new Controleur(38, 37, 40, 39, 78, 10, 16);
+	public static final ControleurConsole CONTROLEUR_CONSOLE = new ControleurConsole();
 	public static ScheduledExecutorService TICK_TASK = Executors.newScheduledThreadPool(1);
 	public static final ScheduledExecutorService FRAME_TASK = Executors.newScheduledThreadPool(1);
 	public static boolean running = false;
