@@ -15,18 +15,35 @@ Caves=20
 
 [cave]
 Name=Cave 1
-CaveDelay=1
+CaveDelay=8
 CaveTime=120
-DiamondsRequired=1
+DiamondsRequired=20
 DiamondValue=15 20
 Colors=Black Black Gray1 LightGreen Yellow
 
 [map]
-WWWWW
-WP.qW
-WX..W
-Wq.dW
-WWWWW
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W..d...r.rdr.......... ..r. .......r..rW
+Wr....r... . ......r r....r... ... ....W
+W.r.. r..d.r. ...r... .r.... ..r. .. drW
+W. ... ..r.  ..... ....r....d..........W
+W...r....rr .r... . d.. ...rd..r..r... W
+W.r.... .....r ..r......  .... ..r.. r.W
+W...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...rW
+W.... .r.... ....r.. .. ..r.... .......W
+W. .......r............r...drr..d.r.r..W
+WP..r.... r.rr.d.....r..r......r.r..drXW
+W..rr ....r.rr..r..r......... ..r......W
+W.....d......... ..... ..d...r.....r...W
+Wd....r.r..r.......r.... ...  r.... ...W
+W. .wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww.r.rW
+W.... . ...r...r.... .. .r......... ..rW
+W.......r .......r....... ..r...r ...rrW
+W .d...r .....r. rr.....d..............W
+Wr... .. .. ...r....r.r...r..r.r......rW
+Wr..r. ...dd. ........ ...r.....r... d W
+W..rr..dr.........r...rr.... ...r ....rW
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
 
@@ -67,7 +84,7 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 [cave]
 Name=Cave 3
-CaveDelay=16
+CaveDelay=64
 CaveTime=180
 DiamondsRequired=32
 DiamondValue=20
@@ -77,9 +94,9 @@ Colors=Black Black LightBlue Orange White
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W......................................W
 W.. ................................ ..W
-W.. ..  ddd       d..d            ..d..W
+W.. ..  ddd   c   d..d       c    ..c..W
 W.. .. .......................... .. ..W
-W.. .. ..         d..d         .. .. ..W
+W.. .. ..   c     d..d    c    .. .. ..W
 W.. .. .. .................... .. .. ..W
 W.. .. .. ..      d..d      .. .. .. ..W
 W.. .. .. .. .............. .. .. .. ..W
@@ -92,7 +109,7 @@ W......................................W
 W......................................W
 W..    ..    ..    ..    ..    ..    ..W
 W.. .. .. .. .. .. .. .. .. .. .. .. ..W
-W.. .. .. .. .. .. .. .. .. .. .. .. ..W
+W..c.. .. .. .. ..c.. .. .. ..c.. .. ..W
 W......................................W
 W..d..d..d..d..d..d..d..d..d..d..d..d..W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

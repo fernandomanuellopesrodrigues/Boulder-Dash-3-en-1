@@ -96,8 +96,8 @@ public class GererNiveau {
 		tickInterne();
 	}
 
-	public boolean tickLecture(char diretion) {
-		toucheClavier = diretion;
+	public boolean tickLecture(char touche) {
+		toucheClavier = touche;
 		return tickInterne();
 	}
 

@@ -90,21 +90,24 @@ public class IaEvolue extends Ia {
 				int rng = (int) (Math.random()
 						* (Constantes.POURCENTAGE_DES_SELECTIONNES * Constantes.NOMBRE_DE_TRY_GENERATION) / 100.0);
 				Score s = liste.get(rng);
-				/*
-				 * char rng3 = Ia.directionRandom();
-				 * s.setChemin(s.getChemin().substring(0, s.getParcours() - 1) +
-				 * rng3 + s.getChemin().substring(s.getParcours(),
-				 * s.getChemin().length()));
-				 */
+				
+				int tailleMutation = 1;
+				/*if(s.getParcours() > (9/10) * s.getChemin().length()){
+					tailleMutation += s.getParcours()/10;
+				}*/
+				//tailleMutation += s.getParcours()/5;
+				String finChemin="";
+				for(int j = s.getParcours() - tailleMutation; j < s.getChemin().length(); j++){
+					finChemin += Ia.directionRandom();
+				}
+				  //char rng3 = Ia.directionRandom();
+				  s.setChemin(s.getChemin().substring(0, s.getParcours() - tailleMutation) + finChemin);
+				 
 
-				List<Paire<Integer, Long>> listeDiamants = s.getListeDiamants();
-				if ((listeDiamants.size() > 1))
-					while (listeDiamants.get(1).getLeft()
+				/*List<Paire<Integer, Long>> listeDiamants = s.getListeDiamants();
+					while ((listeDiamants.size() > 1) && listeDiamants.get(1).getLeft()
 							- listeDiamants.get(0).getLeft() < (this.nbObjectifs / this.tailleCheminMaximale)) {
 						listeDiamants.remove(0);
-						if (listeDiamants.isEmpty()||(listeDiamants.size() == 1)) {
-							break;
-						}
 					}
 				int debutMutation;
 				if (listeDiamants.isEmpty()) {
@@ -117,7 +120,7 @@ public class IaEvolue extends Ia {
 				for (int j = debutMutation + 1; j < tailleCheminMaximale; j++) {
 					finChemin += Ia.directionRandom();
 				}
-				s.setChemin(s.getChemin().substring(0, debutMutation) + finChemin);
+				s.setChemin(s.getChemin().substring(0, debutMutation) + finChemin);*/
 
 				// changements
 
@@ -154,6 +157,9 @@ public class IaEvolue extends Ia {
 			}
 			liste2.clear();
 			Collections.sort(liste);
+			for(Score s : liste){
+				System.out.println(s.getScore() + "     ....     " + s.moyenne2() + "     ....     " + s.getParcours());
+			}
 			System.out.println(generationActuelle+"/"+nbGenerations);
 		}
 

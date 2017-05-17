@@ -85,6 +85,7 @@ public class Partie {
 			if (gererNiveau.tickLecture(direction) || gererNiveau.getNiveau().getRockford().isMort()) {
 				break;
 			}
+			
 		}
 		/*
 		 * System.out.println(parcoursParcouru); System.out.println(parcours2);
@@ -106,7 +107,11 @@ public class Partie {
 			if (ia != null)
 				ia.reset();
 		} else if (lecture) {
-			System.out.println("Mort de Rockford. Mauvais parcours. Fin du Programme.");
+			if (gererNiveau.getNiveau().getRockford().isMort())
+				System.out.println("Mort de Rockford. Mauvais parcours. Fin du Programme.");
+			else
+				System.out.println("Fin du temps. Fin Du programme.");
+			System.exit(1);
 		} else {
 			Coeur.running = false;
 			lancerNiveau();
