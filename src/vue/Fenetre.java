@@ -5,10 +5,10 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import constantes.Constantes;
+import main.Constantes;
 
-import static constantes.Constantes.*;
 import static main.Coeur.CONTROLEUR;
+import static main.Constantes.*;
 
 public class Fenetre extends JFrame implements KeyListener {
 

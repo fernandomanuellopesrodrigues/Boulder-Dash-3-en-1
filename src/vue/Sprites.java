@@ -1,7 +1,7 @@
 package vue;
 
-import static constantes.Constantes.CHEMIN_DOSSIER_SPRITES;
-import static constantes.Constantes.FPS;
+import static main.Constantes.CHEMIN_DOSSIER_SPRITES;
+import static main.Constantes.FPS;
 
 import java.awt.Image;
 import java.io.File;
@@ -13,15 +13,15 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import constantes.Constantes;
 import entitees.tickables.Rockford;
+import main.Constantes;
 import main.Partie;
 import outils.EnsembleDeSprites;
 import outils.Paire;
 
 /**
- * La classe Sprites n'est jamais instanciée, c'est une classe base de données
- * contenant les images des éléments du jeu.
+ * La classe Sprites n'est jamais instanciï¿½e, c'est une classe base de donnï¿½es
+ * contenant les images des ï¿½lï¿½ments du jeu.
  * 
  * @author Murloc
  */
@@ -58,7 +58,7 @@ public class Sprites {
 	public static final int VITESSE_ANIM_MURS_MAGIQUES = 30;
 	public static final int VITESSE_ANIM_EXPLOSIONS = 15;
 
-	// Apelle la méthode qui charge les images.
+	// Apelle la mï¿½thode qui charge les images.
 	static {
 		chargerSprites(CHEMIN_DOSSIER_SPRITES);
 	}
@@ -78,7 +78,7 @@ public class Sprites {
 			}
 		}
 		/*
-		 * Gère
+		 * Gï¿½re
 		 */
 		if (Partie.gererNiveau.getTicks() < 2) {
 			changerDirectionSpriteRockford(' ');

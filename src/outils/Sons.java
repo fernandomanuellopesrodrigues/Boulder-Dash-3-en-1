@@ -7,7 +7,7 @@ import java.io.InputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import constantes.Constantes;
+import main.Constantes;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 

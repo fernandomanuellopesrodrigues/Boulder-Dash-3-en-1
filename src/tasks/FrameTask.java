@@ -1,7 +1,7 @@
 package tasks;
 
-import constantes.Constantes;
 import main.Coeur;
+import main.Constantes;
 import vue.Fenetre;
 
 public class FrameTask implements Runnable {

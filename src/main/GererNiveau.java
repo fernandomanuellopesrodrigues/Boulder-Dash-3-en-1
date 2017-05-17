@@ -6,9 +6,11 @@ import java.util.List;
 
 import entitees.abstraites.Tickable;
 import entitees.fixes.Amibe;
+import entitees.tickables.Diamant;
 import ia.Ia;
 import ia.IaEvolue;
 import loader.Niveau;
+import outils.Paire;
 
 public class GererNiveau {
 
@@ -29,6 +31,7 @@ public class GererNiveau {
 	private List<Tickable> listeTickable = new ArrayList<Tickable>();
 	private List<Amibe> listeAmibesAjout = new ArrayList<Amibe>();
 	private List<Tickable> listeTickableAjout = new ArrayList<Tickable>();
+	private List<Paire<Integer, Long>> listeDiamants = new ArrayList<Paire<Integer, Long>>();
 
 	public GererNiveau(Niveau niveau) {
 		this.niveau = niveau;
@@ -205,7 +208,8 @@ public class GererNiveau {
 		niveau = null;
 	}
 
-	public void incrementerNbDiamants() {
+	public void incrementerNbDiamants(Diamant d) {
+		listeDiamants.add(new Paire<Integer, Long>(compteurTicks, d.getId()));
 		nbDiamants++;
 	}
 
@@ -304,4 +308,5 @@ public class GererNiveau {
 	public void setTourParTour(boolean tourParTour) {
 		this.tourParTour = tourParTour;
 	}
+
 }

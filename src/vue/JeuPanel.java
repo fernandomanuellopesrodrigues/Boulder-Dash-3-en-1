@@ -6,7 +6,6 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import constantes.Constantes;
 import entitees.abstraites.Entitee;
 import entitees.fixes.Amibe;
 import entitees.fixes.Mur;
@@ -21,11 +20,12 @@ import entitees.tickables.Libellule;
 import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
+import main.Constantes;
 import main.Partie;
 
 /**
- * La classe JeuPanel hérité de JPanel et sert a afficher un niveau du jeu quand
- * celui-ci est en mode fenêtré.
+ * La classe JeuPanel hï¿½ritï¿½ de JPanel et sert a afficher un niveau du jeu quand
+ * celui-ci est en mode fenï¿½trï¿½.
  *
  * Elle dispose d'un tableau a 2 dimensions d'entitees et d'un compteur de FPS.
  * 
@@ -38,14 +38,14 @@ import main.Partie;
 public class JeuPanel extends JPanel {
 
 	/**
-	 * Le tableau d'entitées qui situe dans l'espace les elements d'une partie.
+	 * Le tableau d'entitï¿½es qui situe dans l'espace les elements d'une partie.
 	 * 
 	 * @see entitees.abstraites.Entitee
 	 */
 	private Entitee[][] map;
 
 	/**
-	 * Le compteur de FPS qui s'incrémente à chaque appel de
+	 * Le compteur de FPS qui s'incrï¿½mente ï¿½ chaque appel de
 	 * {@link vue.JeuPanel#paintComponent(Graphics)}.
 	 */
 	private long compteurFPS;
@@ -53,10 +53,10 @@ public class JeuPanel extends JPanel {
 	/**
 	 * Constructeur JeuPanel.
 	 * 
-	 * Initialise le tableau d'entitées en allant cherchant celui du niveau
+	 * Initialise le tableau d'entitï¿½es en allant cherchant celui du niveau
 	 * actuellement en cours dans Partie.
 	 * 
-	 * Initialise le compteur de FPS à 0.
+	 * Initialise le compteur de FPS ï¿½ 0.
 	 */
 	public JeuPanel() {
 		map = Partie.gererNiveau.getNiveau().getMap();
@@ -66,23 +66,23 @@ public class JeuPanel extends JPanel {
 	/**
 	 * La methode servant a dessiner le niveau.
 	 * 
-	 * Appellée par la fenêtre à chaque {@link vue.Fenetre#repaint()}.
+	 * Appellï¿½e par la fenï¿½tre ï¿½ chaque {@link vue.Fenetre#repaint()}.
 	 * 
 	 * Elle se sert du tableau d'entitees et du compteur de FPS.
 	 * 
-	 * Elle récupère la largeur du Panel {@link vue.JeuPanel#getWidth()}, le
-	 * divise par la largeur du niveau, ainsi a chaque entitée du niveau peut
-	 * être attribuée une coordonée. Idem pour la hauteur.
+	 * Elle rï¿½cupï¿½re la largeur du Panel {@link vue.JeuPanel#getWidth()}, le
+	 * divise par la largeur du niveau, ainsi a chaque entitï¿½e du niveau peut
+	 * ï¿½tre attribuï¿½e une coordonï¿½e. Idem pour la hauteur.
 	 * 
 	 * @see vue.Sprites#oneFrame(long, Rockford)
 	 * @see vue.JeuPanel#getSprite(Entitee)
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
-		// Incrémentation du compteur.
+		// Incrï¿½mentation du compteur.
 		compteurFPS++;
 
-		// On indique à la classe qui gère les sprites qu'une frame va avoir
+		// On indique ï¿½ la classe qui gï¿½re les sprites qu'une frame va avoir
 		// lieu.
 		Sprites.oneFrame(compteurFPS, Partie.gererNiveau.getNiveau().getRockford());
 
@@ -100,10 +100,10 @@ public class JeuPanel extends JPanel {
 		for (int i = 0; i < map[0].length; i++) {
 			for (int j = 0; j < map.length; j++) {
 
-				// Get l'image suivant l'entité.
+				// Get l'image suivant l'entitï¿½.
 				Image image = getSprite(map[j][i]);
 
-				// Dessine l'image en se basant sur i et j pour les coordonnées.
+				// Dessine l'image en se basant sur i et j pour les coordonnï¿½es.
 				if (image != null) {
 					g.drawImage(image, (j) * largeur_case, (i) * hauteur_case, largeur_case, hauteur_case, this);
 				}
@@ -116,21 +116,21 @@ public class JeuPanel extends JPanel {
 	 * Cette methode prend en parametre une entitee et renvoie une image en
 	 * fonction.
 	 * 
-	 * Elle va chercher l'image dans la base de données de la classe
+	 * Elle va chercher l'image dans la base de donnï¿½es de la classe
 	 * {@link vue.Sprites}.
 	 * 
 	 * @param e
-	 *            L'entitée dont on veut l'image.
+	 *            L'entitï¿½e dont on veut l'image.
 	 * 
-	 * @return L'image propre à l'entitée, null si non trouvée.
+	 * @return L'image propre ï¿½ l'entitï¿½e, null si non trouvï¿½e.
 	 * 
 	 */
 	private Image getSprite(Entitee e) {
 
-		// Get de la classe de l'entitée.
+		// Get de la classe de l'entitï¿½e.
 		Class<? extends Entitee> classe = e.getClass();
 
-		// Comparaison de la classe avec les classes des entitées existantes,
+		// Comparaison de la classe avec les classes des entitï¿½es existantes,
 		// renvoie l'image correspondante.
 		if (classe.equals(Mur.class)) {
 			return Sprites.SPRITES_MURS.get(0);
@@ -156,7 +156,7 @@ public class JeuPanel extends JPanel {
 			/*
 			 * Algo permettant le clignotement de la bombe avant l'explosion,
 			 * renvoie une image de la bombe noire ou celle de la bombe rouge
-			 * (suivant l'évolution du compteur de FPS), pour créer l'illusion
+			 * (suivant l'ï¿½volution du compteur de FPS), pour crï¿½er l'illusion
 			 * du clignotement.
 			 */
 			if (((Bombe) e).getTempsRestantAvantExplosion() < 1) {
@@ -173,7 +173,7 @@ public class JeuPanel extends JPanel {
 		} else if (classe.equals(Rockford.class)) {
 			/*
 			 * Si le camouflage de Rockford est actif renvoie l'image de
-			 * rockford camouflé, sinon renvoie l'image de Rockford.
+			 * rockford camouflï¿½, sinon renvoie l'image de Rockford.
 			 */
 			if (Partie.gererNiveau.getNiveau().getRockford().camouflageActif()) {
 				return Sprites.SPRITES_CAMOUFLAGE.get(0);

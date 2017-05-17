@@ -1,6 +1,6 @@
 package outils;
 
-import constantes.Constantes;
+import main.Constantes;
 
 /**
  * Created by celso on 20/03/17.

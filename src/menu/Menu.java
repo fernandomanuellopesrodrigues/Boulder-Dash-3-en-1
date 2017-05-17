@@ -1,6 +1,6 @@
 package menu;
 
-import static constantes.Constantes.*;
+import static main.Constantes.*;
 
 import java.util.Scanner;
 

@@ -1,14 +1,20 @@
 package entitees.tickables;
 
+import static entitees.abstraites.Entitee.Entitees.Amibe;
+import static entitees.abstraites.Entitee.Entitees.Diamant;
+import static entitees.abstraites.Entitee.Entitees.Explosion;
+import static entitees.abstraites.Entitee.Entitees.Libellule;
+import static entitees.abstraites.Entitee.Entitees.Luciole;
+import static entitees.abstraites.Entitee.Entitees.Pierre;
+import static entitees.abstraites.Entitee.Entitees.Poussiere;
+import static entitees.abstraites.Entitee.Entitees.Rockford;
+import static entitees.abstraites.Entitee.Entitees.Sortie;
+import static entitees.abstraites.Entitee.Entitees.Vide;
+
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
-import main.Coeur;
+import main.Constantes;
 import main.Partie;
-import outils.SonToolKit;
-
-import static entitees.abstraites.Entitee.Entitees.*;
-
-import constantes.Constantes;
 
 public class Rockford extends Tickable {
 
@@ -31,7 +37,7 @@ public class Rockford extends Tickable {
 		enumeration = Rockford;
 	}
 
-	public void ramasserDiamant() {
+	public void ramasserDiamant(Diamant d) {
 		if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {
 			Partie.gererNiveau
 					.setScore(Partie.gererNiveau.getScore() + Partie.gererNiveau.getNiveau().getDiamond_value_bonus());
@@ -39,7 +45,7 @@ public class Rockford extends Tickable {
 			Partie.gererNiveau
 					.setScore(Partie.gererNiveau.getScore() + Partie.gererNiveau.getNiveau().getDiamond_value());
 		}
-		Partie.gererNiveau.incrementerNbDiamants();
+		Partie.gererNiveau.incrementerNbDiamants(d);
 	}
 
 	@Override
@@ -57,7 +63,7 @@ public class Rockford extends Tickable {
 			return 0;
 		} else if (entitee.is(Diamant)) {
 			entitee.mourir();
-			ramasserDiamant();
+			ramasserDiamant((Diamant)entitee);
 			return 1;
 		} else if (entitee.is(Sortie)) {
 			if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {

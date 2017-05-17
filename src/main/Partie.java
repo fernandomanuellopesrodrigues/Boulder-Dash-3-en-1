@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import constantes.Constantes;
 import ia.Ia;
 import ia.IaDirective;
 import ia.IaEvolue;

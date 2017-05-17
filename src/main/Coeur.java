@@ -4,7 +4,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import constantes.Constantes;
 import outils.SonToolKit;
 import tasks.FrameTask;
 import tasks.TickTask;

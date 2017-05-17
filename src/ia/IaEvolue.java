@@ -1,13 +1,13 @@
 package ia;
 
-import static constantes.Constantes.NOMBRE_DE_TRY_GENERATION;
+import static main.Constantes.NOMBRE_DE_TRY_GENERATION;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import constantes.Constantes;
 import entitees.abstraites.Entitee;
+import main.Constantes;
 import main.Partie;
 import outils.Score;
 

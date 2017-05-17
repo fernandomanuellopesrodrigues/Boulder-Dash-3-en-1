@@ -1,8 +1,8 @@
 package entitees.tickables;
 
-import constantes.Constantes;
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
+import main.Constantes;
 import main.Partie;
 
 import static entitees.abstraites.Entitee.Entitees.Bombe;
