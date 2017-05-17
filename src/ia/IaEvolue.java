@@ -9,6 +9,7 @@ import java.util.List;
 import entitees.abstraites.Entitee;
 import main.Constantes;
 import main.Partie;
+import outils.Paire;
 import outils.Score;
 
 public class IaEvolue extends Ia {
@@ -19,23 +20,24 @@ public class IaEvolue extends Ia {
 	private int generationActuelle = 1;
 	private int trysDeGeneration = NOMBRE_DE_TRY_GENERATION;
 	private List<Score> liste2 = new ArrayList<>();
-	private List<Score> liste3 = new ArrayList<>();
+	private double tailleCheminMaximale;
+	private int nbObjectifs;
 
 	public IaEvolue(int nbGenerations) {
 		this.nbGenerations = nbGenerations;
-
+		this.nbObjectifs = Partie.gererNiveau.getNiveau().getDiamonds_required() + 1;
+		this.tailleCheminMaximale = Partie.gererNiveau.getNiveau().getCaveDelay()
+				* Partie.gererNiveau.getNiveau().getCave_time() * Constantes.VITESSE_JEU_TEMPS_REEL;
 		for (int i = 0; i < NOMBRE_DE_TRY_GENERATION; i++) {
 			Partie.finiEvolution = false;
 			String chemin = "";
-			for (int j = 0; j < (Partie.gererNiveau.getNiveau().getCaveDelay()
-					* Partie.gererNiveau.getNiveau().getCave_time()*Constantes.VITESSE_JEU_TEMPS_REEL); j++) {
+			for (int j = 0; j < (tailleCheminMaximale); j++) {
 				chemin += Ia.directionRandom();
 			}
 			Score s;
 			s = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, chemin);
 			liste.add(s);
 		}
-		
 		Collections.sort(liste);
 	}
 
@@ -74,58 +76,87 @@ public class IaEvolue extends Ia {
 					/ 100; i++) {
 				Partie.finiEvolution = false;
 				String chemin = "";
-				for (int j = 0; j < (Partie.gererNiveau.getNiveau().getCaveDelay()
-						* Partie.gererNiveau.getNiveau().getCave_time()*Constantes.VITESSE_JEU_TEMPS_REEL); j++) {
+				for (int j = 0; j < (tailleCheminMaximale); j++) {
 					chemin += Ia.directionRandom();
 				}
 				Score s;
-
 				s = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, chemin);
-				liste2.add(s);
-			}
-			for (int i = 0; i < (Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_MUTATIONS)
-					/ 100; i++) {
-				int rng = (int) (Math.random()
-						* ((Constantes.POURCENTAGE_DES_SELECTIONNES) * Constantes.NOMBRE_DE_TRY_GENERATION) / 100.0);
-				Score s = liste.get(rng);
-				char rng3 = Ia.directionRandom();
-				s.setChemin(s.getChemin().substring(0, s.getParcours()-1) + rng3
-						+ s.getChemin().substring(s.getParcours(), s.getChemin().length()));
-				s = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, s.getChemin());
 				liste2.add(s);
 			}
 			for (int i = 0; i < (Constantes.NOMBRE_DE_TRY_GENERATION
 					- ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS) / 100)
-					- ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE) / 100)
-					- ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_MUTATIONS) / 100)); i++) {
-				int rng = (int) (Math.random()
-						* ((Constantes.POURCENTAGE_DES_SELECTIONNES) * Constantes.NOMBRE_DE_TRY_GENERATION) / 100.0);
-				int rng2 = (int) (Math.random()
-						* ((Constantes.POURCENTAGE_DES_SELECTIONNES) * Constantes.NOMBRE_DE_TRY_GENERATION) / 100.0);
-				int tailleDuPLusPetit = liste.get(rng).getParcours() > liste.get(rng2).getParcours()
-						? liste.get(rng2).getParcours() : liste.get(rng).getParcours();
-				int rng3 = (int) (Math.random() * (tailleDuPLusPetit-2));
-				Score score1 = liste.get(rng);
-				Score score2 = liste.get(rng2);
+					- ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE) / 100)); i++) {
 
-				
-				String s = score1.getChemin().substring(0, rng3)
-						+ score2.getChemin().substring(rng3 + 1, score2.getChemin().length());
-				Score scoreee = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, s);
-				liste2.add(scoreee);
+				int rng = (int) (Math.random()
+						* (Constantes.POURCENTAGE_DES_SELECTIONNES * Constantes.NOMBRE_DE_TRY_GENERATION) / 100.0);
+				Score s = liste.get(rng);
+				/*
+				 * char rng3 = Ia.directionRandom();
+				 * s.setChemin(s.getChemin().substring(0, s.getParcours() - 1) +
+				 * rng3 + s.getChemin().substring(s.getParcours(),
+				 * s.getChemin().length()));
+				 */
+
+				List<Paire<Integer, Long>> listeDiamants = s.getListeDiamants();
+				if ((listeDiamants.size() > 1))
+					while (listeDiamants.get(1).getLeft()
+							- listeDiamants.get(0).getLeft() < (this.nbObjectifs / this.tailleCheminMaximale)) {
+						listeDiamants.remove(0);
+						if (listeDiamants.isEmpty()||(listeDiamants.size() == 1)) {
+							break;
+						}
+					}
+				int debutMutation;
+				if (listeDiamants.isEmpty()) {
+					debutMutation = 0;
+				} else {
+					debutMutation = listeDiamants.get(0).getLeft();
+				}
+
+				String finChemin = "";
+				for (int j = debutMutation + 1; j < tailleCheminMaximale; j++) {
+					finChemin += Ia.directionRandom();
+				}
+				s.setChemin(s.getChemin().substring(0, debutMutation) + finChemin);
+
+				// changements
+
+				s = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, s.getChemin());
+				liste2.add(s);
 			}
+			/*
+			 * for (int i = 0; i < (Constantes.NOMBRE_DE_TRY_GENERATION -
+			 * ((Constantes.NOMBRE_DE_TRY_GENERATION *
+			 * Constantes.POURCENTAGE_DE_SURVIVANTS) / 100) -
+			 * ((Constantes.NOMBRE_DE_TRY_GENERATION *
+			 * Constantes.POURCENTAGE_DE_ALEATOIRE) / 100) -
+			 * ((Constantes.NOMBRE_DE_TRY_GENERATION *
+			 * Constantes.POURCENTAGE_DE_MUTATIONS) / 100)); i++) { int rng =
+			 * (int) (Math.random() ((Constantes.POURCENTAGE_DES_SELECTIONNES) *
+			 * Constantes.NOMBRE_DE_TRY_GENERATION) / 100.0); int rng2 = (int)
+			 * (Math.random() ((Constantes.POURCENTAGE_DES_SELECTIONNES) *
+			 * Constantes.NOMBRE_DE_TRY_GENERATION) / 100.0); int
+			 * tailleDuPLusPetit = liste.get(rng).getParcours() >
+			 * liste.get(rng2).getParcours() ? liste.get(rng2).getParcours() :
+			 * liste.get(rng).getParcours(); int rng3 = (int) (Math.random() *
+			 * (tailleDuPLusPetit - 2)); Score score1 = liste.get(rng); Score
+			 * score2 = liste.get(rng2);
+			 * 
+			 * String s = score1.getChemin().substring(0, rng3) +
+			 * score2.getChemin().substring(rng3 + 1,
+			 * score2.getChemin().length()); Score scoreee =
+			 * Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, s);
+			 * liste2.add(scoreee); }
+			 */
 			liste.clear();
 			for (int i = 0; i < liste2.size(); i++) {
 				liste.add(liste2.get(i));
 			}
 			liste2.clear();
 			Collections.sort(liste);
-			for(Score sc : liste){
-				System.out.println(sc.getParcours()+" ,,, "+sc.getScore());
-			}
-			System.out.println("\n\n\n");
+			System.out.println(generationActuelle+"/"+nbGenerations);
 		}
-		
+
 		aReturn = liste.get(0);
 		return aReturn;
 	}
@@ -139,7 +170,8 @@ public class IaEvolue extends Ia {
 	}
 
 	public void ajouterScore() {
-		scoreActuel = new Score(Partie.gererNiveau.getScore(), Partie.gererNiveau.getTrajet().length());
+		scoreActuel = new Score(Partie.gererNiveau.getScore(), Partie.gererNiveau.getTrajet().length(),
+				Partie.gererNiveau.getListeDiamants());
 		scoreActuel.setChemin(Partie.parcours);
 		liste.add(scoreActuel);
 		Collections.sort(liste);
@@ -151,6 +183,10 @@ public class IaEvolue extends Ia {
 
 	public int getGenerationActuelle() {
 		return generationActuelle;
+	}
+
+	public int getNbObjectifs() {
+		return nbObjectifs;
 	}
 
 }

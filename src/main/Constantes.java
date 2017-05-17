@@ -21,10 +21,10 @@ public class Constantes {
 	/*
 	 * Constantes de l'ia génétique.
 	 */
-	public static final int NOMBRE_DE_TRY_GENERATION = 500;
-	public static final int POURCENTAGE_DE_SURVIVANTS = 10;
+	public static final int NOMBRE_DE_TRY_GENERATION = 50;
+	public static final int POURCENTAGE_DE_SURVIVANTS = 20;
 	public static final int POURCENTAGE_DE_CROISEMENTS = 0;
-	public static final int POURCENTAGE_DE_MUTATIONS = 80;
-	public static final int POURCENTAGE_DES_SELECTIONNES = 25;
+	public static final int POURCENTAGE_DE_MUTATIONS = 70;
+	public static final int POURCENTAGE_DES_SELECTIONNES = 40;
 	public static final int POURCENTAGE_DE_ALEATOIRE = 10;
 }

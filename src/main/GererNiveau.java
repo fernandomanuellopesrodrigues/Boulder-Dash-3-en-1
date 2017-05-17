@@ -309,4 +309,8 @@ public class GererNiveau {
 		this.tourParTour = tourParTour;
 	}
 
+	public List<Paire<Integer, Long>> getListeDiamants() {
+		return listeDiamants;
+	}
+
 }

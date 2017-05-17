@@ -14,6 +14,7 @@ import ia.IaEvolue;
 import ia.IaRandom;
 import loader.EnsembleDeNiveaux;
 import loader.Loader;
+import outils.Paire;
 import outils.Score;
 import outils.SonToolKit;
 import vue.FinPanel;
@@ -73,18 +74,23 @@ public class Partie {
 		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
 		Score s;
 		String parcoursParcouru = "";
+		int score = 0;
+		List<Paire<Integer, Long>> liste = null;
 		while (parcours.length() > 0 && !gererNiveau.isDemandeReset() && !gererNiveau.isDemandeFin()) {
 			char direction = parcours.charAt(0);
-
 			parcours = parcours.substring(1, parcours.length());
 			parcoursParcouru += direction;
+			liste = gererNiveau.getListeDiamants();
+			score = gererNiveau.getScore();
 			if (gererNiveau.tickLecture(direction) || gererNiveau.getNiveau().getRockford().isMort()) {
-
 				break;
 			}
 		}
-
-		s = new Score(gererNiveau.getScore(), parcoursParcouru.length());
+		/*
+		 * System.out.println(parcoursParcouru); System.out.println(parcours2);
+		 * System.out.println("\n\n\n\n\n");
+		 */
+		s = new Score(score, parcoursParcouru.length(), liste);
 		s.setChemin(parcours2);
 		if (gererNiveau.isDemandeFin()) {
 			s.setFini(true);
@@ -125,7 +131,7 @@ public class Partie {
 				;
 		}
 
-		Score score = new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks());
+		Score score = new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks(), gererNiveau.getListeDiamants());
 		return score;
 	}
 
@@ -141,7 +147,7 @@ public class Partie {
 			ia = new IaEvolue(nbGenerations);
 		}
 		Score score = ((IaEvolue) ia).debut();
-		System.out.println(score.getChemin().substring(0, score.getParcours()));
+		System.out.println(score.getChemin().substring(0, score.getParcours() - 1));
 		return score;
 	}
 
@@ -163,7 +169,7 @@ public class Partie {
 			SCORES.add(gererNiveau.getScore());
 		}
 		if (tousLesNiveaux && niveau < ensembleDeNiveau.getNombre_de_niveaux()) {
-			if(!Coeur.graphique){
+			if (!Coeur.graphique) {
 				ControleurConsole.prochainNiveau(niveau, gererNiveau.getScore());
 			}
 			niveau++;
@@ -199,7 +205,7 @@ public class Partie {
 			Coeur.setTicks((int) (ensembleDeNiveau.getNiveaux().get(niveau - 1).getCaveDelay()
 					* Constantes.VITESSE_JEU_TEMPS_REEL));
 			preparerFenetre();
-		
+
 		} else {
 			Coeur.CONTROLEUR_CONSOLE.run(gererNiveau);
 		}
