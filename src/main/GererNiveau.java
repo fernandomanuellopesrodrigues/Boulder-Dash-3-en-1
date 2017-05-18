@@ -83,6 +83,56 @@ public class GererNiveau {
 			return true;
 		}
 	}
+	
+	public boolean tickIaDirevol(Ia ia) {
+		if (!finiSuccess) {
+			compteurTicks++;
+			toucheClavier = ia.direction(niveau.getMap());
+			trajet += toucheClavier;
+
+			if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
+				compteurReset++;
+				if (ia.getClass().equals(IaEvolue.class)) {
+					((IaEvolue) ia).ajouterScore();
+				}
+				Partie.resetNiveau();
+			}
+			tickInterne();
+		}
+		if (!finiSuccess) {
+			if (ia.getClass().equals(IaEvolue.class)) {
+				((IaEvolue) ia).ajouterScore();
+			}
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public boolean tickIaController(Ia ia, char c) {
+		if (!finiSuccess) {
+			compteurTicks++;
+			toucheClavier = ia.directionController(niveau.getMap(), c);
+			trajet += c;
+
+			if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
+				compteurReset++;
+				if (ia.getClass().equals(IaEvolue.class)) {
+					((IaEvolue) ia).ajouterScore();
+				}
+				Partie.resetNiveau();
+			}
+			tickInterne();
+		}
+		if (!finiSuccess) {
+			if (ia.getClass().equals(IaEvolue.class)) {
+				((IaEvolue) ia).ajouterScore();
+			}
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 	public void tick() {
 		toucheClavier = Coeur.CONTROLEUR.getDirection();

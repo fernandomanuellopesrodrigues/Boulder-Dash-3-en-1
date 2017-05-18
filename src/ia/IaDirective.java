@@ -9,6 +9,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import com.sun.javafx.animation.TickCalculation;
+
 import entitees.abstraites.Entitee;
 import entitees.tickables.Diamant;
 import iaToolKit.Noeud;
@@ -19,6 +21,7 @@ public class IaDirective extends Ia {
 
 	private Noeud[][] graphe;
 	private Stack<Noeud> chemin;
+	private boolean bloquer = false;
 
 	private Noeud diamantLePlusProche(Noeud depart) {
 		LinkedList<Noeud> file = new LinkedList<Noeud>();
@@ -110,7 +113,7 @@ public class IaDirective extends Ia {
 				graphe[i][j] = new Noeud(map[i][j]);
 			}
 		}
-		boolean bloquer = false;
+		bloquer = false;
 		char direction;
 
 		graphe = new Noeud[map.length][map[0].length];
@@ -119,17 +122,21 @@ public class IaDirective extends Ia {
 				graphe[i][j] = new Noeud(map[i][j]);
 			}
 		}
-		if (!niveau.getSortie().isOuvert()) {
+		if (niveau.getSortie() != null && !niveau.getSortie().isOuvert()) {
 			Noeud diamant = diamantLePlusProche(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()]);
 			if (diamant != null) {
 				chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()], diamant);
+				if (chemin == null || chemin.isEmpty())
+					bloquer = true;
 			} else {
 				bloquer = true;
 			}
 		} else {
-			chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()],
-					graphe[niveau.getSortie().getX()][niveau.getSortie().getY()]);
-			if (chemin == null)
+			if (niveau.getSortie() != null){
+				chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()],
+						graphe[niveau.getSortie().getX()][niveau.getSortie().getY()]);
+			}
+			if (chemin == null || chemin.isEmpty())
 				bloquer = true;
 		}
 
@@ -161,39 +168,81 @@ public class IaDirective extends Ia {
 		return direction;
 	}
 
-	private Noeud diamantAleatoire(Noeud depart) {
-		LinkedList<Noeud> file = new LinkedList<Noeud>();
-		ArrayList<Noeud> diamants = new ArrayList<Noeud>();
-		file.add(depart);
-		depart.setCout(0);
-		depart.setEtat('a');
-		while (!file.isEmpty()) {
-			Noeud u = file.removeFirst();
-			Set<Noeud> voisins = VoisinsNoeud(u);
-			for (Noeud v : voisins) {
-				if (v.getEtat() != 'a') {
-					file.add(v);
-					v.setCout(u.getCout() + 1);
-					v.setEtat('a');
-					if (v.getEntite().getClass().equals(Diamant.class)) {
-						diamants.add(v);
-					}
-				}
+	public char tickController(Entitee[][] map, char c) {
+		Niveau niveau = Partie.gererNiveau.getNiveau();
+		graphe = new Noeud[map.length][map[0].length];
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				graphe[i][j] = new Noeud(map[i][j]);
 			}
 		}
-		if (diamants.isEmpty()) {
-			return null;
+		bloquer = false;
+		char direction;
+
+		graphe = new Noeud[map.length][map[0].length];
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				graphe[i][j] = new Noeud(map[i][j]);
+			}
+		}
+		if (niveau.getSortie() != null && !niveau.getSortie().isOuvert()) {
+			Noeud diamant = diamantLePlusProche(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()]);
+			if (diamant != null) {
+				chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()], diamant);
+				if (chemin == null || chemin.isEmpty())
+					bloquer = true;
+			} else {
+				bloquer = true;
+			}
 		} else {
-			int rng = (int) Math.random() * diamants.size();
-			return diamants.get(rng);
+			if (niveau.getSortie() != null){
+				chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()],
+						graphe[niveau.getSortie().getX()][niveau.getSortie().getY()]);
+			}
+			if (chemin == null || chemin.isEmpty())
+				bloquer = true;
 		}
 
+		if (!bloquer) {
+			if (niveau.getRockford().getX() > chemin.peek().getX())
+				direction = 'g';
+			else if (niveau.getRockford().getX() < chemin.peek().getX())
+				direction = 'd';
+			else if (niveau.getRockford().getY() > chemin.peek().getY())
+				direction = 'h';
+			else {
+				direction = 'b';
+			}
+		} else {
+			int rng = (int) (Math.random() * 5);
+			if (rng == 1) {
+				direction = 'h';
+			} else if (rng == 2) {
+				direction = 'b';
+			} else if (rng == 3) {
+				direction = 'd';
+			} else if (rng == 4) {
+				direction = 'g';
+			} else {
+				direction = ' ';
+			}
+		}
+
+		return c;
 	}
 
 	@Override
 	public void initialiserTry() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public boolean isBloquer() {
+		return bloquer;
+	}
+
+	public void setBloquer(boolean bloquer) {
+		this.bloquer = bloquer;
 	}
 
 }

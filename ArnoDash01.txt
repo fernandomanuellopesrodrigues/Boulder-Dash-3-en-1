@@ -84,32 +84,32 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 [cave]
 Name=Cave 3
-CaveDelay=64
+CaveDelay=8
 CaveTime=180
-DiamondsRequired=32
+DiamondsRequired=42
 DiamondValue=20
 Colors=Black Black LightBlue Orange White
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W......................................W
-W.. ................................ ..W
-W.. ..  ddd   c   d..d       c    ..c..W
+W.. .d.............................. ..W
+W.. ..  ddd q c   d..d q c   c q  ..c..W
 W.. .. .......................... .. ..W
-W.. .. ..   c     d..d    c    .. .. ..W
-W.. .. .. .................... .. .. ..W
-W.. .. .. ..      d..d      .. .. .. ..W
-W.. .. .. .. .............. .. .. .. ..W
-W.. .. .. .. ..   d..d   .. .. .. .. ..W
+W.. ..c..   c  q  d..d q  c  q .. .. ..W
+W..c.. .. .................... ..d.. ..W
+W.. ..q.. .. c  q d..d q  c .. .. .. ..W
+W.. .. ..c.. .............. .. .. .. ..W
+W..q.. .. .. ..   d..d   .. .. .. .. ..W
 W..d..d..d..d..d........d..d..d..d..d..W
 W......................................W
-W..................XP..................W
-W......................................W
-W......................................W
-W......................................W
-W..    ..    ..    ..    ..    ..    ..W
-W.. .. .. .. .. .. .. .. .. .. .. .. ..W
-W..c.. .. .. .. ..c.. .. .. ..c.. .. ..W
+W.....d............XP..................W
+W..........c  c ..........c   c .......W
+W...................................d..W
+W................d.....................W
+W.. q  ..  q ..  q .. q c.. q  .. d  ..W
+W.. ..d.. .. ..d.. .. .. .. ..d.. .. ..W
+W..c.. ..c.. .. ..c..c..d.. ..c..c.. ..W
 W......................................W
 W..d..d..d..d..d..d..d..d..d..d..d..d..W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -156,23 +156,23 @@ Name=Cave 5
 Intermission=true
 CaveDelay=3
 CaveTime=10
-DiamondsRequired=0
+DiamondsRequired=1
 DiamondValue=35 45
 AmoebaTime=255
 Colors=Black Black LightBlue Red Green
 
 [map]
 WWWWWWWWWWWWWWWWWWWW
-Wrrrrrrrrrrrrrrrrr.W
-Wrrrrrrrrrrrrrrrrr.W
-WP.................W
+W..................W
+W..................W
+W..................W
 W                 .W
 W                 .W
+Wd       q       PXW
 W                 .W
 W                 .W
-W                 .W
-WaaaaaaaaaaaaaaaaaaW
-WXaaaaaaaaaaaaaaaaaW
+W..................W
+W..................W
 WWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]

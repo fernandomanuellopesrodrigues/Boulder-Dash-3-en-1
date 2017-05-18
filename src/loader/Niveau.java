@@ -148,4 +148,13 @@ public class Niveau implements Cloneable {
 	public void setCave_time(int cave_time) {
 		this.cave_time = cave_time;
 	}
+
+	public void setMap(Entitee[][] map) {
+		this.map = map;
+	}
+
+	public void setRockford(Rockford rockford) {
+		this.rockford = rockford;
+	}
+	
 }

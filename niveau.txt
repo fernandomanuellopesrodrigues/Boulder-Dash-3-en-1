@@ -623,25 +623,25 @@ Colors=Black Black Gray1 Red Green
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 WP. Xrddc.rd.q  .rrwWw .  r.q .c qrw  cW
-Wr.qq.  r rd .wwrwrW. .qq..  q wrar.q.aW
+Wr.qq.  r rd .wwrwrW. .qq..  q wr.r.q..W
 W.. .d.q  q q w . q . .   .qwrq c.   w W
-Wdcqar   crqrr aarw.cWr. r.rrcw..c.qd  W
-Wq.  rw Wwrqwwcaq a  ww. q dwr .rcc .d W
-W wq.q.wqq.wdrdMrx dW.  .  aqc.wrrcdw  W
+Wdcq.r   crqrr ..rw.cWr. r.rrcw..c.qd  W
+Wq.  rw Wwrqwwc.q .  ww. q dwr .rcc .d W
+W wq.q.wqq.wdrdMrx dW.  .  .qc.wrrcdw  W
 W  cqd  .cww q qdr. wd wwr rq q..r  qwrW
-W   .q  c.   d  qara. qr    rrxd  d rr.W
-W .a drw rWdd   cdqw.   .r wq a  qwwrq.W
-WWw.    a.wqqWrqwq wqqdww r  r.r q. ca W
-W.W qw.rrr.r. r w  c rwwq ..rq   .  qa W
-W  .wq . Mq  . aa c. qw c . rr.r q.  qrW
+W   .q  c.   d  q.r.. qr    rrxd  d rr.W
+W .. drw rWdd   cdqw.   .r wq .  qwwrq.W
+WWw.    ..wqqWrqwq wqqdww r  r.r q. c. W
+W.W qw.rrr.r. r w  c rwwq ..rq   .  q. W
+W  .wq . Mq  . .. c. qw c . rr.r q.  qrW
 W.c w  r.   Mrrr. q qq. ..q  w.crr rw rW
-W r  a     .a.. .aq  q  qWr wr .wrq r dW
-W c wqda  .q.d..q  . .aqr .qrqrq   .aadW
-Waw q. . . . w.d  dqq.rqqwqcqw..  q a .W
-Www qr rwrqrq q qcq.  . Wrq  a cq.. qrcW
-Ww  rqrWr. cwa   q.rqqrwr  qw...rd.rc..W
-W qad   r   rqrwqMd  xqxa   r rcdrr  q W
-Wwwq  W w.q.rqqr  q..wcaaw . cr.rddr rwW
+W r  .     .... ..q  q  qWr wr .wrq r dW
+W c wqd.  .q.d..q  . ..qr .qrqrq   ...dW
+W.w q. . . . w.d  dqq.rqqwqcqw..  q . .W
+Www qr rwrqrq q qcq.  . Wrq  . cq.. qrcW
+Ww  rqrWr. cw.   q.rqqrwr  qw...rd.rc..W
+W q.d   r   rqrwqMd  xqx.   r rcdrr  q W
+Wwwq  W w.q.rqqr  q..wc..w . cr.rddr rwW
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 [/map]
 [/cave]
