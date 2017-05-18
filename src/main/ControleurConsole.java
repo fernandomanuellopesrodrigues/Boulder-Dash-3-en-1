@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import jline.ConsoleReader;
 import vue.GraphiqueConsole;
