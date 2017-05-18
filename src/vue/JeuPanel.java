@@ -24,7 +24,7 @@ import main.Constantes;
 import main.Partie;
 
 /**
- * La classe JeuPanel hï¿½ritï¿½ de JPanel et sert a afficher un niveau du jeu quand
+ * La classe JeuPanel hï¿½ritï¿½ de JPanel et sert à afficher un niveau du jeu quand
  * celui-ci est en mode fenï¿½trï¿½.
  *
  * Elle dispose d'un tableau a 2 dimensions d'entitees et d'un compteur de FPS.

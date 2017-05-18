@@ -29,7 +29,7 @@ public class ScorePanel extends JPanel {
 	 * {@link main.Coeur#FENETRE}.
 	 */
 	public ScorePanel() {
-		setPreferredSize(new Dimension(Coeur.FENETRE.getWidth(), (Coeur.FENETRE.getHeight() / 20)));
+		this.setPreferredSize(new Dimension(Coeur.FENETRE.getWidth(), (Coeur.FENETRE.getHeight() / 20)));
 	}
 
 	/**

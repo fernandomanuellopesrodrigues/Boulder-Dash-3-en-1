@@ -84,7 +84,7 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
 [cave]
 Name=Cave 3
-CaveDelay=64
+CaveDelay=8
 CaveTime=180
 DiamondsRequired=32
 DiamondValue=20

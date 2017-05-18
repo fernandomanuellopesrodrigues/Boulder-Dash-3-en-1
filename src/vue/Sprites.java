@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 import entitees.tickables.Rockford;
 import main.Constantes;
@@ -20,8 +19,12 @@ import outils.EnsembleDeSprites;
 import outils.Paire;
 
 /**
- * La classe Sprites n'est jamais instanciï¿½e, c'est une classe base de donnï¿½es
- * contenant les images des ï¿½lï¿½ments du jeu.
+ * La classe Sprites n'est jamais instanciée, c'est une classe base de données
+ * contenant les images des éléments du jeu.
+ * 
+ * La méthode {@link chargerSprites} est appelée de manière static au début du
+ * programme, elle va charger toutes les images dans la liste
+ * {@link Sprites#CHARGEMENT_SPRITES}.
  * 
  * @author Murloc
  */
@@ -30,7 +33,7 @@ public class Sprites {
 	/*
 	 * 
 	 */
-	
+
 	public static final Map<String, Image> CHARGEMENT_SPRITES = new HashMap<String, Image>();
 	public static final List<Image> SPRITES_AMIBES = new ArrayList<Image>();
 	public static final List<Image> SPRITES_EXPLOSIONS = new ArrayList<Image>();
@@ -98,6 +101,10 @@ public class Sprites {
 		}
 	}
 
+	/**
+	 * 
+	 * @param directionDeRockford
+	 */
 	private static void changerDirectionSpriteRockford(char directionDeRockford) {
 		List<Image> liste;
 		if (directionDeRockford == ' ') {
