@@ -72,7 +72,7 @@ public class Menu {
 				SousMenu.calculerStrategie(args[1], args[2], niveau);
 			}
 		}
-		if (args.length == 6 && ( args[1].equals("-evolue"))) {
+		if (args.length == 6 && ((args[1].equals("-evolue")) || (args[1].equals("-direvol")))) {
 			int niveau = -1;
 			int nb = -1;
 			try {

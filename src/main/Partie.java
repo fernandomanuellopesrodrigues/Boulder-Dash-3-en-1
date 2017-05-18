@@ -10,6 +10,7 @@ import java.util.List;
 
 import ia.Ia;
 import ia.IaDirective;
+import ia.IaDirectiveEvolue;
 import ia.IaEvolue;
 import ia.IaRandom;
 import loader.EnsembleDeNiveaux;
@@ -85,7 +86,7 @@ public class Partie {
 			if (gererNiveau.tickLecture(direction) || gererNiveau.getNiveau().getRockford().isMort()) {
 				break;
 			}
-			
+
 		}
 		/*
 		 * System.out.println(parcoursParcouru); System.out.println(parcours2);
@@ -150,6 +151,8 @@ public class Partie {
 
 		if (strategie.equals("-evolue")) {
 			ia = new IaEvolue(nbGenerations);
+		} else if (strategie.equals("-direvol")) {
+			ia = new IaDirectiveEvolue(nbGenerations);
 		}
 		Score score = ((IaEvolue) ia).debut();
 		System.out.println(score.getChemin().substring(0, score.getParcours() - 1));

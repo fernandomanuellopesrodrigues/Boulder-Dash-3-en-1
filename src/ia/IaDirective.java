@@ -1,5 +1,6 @@
 package ia;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -158,6 +159,35 @@ public class IaDirective extends Ia {
 		}
 
 		return direction;
+	}
+
+	private Noeud diamantAleatoire(Noeud depart) {
+		LinkedList<Noeud> file = new LinkedList<Noeud>();
+		ArrayList<Noeud> diamants = new ArrayList<Noeud>();
+		file.add(depart);
+		depart.setCout(0);
+		depart.setEtat('a');
+		while (!file.isEmpty()) {
+			Noeud u = file.removeFirst();
+			Set<Noeud> voisins = VoisinsNoeud(u);
+			for (Noeud v : voisins) {
+				if (v.getEtat() != 'a') {
+					file.add(v);
+					v.setCout(u.getCout() + 1);
+					v.setEtat('a');
+					if (v.getEntite().getClass().equals(Diamant.class)) {
+						diamants.add(v);
+					}
+				}
+			}
+		}
+		if (diamants.isEmpty()) {
+			return null;
+		} else {
+			int rng = (int) Math.random() * diamants.size();
+			return diamants.get(rng);
+		}
+
 	}
 
 	@Override
