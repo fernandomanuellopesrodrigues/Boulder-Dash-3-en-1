@@ -11,6 +11,7 @@ import ia.Ia;
 import ia.IaEvolue;
 import loader.Niveau;
 import outils.Paire;
+import outils.Score;
 
 public class GererNiveau {
 
@@ -59,6 +60,7 @@ public class GererNiveau {
 	}
 
 	public boolean tickIa(Ia ia) {
+		Score s = null;
 		while (!finiSuccess) {
 			compteurTicks++;
 			toucheClavier = ia.direction(niveau.getMap());
@@ -67,7 +69,7 @@ public class GererNiveau {
 			if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
 				compteurReset++;
 				if (ia.getClass().equals(IaEvolue.class)) {
-					((IaEvolue) ia).ajouterScore();
+					s = ((IaEvolue) ia).ajouterScore();
 				}
 				Partie.resetNiveau();
 				break;
@@ -76,7 +78,7 @@ public class GererNiveau {
 		}
 		if (!finiSuccess) {
 			if (ia.getClass().equals(IaEvolue.class)) {
-				((IaEvolue) ia).ajouterScore();
+				((IaEvolue) ia).ajouterScore(s);
 			}
 			return false;
 		} else {
