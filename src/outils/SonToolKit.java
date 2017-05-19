@@ -3,9 +3,14 @@ package outils;
 import main.Constantes;
 
 /**
+ * La classe SonToolKit est une classe servant à 
  * Created by celso on 20/03/17.
  */
 public class SonToolKit {
+	
+	/**
+	 * 
+	 */
 	private long compteur1, compteur2, compteur3, compteur4, compteur5, compteur6;
 	private Sons sons1 = new Sons(), sons2 = new Sons(), sons3 = new Sons();
 	private boolean boolean1, boolean2, boolean3;

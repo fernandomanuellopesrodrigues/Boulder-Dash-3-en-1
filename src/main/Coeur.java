@@ -4,6 +4,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import controleurs.Controleur;
+import controleurs.ControleurConsole;
 import tasks.FrameTask;
 import tasks.TickTask;
 import vue.Fenetre;

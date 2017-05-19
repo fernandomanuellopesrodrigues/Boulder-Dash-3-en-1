@@ -1,8 +1,10 @@
-package main;
+package controleurs;
 
 import java.io.IOException;
 
 import jline.ConsoleReader;
+import main.Coeur;
+import main.GererNiveau;
 import vue.GraphiqueConsole;
 
 /**

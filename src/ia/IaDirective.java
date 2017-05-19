@@ -10,9 +10,9 @@ import java.util.Stack;
 
 import entitees.abstraites.Entitee;
 import entitees.tickables.Diamant;
-import iaToolKit.Noeud;
 import loader.Niveau;
 import main.Partie;
+import outils.Noeud;
 
 public class IaDirective extends Ia {
 

@@ -1,6 +1,9 @@
-package main;
+package controleurs;
 
 import java.awt.event.KeyEvent;
+
+import main.Coeur;
+import main.Partie;
 
 /**
  * La classe Controleur est une classe qui va g�rer les entr�es clavier.

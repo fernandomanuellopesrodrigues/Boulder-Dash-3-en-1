@@ -1,4 +1,4 @@
-package iaToolKit;
+package outils;
 
 import entitees.abstraites.Entitee;
 import entitees.fixes.Poussiere;
@@ -7,11 +7,11 @@ import entitees.fixes.Vide;
 import entitees.tickables.Diamant;
 
 /**
- * Classe représentant un noeud d'un graphe.
+ * Classe reprï¿½sentant un noeud d'un graphe.
  * 
- * Le contenu d'un noeud est une entitée.
+ * Le contenu d'un noeud est une entitï¿½e.
  * 
- * Elle possède les atributs utiles pour effectuer des algorithmes dans les
+ * Elle possï¿½de les atributs utiles pour effectuer des algorithmes dans les
  * graphes.
  * 
  * @see Entitee
@@ -25,39 +25,39 @@ public class Noeud implements Comparable<Noeud> {
 	private Entitee entite;
 
 	/**
-	 * Les coordonées du Noeud.
+	 * Les coordonï¿½es du Noeud.
 	 */
 	private int x, y;
 
 	/**
-	 * Le cout du noeud (utilisé en algorithmique de graphes).
+	 * Le cout du noeud (utilisï¿½ en algorithmique de graphes).
 	 */
 	private int cout;
 
 	/**
-	 * L'heuristique du noeud (utilisé en algorithmique de graphes).
+	 * L'heuristique du noeud (utilisï¿½ en algorithmique de graphes).
 	 */
 	private int heuristique;
 
 	/**
-	 * La traversabilité du noeud (utilisé en algorithmique de graphes).
+	 * La traversabilitï¿½ du noeud (utilisï¿½ en algorithmique de graphes).
 	 */
 	private boolean traversable;
 
 	/**
-	 * Le noeud père (utilisé en algorithmique de graphes).
+	 * Le noeud pï¿½re (utilisï¿½ en algorithmique de graphes).
 	 */
 	private Noeud pere;
 
 	/**
-	 * L'état du noeud (utilisé en algorithmique de graphes).
+	 * L'ï¿½tat du noeud (utilisï¿½ en algorithmique de graphes).
 	 */
 	private char etat;
 
 	/**
 	 * Constructeur Noeud.
 	 * 
-	 * Prend en paramètre une entitée et crée un noeud.
+	 * Prend en paramï¿½tre une entitï¿½e et crï¿½e un noeud.
 	 * 
 	 * @param entite
 	 *            Le contenu du noeud.
