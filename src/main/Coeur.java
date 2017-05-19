@@ -9,7 +9,7 @@ import tasks.TickTask;
 import vue.Fenetre;
 
 /**
- * La classe Coeur n'est jamais instanciée.
+ * La classe Coeur n'est jamais instanciï¿½e.
  * 
  * Elle dispose de plusieurs objets static essentiels au fonctionnement du
  * programme.
@@ -20,7 +20,7 @@ import vue.Fenetre;
 public class Coeur {
 
 	/**
-	 * La fenêtre de jeu servant si le jeu est en mode graphique.
+	 * La fenï¿½tre de jeu servant si le jeu est en mode graphique.
 	 */
 	public static final Fenetre FENETRE = new Fenetre();
 
@@ -35,42 +35,43 @@ public class Coeur {
 	public static final ControleurConsole CONTROLEUR_CONSOLE = new ControleurConsole();
 
 	/**
-	 * L'objet permettant de réaliser des tours de jeu à un rythme régulier dans
-	 * un thread quand le jeu est en mode temps réel.
+	 * L'objet permettant de rï¿½aliser des tours de jeu ï¿½ un rythme rï¿½gulier dans
+	 * un thread quand le jeu est en mode temps rï¿½el.
 	 */
 	public static ScheduledExecutorService tickTask = Executors.newScheduledThreadPool(1);
 
 	/**
-	 * L'objet permettant d'effectuer des frames de jeu à un rythme régulier
+	 * L'objet permettant d'effectuer des frames de jeu ï¿½ un rythme rï¿½gulier
 	 * dans un thread quand le jeu est en mode graphique.
 	 */
 	public static final ScheduledExecutorService FRAME_TASK = Executors.newScheduledThreadPool(1);
 
 	/**
-	 * Booléan définissant si une partie est en train d'avoir lieu ou pas.
+	 * Boolï¿½an dï¿½finissant si une partie est en train d'avoir lieu ou pas.
 	 * 
 	 * Si le joueur est en train de jouer il est vrai.
 	 * 
-	 * Si le programme calcule une stratégie ou alors qu'il est en train
+	 * Si le programme calcule une stratï¿½gie ou alors qu'il est en train
 	 * d'effectuer un changement de niveau il est en faux.
 	 */
 	public static boolean running = false;
 
 	/**
-	 * Booléan définissant si une partie est en mode temps graphique ou console.
+	 * Boolï¿½an dï¿½finissant si une partie est en mode temps graphique ou console.
 	 */
 	public static boolean graphique = false;
 
 	/**
-	 * Booléan définissant si une partie est en mode temps réel.
+	 * Boolï¿½an dï¿½finissant si une partie est en mode temps rï¿½el.
 	 */
 	public static boolean tempsReel = false;
 
 	/**
 	 * On initialsie l'objet qui effectue des FPS tout en limitant les FPS si
-	 * ceux-ci sont absurdes. (Oui 120 FPS pour ce jeu c'est déjà absurde.)
+	 * ceux-ci sont absurdes. (Oui 120 FPS pour ce jeu c'est dï¿½jï¿½ absurde.)
 	 */
 	static {
+		System.out.println("wesh");
 		if (Constantes.FPS >= 1 && Constantes.FPS <= 120)
 			FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / Constantes.FPS, TimeUnit.MILLISECONDS);
 		else
@@ -79,11 +80,11 @@ public class Coeur {
 	}
 
 	/**
-	 * Méthode servant à lancer l'objet qui effectue des tours de jeu dans un
+	 * Mï¿½thode servant ï¿½ lancer l'objet qui effectue des tours de jeu dans un
 	 * thread ({@link Coeur#tickTask}.
 	 * 
-	 * Elle prend en paramètre le nombre de tours par secondes qu'elle doit
-	 * effetuer et crée un nouvel objet en fonction.
+	 * Elle prend en paramï¿½tre le nombre de tours par secondes qu'elle doit
+	 * effetuer et crï¿½e un nouvel objet en fonction.
 	 * 
 	 * @param ticks
 	 *            Le nombre de tours par secondes voulu.
