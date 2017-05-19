@@ -5,23 +5,25 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 
+import main.Partie;
+
 /**
- * La classe Ecrivain est une classe qui n'est jamais instanciée, elle dipose de
- * méthodes statiques servant à créer et lire des fichier DASH.
+ * La classe Ecrivain est une classe qui n'est jamais instanciï¿½e, elle dipose de
+ * mï¿½thodes statiques servant ï¿½ crï¿½er et lire des fichier DASH.
  * 
  * @author Murloc
  *
  */
 public class Ecrivain {
 	/**
-	 * Cette methode crée un fichier et écrit du texte dedans.
+	 * Cette methode crï¿½e un fichier et ï¿½crit du texte dedans.
 	 * 
 	 * @param aEcrire
-	 *            Le texte qui sera écrit dans le fichier.
+	 *            Le texte qui sera ï¿½crit dans le fichier.
 	 * @param nom
-	 *            Le nom du fichier futurement créé.
+	 *            Le nom du fichier futurement crï¿½ï¿½.
 	 * @param repertoire
-	 *            Le nom du dossier où le fichier doit être créé.
+	 *            Le nom du dossier oï¿½ le fichier doit ï¿½tre crï¿½ï¿½.
 	 */
 	public static void ecrire(String aEcrire, String nom, String repertoire) {
 		try {
@@ -31,7 +33,10 @@ public class Ecrivain {
 			destinationFile.createNewFile();
 			PrintWriter ecrivain = new PrintWriter(repertoire + nom, "UTF-8");
 			ecrivain.print(aEcrire);
-			System.out.println("Chemin parcouru enregistre sous : " + repertoire + nom);
+			if(Partie.IA){
+				System.out.println("\nMeilleur trajet enregistrÃ© sous : " + repertoire + nom);
+			}else
+			System.out.println("\nChemin parcouru enregistre sous : " + repertoire + nom);
 			ecrivain.close();
 		} catch (Exception e) {
 			System.err.println("Impossible d'enregistrer le chemin parcouru");
@@ -39,19 +44,19 @@ public class Ecrivain {
 	}
 
 	/**
-	 * Cette méthode prend en paramètre le chemin d'un fichier DASH et renvoie
-	 * le parcours écrit dans le fichier.
+	 * Cette mï¿½thode prend en paramï¿½tre le chemin d'un fichier DASH et renvoie
+	 * le parcours ï¿½crit dans le fichier.
 	 * 
 	 * @param cheminFichierBD
 	 *            Chemin du fichier DASH.
-	 * @return Le parcours écrit dans le fichier.
+	 * @return Le parcours ï¿½crit dans le fichier.
 	 */
 	public static String lireParcours(String cheminFichierBD) {
 		try {
 			FileReader lecteur = new FileReader(cheminFichierBD);
 			BufferedReader in = new BufferedReader(lecteur);
 
-			// récupération du fichier
+			// rï¿½cupï¿½ration du fichier
 			String ensemble_du_fichier = "";
 			String s;
 

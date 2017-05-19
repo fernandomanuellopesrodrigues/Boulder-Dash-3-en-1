@@ -65,6 +65,8 @@ public class Amibe extends Entitee {
 		for (Amibe amibe : Partie.gererNiveau.getListeAmibes()) {
 			Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()] = new Diamant(amibe.getX(),
 					amibe.getY());
+			Partie.gererNiveau
+					.ajouterTickable((Diamant) Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()]);
 		}
 		Partie.gererNiveau.getListeAmibes().clear();
 		Partie.gererNiveau.getListeAmibesAjout().clear();

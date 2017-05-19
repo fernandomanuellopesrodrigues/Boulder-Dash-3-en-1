@@ -6,7 +6,7 @@ import jline.ConsoleReader;
 import vue.GraphiqueConsole;
 
 /**
- * La classe ControleurConsole sert à gérer les entrées clavier et les tours de
+ * La classe ControleurConsole sert ï¿½ gï¿½rer les entrï¿½es clavier et les tours de
  * boucle du jeu quand celui-ci est en mode console.
  * 
  * @author Murloc
@@ -15,49 +15,49 @@ import vue.GraphiqueConsole;
 public class ControleurConsole {
 
 	/**
-	 * Entiers représentants les touches du clavier qui servent à jouer. Ils
-	 * sont final pour pouvoi être utilisés dans un switch case.
+	 * Entiers reprï¿½sentants les touches du clavier qui servent ï¿½ jouer. Ils
+	 * sont final pour pouvoi ï¿½tre utilisï¿½s dans un switch case.
 	 */
 	private final int TOUCHE_HAUT = 16, TOUCHE_BAS = 14, TOUCHE_GAUCHE = 2, TOUCHE_DROITE = 6, TOUCHE_ATTENTE = 10,
 			TOUCHE_RESET = 32;
 
 	/**
-	 * Méthode prenant en paramètre un objet GererNiveau.
+	 * Mï¿½thode prenant en paramï¿½tre un objet GererNiveau.
 	 * 
-	 * Cette méthode s'occupe de gérer les tours durant la partie ainsi que les
-	 * entrées clavier.
+	 * Cette mï¿½thode s'occupe de gï¿½rer les tours durant la partie ainsi que les
+	 * entrï¿½es clavier.
 	 * 
 	 * Elle lance un thread qui affiche en boucle le niveau afin que celui-ci
-	 * mette à jour le temps restant en temps réel.
+	 * mette ï¿½ jour le temps restant en temps rï¿½el.
 	 * 
 	 * Elle effectue un tour de jeu quand le joueur appuye sur une des touches
-	 * qui sert à jouer.
+	 * qui sert ï¿½ jouer.
 	 * 
 	 * @param g
 	 *            L'objet {@link GererNiveau} du niveau en question.
 	 */
 	public void run(GererNiveau g) {
-		Thread t = new Thread() {
-			public void run() {
-				while (true) {
-					if (Coeur.running) {
-						GraphiqueConsole.afficher(g.getNiveau());
-						g.gererTemps();
-						if (g.isDemandeReset()) {
-							g.tick();
+
+		try {
+			Thread t = new Thread() {
+				public void run() {
+					while (true) {
+						if (Coeur.running) {
+							GraphiqueConsole.afficher(g.getNiveau());
+							g.gererTemps();
+							if (g.isDemandeReset()) {
+								g.tick();
+							}
+						}
+
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
 						}
 					}
-
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-					}
 				}
-			}
-		};
-		t.start();
-		try {
-
+			};
+			t.start();
 			ConsoleReader console = new ConsoleReader();
 			int input;
 			boolean fin = false;
@@ -102,8 +102,8 @@ public class ControleurConsole {
 	}
 
 	/**
-	 * Méthode appelée entre deux niveaux afin d'effectuer une pause et
-	 * d'attendre que le joueur appuye sur entrée pour continuer le jeu.
+	 * Mï¿½thode appelï¿½e entre deux niveaux afin d'effectuer une pause et
+	 * d'attendre que le joueur appuye sur entrï¿½e pour continuer le jeu.
 	 * 
 	 * @param niveau
 	 *            Le niveau que le joueur vient de finir.

@@ -7,11 +7,11 @@ import java.util.Scanner;
 import main.Coeur;
 
 /**
- * La classe Menu contient le main ainsi que d'autres méthodes statics gérant la
- * lecture des paramètres du programme.
+ * La classe Menu contient le main ainsi que d'autres mï¿½thodes statics gï¿½rant la
+ * lecture des paramï¿½tres du programme.
  * 
- * Elle lance des méthodes de la classe {@link SousMenu} en fonction des
- * paramètres entrés.
+ * Elle lance des mï¿½thodes de la classe {@link SousMenu} en fonction des
+ * paramï¿½tres entrï¿½s.
  * 
  * @author Murloc
  *
@@ -19,9 +19,9 @@ import main.Coeur;
 public class Menu {
 
 	/**
-	 * La méthode main.
+	 * La mï¿½thode main.
 	 * 
-	 * Elle lance d'autres méthodes en fonction des paramètres.
+	 * Elle lance d'autres mï¿½thodes en fonction des paramï¿½tres.
 	 * 
 	 * @param args
 	 *            Les arguments
@@ -42,6 +42,8 @@ public class Menu {
 				rejouer(args);
 			} else if (args[0].equals("-simul")) {
 				simuler(args);
+			} else if (args[0].equals("-parfait")) {
+				System.out.println("\nL'IA parfaite n'est pas encore prÃ©sente dans cette version.");
 			} else {
 				System.err.println("Argument(s) non reconnu(s).");
 			}
@@ -52,8 +54,8 @@ public class Menu {
 	}
 
 	/**
-	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-lis",
-	 * elle teste si le nombre d'arguments entrés est correct puis lance
+	 * Cette mï¿½thode est appelï¿½e si l'utilisateur a rentrï¿½ l'argument "-lis",
+	 * elle teste si le nombre d'arguments entrï¿½s est correct puis lance
 	 * {@link SousMenu#lireInfos(String)} si oui.
 	 * 
 	 * @param args
@@ -68,12 +70,12 @@ public class Menu {
 	}
 
 	/**
-	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-joue",
-	 * elle teste si le nombre d'arguments entrés est correct puis lance
-	 * d'autres méthodes si oui.
+	 * Cette mï¿½thode est appelï¿½e si l'utilisateur a rentrï¿½ l'argument "-joue",
+	 * elle teste si le nombre d'arguments entrï¿½s est correct puis lance
+	 * d'autres mï¿½thodes si oui.
 	 * 
-	 * Lance la méthode {@link Menu#options()} au début pour savoir si oui ou
-	 * non le joueur veut jouer en mode console/fenêtré/temps réel.
+	 * Lance la mï¿½thode {@link Menu#options()} au dï¿½but pour savoir si oui ou
+	 * non le joueur veut jouer en mode console/fenï¿½trï¿½/temps rï¿½el.
 	 * 
 	 * @param args
 	 *            Les arguments.
@@ -98,12 +100,12 @@ public class Menu {
 	}
 
 	/**
-	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-cal",
-	 * elle teste si le nombre d'arguments entrés est correct puis lance
-	 * d'autres méthodes si oui.
+	 * Cette mï¿½thode est appelï¿½e si l'utilisateur a rentrï¿½ l'argument "-cal",
+	 * elle teste si le nombre d'arguments entrï¿½s est correct puis lance
+	 * d'autres mï¿½thodes si oui.
 	 * 
 	 * Elle lance {@link SousMenu#calculerStrategie(String, String, int)} si
-	 * l'ia voulue n'est pas évolutive ou
+	 * l'ia voulue n'est pas ï¿½volutive ou
 	 * {@link SousMenu#calculerStrategieEvol(String, int, String, int)} si elle
 	 * l'est.
 	 * 
@@ -140,9 +142,9 @@ public class Menu {
 	}
 
 	/**
-	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-rejoue",
-	 * elle teste si le nombre d'arguments entrés est correct puis lance
-	 * d'autres méthodes si oui.
+	 * Cette mï¿½thode est appelï¿½e si l'utilisateur a rentrï¿½ l'argument "-rejoue",
+	 * elle teste si le nombre d'arguments entrï¿½s est correct puis lance
+	 * d'autres mï¿½thodes si oui.
 	 * 
 	 * Puis elle lance {@link SousMenu#rejouerNiveau(String, String, int)} si
 	 * tout est ok.
@@ -170,9 +172,9 @@ public class Menu {
 	}
 
 	/**
-	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-simul",
-	 * elle teste si le nombre d'arguments entrés est correct puis lance
-	 * d'autres méthodes si oui.
+	 * Cette mï¿½thode est appelï¿½e si l'utilisateur a rentrï¿½ l'argument "-simul",
+	 * elle teste si le nombre d'arguments entrï¿½s est correct puis lance
+	 * d'autres mï¿½thodes si oui.
 	 * 
 	 * Si tout est ok elle lance
 	 * {@link SousMenu#simulerNiveau(int, String, String, String, int)}.
@@ -199,13 +201,13 @@ public class Menu {
 	}
 
 	/**
-	 * Cette méthode est lancée en début de programme et demande au joueur
+	 * Cette mï¿½thode est lancï¿½e en dï¿½but de programme et demande au joueur
 	 * diverses informations.
 	 * 
-	 * Elle change les booleans de {@link Coeur} en fonction des résultats.
+	 * Elle change les booleans de {@link Coeur} en fonction des rï¿½sultats.
 	 * 
-	 * Elle fait apparaitre la fenêtre {@link Coeur#FENETRE} si l'utilisateur
-	 * joue en mode fenêtré.
+	 * Elle fait apparaitre la fenï¿½tre {@link Coeur#FENETRE} si l'utilisateur
+	 * joue en mode fenï¿½trï¿½.
 	 */
 	public static void options() {
 

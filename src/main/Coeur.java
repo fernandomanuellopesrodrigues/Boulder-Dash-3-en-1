@@ -27,7 +27,7 @@ public class Coeur {
 	/**
 	 * Le controleur servant si le jeu est en mode graphique.
 	 */
-	public static final Controleur CONTROLEUR = new Controleur(38, 37, 40, 39, 78, 10);
+	public static final Controleur CONTROLEUR = new Controleur(38, 37, 40, 39, 10, 16);
 
 	/**
 	 * Le controleur console servant si le jeu n'est pas en mode graphique.

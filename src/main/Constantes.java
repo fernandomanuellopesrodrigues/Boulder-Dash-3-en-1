@@ -3,12 +3,13 @@ package main;
 public class Constantes {
 
 	// String affich� quand on entre en argument "-noms".
-	public static final String NOMS = "\n\nCelso De Carvalho Rodrigues\nDany Br�geon\nLo�s Monet\nMaxime Poirier\n";
+	public static final String NOMS = "\n\nCelso De Carvalho Rodrigues\nDany Brégeon\nLoïs Monet\nMaxime Poirier\n";
 
 	// String affich� quand on entre en argument "-help".
-	public static final String HELP = "java -jar boulder_dash.jar -name affiche les noms et pr�noms des devs\n� java -jar boulder_dash.jar -h rappelle la liste des options du programme\n� java -jar boulder_dash.jar -lis ficher.bdcff lis et affiche les param�tres d�un fichierBDCFF (de description de niveaux boulder dash).\n� java -jar boulder_dash.jar -joue fichier.bdcff [-niveau N] offre la possibilit�de jouer sur la console de mani�re interactive dans les niveaux d�crits dans le fichier BDCFF. Le chemin utilis�par le joueur devra �tre sauvegard� dans un fichier au format .dash (voir exemple fourni). Un fichier BDCFF peutcontenir plusieurs niveaux, si l�option -niveau N est pass�e au programme alors il ne jouera que le niveau N,sinon il devra permettre de jouer tous les niveaux d�crits dans le fichier BDCFF, l�un apr�s l�autre.\n� java -jar boulder_dash.jar -cal strategie fichier.bdcff -niveau N calcule unchemin suivant une strat�gie et renvoie ce chemin dans un fichier au format .dash (voir exemple fourni).\n� java -jar boulder_dash.jar -rejoue fichier.dash fichier.bdcff -niveau Nrejoue dans la console une partie de boulder dash en appliquant les d�placements fournis dans le fichier au format.dash fourni.\n� java -jar boulder_dash.jar -simul N strategie strategie fichier.bdcff-niveau N �value les deux strat�gies en param�tre par simulation en lan�ant N parties et renvoie le scoremoyen, la longueur moyenne du chemin obtenu, et le temps moyen mis pour l�obtenir avec chacune des deuxstrat�gies.";
+	public static final String HELP = "\n\n\"-name\" : Affiche les noms et prénoms des devs\n\n\"-lis ficher.bdcff\" : Lis et affiche les paramètres d'un fichierBDCFF\n\n\"-joue fichier.bdcff [-niveau N]\" : Permet de jouer aux niveaux décrits dans le fichier BDCFF. Si l'option -niveau N est passée au programme alors ne joue que le niveau N, sinon lance tous les niveaux, l'un après l'autre.\n\n\"-cal strategie fichier.bdcff -niveau N\" : Calcule un chemin suivant une stratégie et renvoie ce chemin dans un fichier au format .dash.\n\n\"-rejoue fichier.dash fichier.bdcff -niveau N\" : Rejoue dans une partie de boulder dash en appliquant les déplacements fournis dans le fichier au format.dash fourni.\n\n\"-simul N strategie strategie fichier.bdcff-niveau N\" : Evalue les deux stratégies en paramètre par simulation en lançant N parties et renvoie le score moyen, la longueur moyenne du chemin obtenu, et le temps moyen mis pour l'obtenir avec chacune des deux stratégies.\n";
 
-	// Entier permettant de choisir le nombre d'images par seconde en mode graphique.
+	// Entier permettant de choisir le nombre d'images par seconde en mode
+	// graphique.
 	public static final int FPS = 30;
 
 	// Largeur en pixels par d�faut de la fen�tre.
@@ -52,6 +53,10 @@ public class Constantes {
 
 	/*
 	 * Constantes de l'ia g�n�tique.
+	 */
+
+	/**
+	 * 
 	 */
 	public static final int NOMBRE_DE_TRY_GENERATION = 100;
 	public static final int POURCENTAGE_DE_SURVIVANTS = 20;

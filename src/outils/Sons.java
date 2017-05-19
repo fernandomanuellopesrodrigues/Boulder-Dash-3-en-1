@@ -3,7 +3,9 @@ package outils;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import main.Coeur;
 import main.Constantes;
+import main.Partie;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
@@ -13,7 +15,7 @@ public class Sons {
 	private AudioStream audioStream;
 
 	private void charger(String nom) throws Exception {
-		if (Constantes.SONS) {
+		if (Constantes.SONS && Coeur.graphique && !Partie.IA) {
 			String gongFile = PATH + nom;
 			InputStream in = new FileInputStream(gongFile);
 			audioStream = new AudioStream(in);
@@ -30,7 +32,7 @@ public class Sons {
 				AudioPlayer.player.start(audioStream);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			desactive = true;
 			System.err.println("Impossible de jouer le son " + son + ". En consequence, les sons ont ete desactives");
 		}
 	}

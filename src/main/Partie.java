@@ -15,6 +15,7 @@ import ia.IaEvolue;
 import ia.IaRandom;
 import loader.EnsembleDeNiveaux;
 import loader.Loader;
+import menu.SousMenu;
 import outils.Paire;
 import outils.Score;
 import outils.SonToolKit;
@@ -87,7 +88,6 @@ public class Partie {
 				break;
 			}
 		}
-		System.out.println(parcoursParcouru.length());
 		s = new Score(score, parcoursParcouru.length(), liste);
 		s.setChemin(parcours2);
 		if (gererNiveau.isDemandeFin()) {
@@ -134,10 +134,13 @@ public class Partie {
 		}
 
 		Score score = new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks(), gererNiveau.getListeDiamants());
+
+		SousMenu.finIA(score);
 		return score;
 	}
 
-	public static Score calculerStrategieEvolue(String strategie, int nbGenerations, String cheminFichierBDCFF, int niveau) {
+	public static Score calculerStrategieEvolue(String strategie, int nbGenerations, String cheminFichierBDCFF,
+			int niveau) {
 		IA = true;
 		Partie.cheminFichier = cheminFichierBDCFF;
 		ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
@@ -149,15 +152,15 @@ public class Partie {
 		} else if (strategie.equals("-direvol")) {
 			ia = new IaDirectiveEvolue(nbGenerations);
 		}
-		Score score=null;
+		Score score = null;
 
 		if (ia instanceof IaEvolue) {
 			score = ((IaEvolue) ia).debut();
 		} else if (ia instanceof IaDirectiveEvolue) {
 			score = ((IaDirectiveEvolue) ia).debut();
 		}
-		System.out.println(score.getParcours());
-		System.out.println(score.getChemin().substring(0, score.getParcours()));
+
+		SousMenu.finIA(score);
 		return score;
 	}
 
@@ -165,15 +168,9 @@ public class Partie {
 		sons.stopAll();
 		finiEvolution = true;
 		Coeur.running = false;
-		String essai = "Trajet : " + gererNiveau.getTrajet() + "\nScore : " + gererNiveau.getScore() + "     Diamants : "
-				+ gererNiveau.getNbDiamants() + "      Temps : ";
-		if (gererNiveau.isTourParTour() || IA) {
-			essai += (gererNiveau.getCompteurTicks() + " tours\n");
-		} else {
-			essai += (((double) gererNiveau.getCompteurTicks()) / ((double) gererNiveau.getNiveau().getCaveDelay())) + " secondes\n";
+		if (!lecture && !simulation) {
+			enregistrerEssai(gererNiveau.getTrajet());
 		}
-		if (!lecture && !simulation)
-			enregistrerEssai(essai);
 		if (tousLesNiveaux) {
 			SCORES.add(gererNiveau.getScore());
 		}
@@ -211,7 +208,25 @@ public class Partie {
 		gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
 		Coeur.running = true;
 		if (Coeur.graphique) {
-			Coeur.setTicks((int) (ensembleDeNiveau.getNiveaux().get(niveau - 1).getCaveDelay() * Constantes.VITESSE_JEU_TEMPS_REEL));
+			Thread t = new Thread() {
+				public void run() {
+					while (true) {
+						if (Coeur.running) {
+							gererNiveau.gererTemps();
+							if (gererNiveau.isDemandeReset()) {
+								gererNiveau.tick();
+							}
+						}
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+						}
+					}
+				}
+			};
+			t.start();
+			Coeur.setTicks((int) (ensembleDeNiveau.getNiveaux().get(niveau - 1).getCaveDelay()
+					* Constantes.VITESSE_JEU_TEMPS_REEL));
 			preparerFenetre();
 
 		} else {
@@ -231,7 +246,8 @@ public class Partie {
 			} else {
 				finiEvolution = true;
 				if (!IA) {
-					System.err.println("Chemin du fichier terminé or le niveau n'est pas fini, fermeture du programme.");
+					System.err
+							.println("Chemin du fichier terminé or le niveau n'est pas fini, fermeture du programme.");
 					System.exit(0);
 				}
 			}
@@ -249,7 +265,16 @@ public class Partie {
 		Coeur.FENETRE.getContentPane().validate();
 	}
 
-	public static void enregistrerEssai(String essai) {
+	public static String enregistrerEssai(String trajet) {
+		String essai = "Trajet : " + trajet + "\nScore : " + gererNiveau.getScore() + "     Diamants : "
+				+ gererNiveau.getNbDiamants() + "      Temps : ";
+		if (gererNiveau.isTourParTour() || IA) {
+			essai += (gererNiveau.getCompteurTicks() + " tours\n");
+		} else {
+			essai += (((double) gererNiveau.getCompteurTicks()) / ((double) gererNiveau.getNiveau().getCaveDelay()))
+					+ " secondes\n";
+		}
+
 		String chemin = "";
 		if (IA) {
 			chemin += "Essais_IA/";
@@ -258,6 +283,7 @@ public class Partie {
 		}
 		chemin += dateDebut + "/";
 
-		outils.Ecrivain.ecrire(essai, "Niveau_" + niveau + ".bd", chemin);
+		outils.Ecrivain.ecrire(essai, "Niveau_" + niveau + ".dash", chemin);
+		return chemin + "Niveau_" + niveau + ".dash";
 	}
 }

@@ -1,7 +1,5 @@
 package ia;
 
-import java.util.Random;
-
 import entitees.abstraites.Entitee;
 
 /**

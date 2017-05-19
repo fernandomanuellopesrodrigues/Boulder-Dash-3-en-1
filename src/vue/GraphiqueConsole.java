@@ -19,9 +19,8 @@ import loader.Niveau;
 import main.Partie;
 
 /**
- * La classe GraphiqueConsole n'est jamais instanci�e, elle sert uniquement
- * � stocker des m�thodes en rapport avec l'affichage du jeu en mode
- * console.
+ * La classe GraphiqueConsole n'est jamais instanci�e, elle sert uniquement �
+ * stocker des m�thodes en rapport avec l'affichage du jeu en mode console.
  * 
  * @author Murloc
  *
@@ -39,9 +38,8 @@ public class GraphiqueConsole {
 		Entitee[][] map = niveau.getMap();
 
 		/*
-		 * Initialise un string auquel va �tre concat�n� la
-		 * repr�sentation du niveau, ce string sera affich� � la fin de la
-		 * m�thode.
+		 * Initialise un string auquel va �tre concat�n� la repr�sentation du
+		 * niveau, ce string sera affich� � la fin de la m�thode.
 		 */
 		String s = "";
 
@@ -79,8 +77,8 @@ public class GraphiqueConsole {
 	 * 
 	 * @param e
 	 *            L'entit�e dont on veut le caract�re.
-	 * @return Le caract�re propre � l'entit�e. Renvoie ' ' si l'enti�e
-	 *         est inconnue (ou si c'est l'entit�e Vide).
+	 * @return Le caract�re propre � l'entit�e. Renvoie ' ' si l'enti�e est
+	 *         inconnue (ou si c'est l'entit�e Vide).
 	 */
 	public static char getCharDeEntitee(Entitee e) {
 		// Get la classe de l'entit�e.
@@ -90,8 +88,8 @@ public class GraphiqueConsole {
 		char s = ' ';
 
 		/*
-		 * Compare la classe avec les classes des entit�es, puis affecte le
-		 * char correspondant au string.
+		 * Compare la classe avec les classes des entit�es, puis affecte le char
+		 * correspondant au string.
 		 */
 		if (l.equals(Rockford.class)) {
 			s = 'P';
@@ -132,7 +130,8 @@ public class GraphiqueConsole {
 	 *            Le score � afficher.
 	 */
 	public static void afficherScoreUnNiveau(int niveau, int score) {
-		System.out.println("FIN DU JEU , SCORE DU NIVEAU " + niveau + " : " + score + ".\n");
+		if (!Partie.IA && !Partie.lecture)
+			System.out.println("FIN DU JEU , SCORE DU NIVEAU " + niveau + " : " + score + ".\n");
 	}
 
 	/**

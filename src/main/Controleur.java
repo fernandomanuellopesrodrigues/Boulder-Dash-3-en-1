@@ -3,58 +3,58 @@ package main;
 import java.awt.event.KeyEvent;
 
 /**
- * La classe Controleur est une classe qui va gérer les entrées clavier.
+ * La classe Controleur est une classe qui va gï¿½rer les entrï¿½es clavier.
  * 
- * Elle dispose de 3 méthodes "Key listener" qui sont appelées par
- * {@link Coeur#FENETRE} quand une touche subit un événement.
+ * Elle dispose de 3 mï¿½thodes "Key listener" qui sont appelï¿½es par
+ * {@link Coeur#FENETRE} quand une touche subit un ï¿½vï¿½nement.
  * 
- * Elle dispose aussi d'une méthode {@link Controleur#getDirection()} qui est
- * appelée à chaque tour de boucle du jeu et qui renvoie le mouvement que doit
- * effectuer Rockford en fonction des événements clavier qui ont eu lieu.
+ * Elle dispose aussi d'une mï¿½thode {@link Controleur#getDirection()} qui est
+ * appelï¿½e ï¿½ chaque tour de boucle du jeu et qui renvoie le mouvement que doit
+ * effectuer Rockford en fonction des ï¿½vï¿½nements clavier qui ont eu lieu.
  * 
  * @author Murloc
  *
  */
 public class Controleur {
 	/**
-	 * Booleans servant à savoir si les touches qu'ils représentent sont
-	 * enfoncées. Vrai = enfoncé.
+	 * Booleans servant ï¿½ savoir si les touches qu'ils reprï¿½sentent sont
+	 * enfoncï¿½es. Vrai = enfoncï¿½.
 	 */
 	private boolean haut, bas, gauche, droite, space, pierre, bombe;
 	/**
-	 * Booleans servant à savoir si les touches qu'ils représentent étaient
-	 * enfoncées le tour de boucle précédent. Vrai = enfoncé. Utile pour
-	 * améliorer le gameplay en mode temps réel.
+	 * Booleans servant ï¿½ savoir si les touches qu'ils reprï¿½sentent ï¿½taient
+	 * enfoncï¿½es le tour de boucle prï¿½cï¿½dent. Vrai = enfoncï¿½. Utile pour
+	 * amï¿½liorer le gameplay en mode temps rï¿½el.
 	 */
 	private boolean hautwas, baswas, gauchewas, droitewas;
 
 	/**
-	 * Entiers utiles pour savoir quelle touche à été enfoncée en dernier,
-	 * chaque entier représente une touche et l'entier le plus grand signifie
-	 * que c'est cette touche qui a été enfoncée en dernier.
+	 * Entiers utiles pour savoir quelle touche ï¿½ ï¿½tï¿½ enfoncï¿½e en dernier,
+	 * chaque entier reprï¿½sente une touche et l'entier le plus grand signifie
+	 * que c'est cette touche qui a ï¿½tï¿½ enfoncï¿½e en dernier.
 	 */
 	private int hautInt, basInt, gaucheInt, droiteInt, rInt;
 
 	/**
-	 * Entiers représentants les touches du clavier qui servent à jouer.
+	 * Entiers reprï¿½sentants les touches du clavier qui servent ï¿½ jouer.
 	 */
 	private int toucheHaut, toucheBas, toucheGauche, toucheDroite, touchePierre, toucheBombe;
 
 	/**
-	 * Constructeur qui initialise quelles touches du clavier servent à jouer.
+	 * Constructeur qui initialise quelles touches du clavier servent ï¿½ jouer.
 	 * 
 	 * @param toucheHaut
-	 *            L'entier de la touche qui sert à aller vers le haut.
+	 *            L'entier de la touche qui sert ï¿½ aller vers le haut.
 	 * @param toucheGauche
-	 *            L'entier de la touche qui sert à aller vers la gauche.
+	 *            L'entier de la touche qui sert ï¿½ aller vers la gauche.
 	 * @param toucheBas
-	 *            L'entier de la touche qui sert à aller vers le bas.
+	 *            L'entier de la touche qui sert ï¿½ aller vers le bas.
 	 * @param toucheDroite
-	 *            L'entier de la touche qui sert à aller vers la droite.
+	 *            L'entier de la touche qui sert ï¿½ aller vers la droite.
 	 * @param touchePierre
-	 *            L'entier de la touche qui sert à se camoufler.
+	 *            L'entier de la touche qui sert ï¿½ se camoufler.
 	 * @param toucheBombe
-	 *            L'entier de la touche qui sert à poser une bombe.
+	 *            L'entier de la touche qui sert ï¿½ poser une bombe.
 	 */
 	public Controleur(int toucheHaut, int toucheGauche, int toucheBas, int toucheDroite, int touchePierre,
 			int toucheBombe) {
@@ -67,8 +67,8 @@ public class Controleur {
 	}
 
 	/**
-	 * Méthode appelée à chaque tour de boucle en mode temps réel servant à
-	 * améliorer le gameplay.
+	 * Mï¿½thode appelï¿½e ï¿½ chaque tour de boucle en mode temps rï¿½el servant ï¿½
+	 * amï¿½liorer le gameplay.
 	 */
 	public void tick() {
 		droitewas = false;
@@ -98,10 +98,10 @@ public class Controleur {
 	}
 
 	/**
-	 * Méthode qui effectue de nombreux calculs afin de renvoyer un caractere
-	 * représentant l'action à effectuer voulue par le joueur.
+	 * Mï¿½thode qui effectue de nombreux calculs afin de renvoyer un caractere
+	 * reprï¿½sentant l'action ï¿½ effectuer voulue par le joueur.
 	 * 
-	 * @return Caractere représentant l'action à effectuer voulue par le joueur.
+	 * @return Caractere reprï¿½sentant l'action ï¿½ effectuer voulue par le joueur.
 	 */
 	public char getDirection() {
 
@@ -154,12 +154,12 @@ public class Controleur {
 	}
 
 	/**
-	 * Méthode appelée par {@link Coeur#FENETRE} quand une touche est enfoncée.
+	 * Mï¿½thode appelï¿½e par {@link Coeur#FENETRE} quand une touche est enfoncï¿½e.
 	 * 
 	 * Si la partie est en tour par tour elle effectue un tick.
 	 * 
 	 * @param e
-	 *            La touche enfoncée.
+	 *            La touche enfoncï¿½e.
 	 */
 	public void keyPressed(KeyEvent e) {
 		if (!Partie.IA && !Partie.lecture) {
@@ -198,7 +198,7 @@ public class Controleur {
 	}
 
 	/**
-	 * Méthode appelée par {@link Coeur#FENETRE} quand une touche est relachêe.
+	 * Mï¿½thode appelï¿½e par {@link Coeur#FENETRE} quand une touche est relachï¿½e.
 	 * 
 	 * @param e
 	 */
@@ -224,8 +224,8 @@ public class Controleur {
 	}
 
 	/**
-	 * Méthode appelée par {@link Controleur#getDirection()} permettant de
-	 * réinitialiser les entiers servant connaitre la touche enfoncée en
+	 * Mï¿½thode appelï¿½e par {@link Controleur#getDirection()} permettant de
+	 * rï¿½initialiser les entiers servant connaitre la touche enfoncï¿½e en
 	 * dernier.
 	 */
 	private void resetMax() {
@@ -250,8 +250,8 @@ public class Controleur {
 
 	/**
 	 * 
-	 * Méthode qui retourne la valeur du plus grand entiers parmis les entiers
-	 * servant connaitre la touche enfoncée en dernier.
+	 * Mï¿½thode qui retourne la valeur du plus grand entiers parmis les entiers
+	 * servant connaitre la touche enfoncï¿½e en dernier.
 	 *
 	 * @return La valeur du plus grand entier.
 	 */
@@ -278,10 +278,10 @@ public class Controleur {
 
 	/**
 	 * 
-	 * Méthode qui retourne la valeur du deuxième plus grand entiers parmis les
-	 * entiers servant connaitre la touche enfoncée en dernier.
+	 * Mï¿½thode qui retourne la valeur du deuxiï¿½me plus grand entiers parmis les
+	 * entiers servant connaitre la touche enfoncï¿½e en dernier.
 	 *
-	 * @return La valeur du deuxième plus grand entier.
+	 * @return La valeur du deuxiï¿½me plus grand entier.
 	 */
 	private char get2eme() {
 		int max = getMax();

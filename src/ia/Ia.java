@@ -13,18 +13,6 @@ public abstract class Ia {
 		}
 		return tick(map);
 	}
-	
-	public char directionController(Entitee[][] map, char c) {
-		if (reset) {
-			initialiserTry();
-			reset = false;
-		}
-		return tickController(map, c);
-	}
-
-	private char tickController(Entitee[][] map, char c) {
-		return c;
-	}
 
 	public abstract char tick(Entitee[][] map);
 
@@ -36,7 +24,6 @@ public abstract class Ia {
 
 	public static char directionRandom() {
 		int random = 1 + (int) (Math.random() * 5);
-
 		switch (random) {
 		case 1:
 			return 'h';

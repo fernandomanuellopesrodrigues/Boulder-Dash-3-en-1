@@ -57,7 +57,6 @@ public class Pierre extends Tickable {
 			exploser(false);
 			return 0;
 		} else if (entitee.is(Amibe)) {
-			exploser(true);
 			return 0;
 		} else if (entitee.is(Explosion)) {
 			exploser(false);

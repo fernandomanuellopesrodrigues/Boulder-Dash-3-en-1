@@ -129,7 +129,7 @@ public class IaDirective extends Ia {
 				bloquer = true;
 			}
 		} else {
-			if (niveau.getSortie() != null){
+			if (niveau.getSortie() != null) {
 				chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()],
 						graphe[niveau.getSortie().getX()][niveau.getSortie().getY()]);
 			}
@@ -148,84 +148,10 @@ public class IaDirective extends Ia {
 				direction = 'b';
 			}
 		} else {
-			int rng = (int) (Math.random() * 5);
-			if (rng == 1) {
-				direction = 'h';
-			} else if (rng == 2) {
-				direction = 'b';
-			} else if (rng == 3) {
-				direction = 'd';
-			} else if (rng == 4) {
-				direction = 'g';
-			} else {
-				direction = ' ';
-			}
+			direction = Ia.directionRandom();
 		}
 
 		return direction;
-	}
-
-	public char tickController(Entitee[][] map, char c) {
-		Niveau niveau = Partie.gererNiveau.getNiveau();
-		graphe = new Noeud[map.length][map[0].length];
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				graphe[i][j] = new Noeud(map[i][j]);
-			}
-		}
-		bloquer = false;
-		char direction;
-
-		graphe = new Noeud[map.length][map[0].length];
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				graphe[i][j] = new Noeud(map[i][j]);
-			}
-		}
-		if (niveau.getSortie() != null && !niveau.getSortie().isOuvert()) {
-			Noeud diamant = diamantLePlusProche(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()]);
-			if (diamant != null) {
-				chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()], diamant);
-				if (chemin == null || chemin.isEmpty())
-					bloquer = true;
-			} else {
-				bloquer = true;
-			}
-		} else {
-			if (niveau.getSortie() != null){
-				chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()],
-						graphe[niveau.getSortie().getX()][niveau.getSortie().getY()]);
-			}
-			if (chemin == null || chemin.isEmpty())
-				bloquer = true;
-		}
-
-		if (!bloquer) {
-			if (niveau.getRockford().getX() > chemin.peek().getX())
-				direction = 'g';
-			else if (niveau.getRockford().getX() < chemin.peek().getX())
-				direction = 'd';
-			else if (niveau.getRockford().getY() > chemin.peek().getY())
-				direction = 'h';
-			else {
-				direction = 'b';
-			}
-		} else {
-			int rng = (int) (Math.random() * 5);
-			if (rng == 1) {
-				direction = 'h';
-			} else if (rng == 2) {
-				direction = 'b';
-			} else if (rng == 3) {
-				direction = 'd';
-			} else if (rng == 4) {
-				direction = 'g';
-			} else {
-				direction = ' ';
-			}
-		}
-
-		return c;
 	}
 
 	@Override

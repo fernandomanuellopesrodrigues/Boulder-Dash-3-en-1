@@ -85,7 +85,7 @@ public class GererNiveau {
 			return true;
 		}
 	}
-	
+
 	public boolean tickIaDirevol(Ia ia) {
 		if (!finiSuccess) {
 			compteurTicks++;
@@ -110,11 +110,11 @@ public class GererNiveau {
 			return true;
 		}
 	}
-	
+
 	public boolean tickIaController(Ia ia, char c) {
 		if (!finiSuccess) {
 			compteurTicks++;
-			toucheClavier = ia.directionController(niveau.getMap(), c);
+			toucheClavier = c;
 			trajet += c;
 
 			if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
@@ -203,6 +203,7 @@ public class GererNiveau {
 		long temps = System.currentTimeMillis();
 		if (temps - tempsAuDebut > tempsTotal * 1000) {
 			demandeReset = true;
+			niveau.getRockford().mourir();
 		}
 		tempsRestant = (int) (tempsTotal - ((temps - tempsAuDebut) / 1000));
 	}
@@ -261,6 +262,7 @@ public class GererNiveau {
 	}
 
 	public void incrementerNbDiamants(Diamant d) {
+		d.getSons().jouerSon3("explosionDiamant.wav", 1);
 		listeDiamants.add(new Paire<Integer, Long>(compteurTicks, d.getId()));
 		nbDiamants++;
 	}

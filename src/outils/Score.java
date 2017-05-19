@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entitees.abstraites.Entitee;
-
+import ia.IaEvolue;
+import main.Partie;
 
 /**
  * Classe servant � comparer et enregistrer un essai d'un niveau.
@@ -48,12 +49,12 @@ public class Score implements Comparable<Score> {
 	 * Constructeur Score.
 	 * 
 	 * @param score
-	 *            Entier repr�sentant le score obtenu dans cet essai.
+	 *            Entier représentant le score obtenu dans cet essai.
 	 * @param parcours
-	 *            String repr�sentant le chemin pris lors de cet essai.
+	 *            Entier représentant le nombre de tours durant l'essai.
 	 * @param listeDiamants
-	 *            Liste des diamants obtenus lors de cet essai, la cl� est le
-	 *            tick durant lequel le diamant a �t� attrap�.
+	 *            Liste des diamants obtenus lors de cet essai, la clé est le
+	 *            tick durant lequel le diamant a été attrapé.
 	 */
 	public Score(int score, int parcours, List<Paire<Integer, Long>> listeDiamants) {
 		this.score = score;
@@ -74,9 +75,13 @@ public class Score implements Comparable<Score> {
 		}
 		int score1 = 0;
 		int score2 = 0;
-		score1 += (listeDiamants.size()*100);
-		score2 += (o.listeDiamants.size()*100);
-
+		if (Partie.ia instanceof IaEvolue) {
+			score1 += (listeDiamants.size() * 10) + (chemin.length() - parcours) / 1.5;
+			score2 += (o.listeDiamants.size() * 10) + (o.chemin.length() - o.parcours) / 1.5;
+		} else {
+			score1 += (listeDiamants.size() * 100) + (chemin.length() - parcours) / 30;
+			score2 += (o.listeDiamants.size() * 100) + (chemin.length() - parcours) / 30;
+		}
 		if (score2 > score1) {
 			return 1;
 		} else if (score2 < score1) {
@@ -84,18 +89,14 @@ public class Score implements Comparable<Score> {
 		} else {
 			return 0;
 		}
-		/*
-		 * if (o.getScore() > getScore()) { return 1; } else if (getScore() >
-		 * o.getScore()) { return -1; } else { if(o.moyenne2() > moyenne2()){
-		 * return -1; }else if(moyenne2() > o.moyenne2()){ return 1; }else{ if
-		 * (o.getParcours() > getParcours()) { return 1; } else if
-		 * (getParcours() > o.getParcours()) { return -1; } else { return 0; } }
-		 * 
-		 * }
-		 */
 	}
 
-	public float moyenne2() {
+	/**
+	 * Renvoie la moyenne des objets dans la liste {@link Score#listeDiamants}.
+	 * 
+	 * @return La moyenne.
+	 */
+	public float moyenne() {
 		int somme = 0;
 		if (!listeDiamants.isEmpty()) {
 			somme = listeDiamants.get(0).getLeft();
@@ -107,22 +108,6 @@ public class Score implements Comparable<Score> {
 			return 10000;
 		}
 		return somme / (listeDiamants.size());
-	}
-
-	/**
-	 * Renvoie la moyenne des objets dans la liste {@link Score#listeDiamants}.
-	 * 
-	 * @return La moyenne.
-	 */
-	public float moyenne() {
-		int somme = 0;
-		for (Paire<Integer, Long> p : listeDiamants) {
-			somme += p.getLeft();
-		}
-		if (listeDiamants.isEmpty()) {
-			return 10000;
-		}
-		return somme / (listeDiamants.size() + 1);
 	}
 
 	/**
@@ -152,6 +137,7 @@ public class Score implements Comparable<Score> {
 	public List<Paire<Integer, Long>> getListeDiamants() {
 		return listeDiamants;
 	}
+
 	public Entitee[][] getMapFinParcours() {
 		return mapFinParcours;
 	}
