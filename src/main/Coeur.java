@@ -71,7 +71,6 @@ public class Coeur {
 	 * ceux-ci sont absurdes. (Oui 120 FPS pour ce jeu c'est d�j� absurde.)
 	 */
 	static {
-		System.out.println("wesh");
 		if (Constantes.FPS >= 1 && Constantes.FPS <= 120)
 			FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / Constantes.FPS, TimeUnit.MILLISECONDS);
 		else
