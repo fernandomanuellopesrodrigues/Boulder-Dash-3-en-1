@@ -17,7 +17,7 @@ public class EnsembleDeSprites {
     /**
      * La liste qui stock les sprites.
      */
-    private List<Paire<Integer, List<Image>>> sprites = new ArrayList<Paire<Integer, List<Image>>>();
+    private final List<Paire<Integer, List<Image>>> sprites = new ArrayList<Paire<Integer, List<Image>>>();
 
     /**
      * M�thode qui ajoute un objet � la liste.

@@ -18,7 +18,7 @@ import static entitees.abstraites.Entitee.Entitees.Vide;
 
 public class Pierre extends Tickable {
 
-    private List<Entitees> deplacementsPossiblesChute = new ArrayList<Entitees>();
+    private final List<Entitees> deplacementsPossiblesChute = new ArrayList<Entitees>();
 
     public Pierre(int x, int y) {
         super(x, y);
@@ -33,6 +33,7 @@ public class Pierre extends Tickable {
         enumeration = Pierre;
     }
 
+    @Override
     public void tick() {
         if (!bloque || chute) {
             gererChute();
@@ -67,6 +68,7 @@ public class Pierre extends Tickable {
 
     }
 
+    @Override
     protected void exploser(boolean popDiamants) {
         sons.jouerSon1("explosion.wav", 1);
         for (int i = -1; i < 2; i++) {
@@ -76,8 +78,9 @@ public class Pierre extends Tickable {
         }
     }
 
+    @Override
     protected void bloquer() {
-        bloque = !(placeLibreChute(getX(), getY() + 1));
+        bloque = !placeLibreChute(getX(), getY() + 1);
     }
 
     protected boolean placeLibreChute(int x, int y) {

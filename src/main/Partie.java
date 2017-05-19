@@ -17,6 +17,7 @@ import ia.IaRandom;
 import loader.EnsembleDeNiveaux;
 import loader.Loader;
 import menu.SousMenu;
+import outils.Ecrivain;
 import outils.Paire;
 import outils.Score;
 import outils.SonToolKit;
@@ -129,7 +130,7 @@ public class Partie {
         }
 
         if (ia != null) {
-            while (!gererNiveau.tickIa(ia)) { ; }
+            while (!gererNiveau.tickIa(ia)) { }
         }
 
         Score score = new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks(), gererNiveau.getListeDiamants());
@@ -141,7 +142,7 @@ public class Partie {
     public static Score calculerStrategieEvolue(String strategie, int nbGenerations, String cheminFichierBDCFF,
                                                 int niveau) {
         IA = true;
-        Partie.cheminFichier = cheminFichierBDCFF;
+        cheminFichier = cheminFichierBDCFF;
         ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
         Partie.niveau = niveau;
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
@@ -207,6 +208,7 @@ public class Partie {
         Coeur.running = true;
         if (Coeur.graphique) {
             Thread t = new Thread() {
+                @Override
                 public void run() {
                     while (true) {
                         if (Coeur.running) {
@@ -267,9 +269,9 @@ public class Partie {
         String essai = "Trajet : " + trajet + "\nScore : " + gererNiveau.getScore() + "     Diamants : "
                        + gererNiveau.getNbDiamants() + "      Temps : ";
         if (gererNiveau.isTourParTour() || IA) {
-            essai += (gererNiveau.getCompteurTicks() + " tours\n");
+            essai += gererNiveau.getCompteurTicks() + " tours\n";
         } else {
-            essai += (((double) gererNiveau.getCompteurTicks()) / ((double) gererNiveau.getNiveau().getCaveDelay()))
+            essai += (double) gererNiveau.getCompteurTicks() / (double) gererNiveau.getNiveau().getCaveDelay()
                      + " secondes\n";
         }
 
@@ -281,7 +283,7 @@ public class Partie {
         }
         chemin += dateDebut + "/";
 
-        outils.Ecrivain.ecrire(essai, "Niveau_" + niveau + ".dash", chemin);
+        Ecrivain.ecrire(essai, "Niveau_" + niveau + ".dash", chemin);
         return chemin + "Niveau_" + niveau + ".dash";
     }
 }

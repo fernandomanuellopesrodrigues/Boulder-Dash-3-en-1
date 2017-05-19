@@ -39,7 +39,12 @@ public class Controleur {
     /**
      * Entiers représentants les touches du clavier qui servent à jouer.
      */
-    private int toucheHaut, toucheBas, toucheGauche, toucheDroite, touchePierre, toucheBombe;
+    private final int toucheHaut;
+    private final int toucheBas;
+    private final int toucheGauche;
+    private final int toucheDroite;
+    private final int touchePierre;
+    private final int toucheBombe;
 
     /**
      * Constructeur qui initialise quelles touches du clavier servent à jouer.

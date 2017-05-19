@@ -19,7 +19,7 @@ public class TickTask implements Runnable {
      * Un compteur qui sert � compter le nombre de ticks (tours) par secondes en
      * temps r�el.
      */
-    public static double compteur1 = 0;
+    public static double compteur1;
 
     /**
      * Un compteur qui sert � compter le nombre de ticks (tours) par secondes en
@@ -31,7 +31,7 @@ public class TickTask implements Runnable {
      * Un compteur qui sert � compter le nombre de ticks (tours) par secondes en
      * temps r�el.
      */
-    public static int compteur3 = 0;
+    public static int compteur3;
 
     /**
      * La m�thode que l'objet {@link Coeur#tickTask} appelle un certain nombre
@@ -40,6 +40,7 @@ public class TickTask implements Runnable {
      * {@link Coeur#running} est vrai et que le jeu est en mode temps r�el.
      * Elle effectue �galement un repaint qui est utile dans certains cas.
      */
+    @Override
     public void run() {
         if (Coeur.running && !Partie.gererNiveau.isTourParTour()) {
             try {

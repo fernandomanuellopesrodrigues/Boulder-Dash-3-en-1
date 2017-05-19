@@ -119,7 +119,7 @@ public class SousMenu {
 
         System.out.println("\nIA : " + strategie1);
         for (int i = 0; i < nombrePartie; i++) {
-            System.out.println("\n\nPartie " + (i + 1) + "/" + (nombrePartie) + "\n");
+            System.out.println("\n\nPartie " + (i + 1) + "/" + nombrePartie + "\n");
             Score s;
             if (strategie1.equals("-direvol") || strategie1.equals("-evolue")) {
                 s = Partie.calculerStrategieEvolue(strategie1, nbGenerations, cheminFichierBDCFF, niveau);
@@ -131,7 +131,7 @@ public class SousMenu {
         }
         System.out.println("\n\nIA : " + strategie2);
         for (int i = 0; i < nombrePartie; i++) {
-            System.out.println("\n\nPartie " + ((i + 1) + "/" + (nombrePartie)) + "\n");
+            System.out.println("\n\nPartie " + ((i + 1) + "/" + nombrePartie) + "\n");
             Score s;
             if (strategie2.equals("-direvol") || strategie2.equals("-evolue")) {
                 s = Partie.calculerStrategieEvolue(strategie2, nbGenerations, cheminFichierBDCFF, niveau);
@@ -150,13 +150,13 @@ public class SousMenu {
         System.out.println("\n" + strategie1 + " :\nDistance Moyenne : " + longueurMoyenne1);
         System.out.println("Score Moyen : " + scoreMoyen1);
         System.out.println("Temps Moyen : "
-                           + longueurMoyenne1 * (Partie.gererNiveau.getNiveau().getCave_time()) / 1000.0 +
+                           + longueurMoyenne1 * Partie.gererNiveau.getNiveau().getCave_time() / 1000.0 +
                            " secondes.\n");
 
         System.out.println(strategie2 + " :\nDistance Moyenne : " + longueurMoyenne2);
         System.out.println("Score Moyen : " + scoreMoyen2);
         System.out.println("Temps Moyen : "
-                           + longueurMoyenne2 * (Partie.gererNiveau.getNiveau().getCave_time()) / 1000.0 +
+                           + longueurMoyenne2 * Partie.gererNiveau.getNiveau().getCave_time() / 1000.0 +
                            " secondes.");
         System.exit(1);
     }
@@ -175,7 +175,7 @@ public class SousMenu {
                 Coeur.graphique = true;
                 Coeur.FENETRE.setVisible(true);
                 Coeur.tempsReel = true;
-                SousMenu.rejouerNiveau(fichier, Partie.cheminFichier, Partie.niveau);
+                rejouerNiveau(fichier, Partie.cheminFichier, Partie.niveau);
             }
         }
     }

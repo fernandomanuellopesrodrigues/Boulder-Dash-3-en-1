@@ -43,7 +43,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
      * Les éléments de cette liste représentent quels types d'élément notre
      * objet peut se déplacer.
      */
-    private List<Entitees> deplacementsPossibles = new ArrayList<Entitees>();
+    private final List<Entitees> deplacementsPossibles = new ArrayList<Entitees>();
     /**
      * Booleen servant à définir si lors d'un tour de boucle
      * {@link GererNiveau#tick()} l'objet à déjà fait son action.
@@ -147,8 +147,8 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
             direction = 'b';
             seDeplacer();
         } else if (Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, Vide)
-                   || (Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, MurMagique)
-                       && Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 2, Vide))) {
+                   || Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, MurMagique)
+                      && Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 2, Vide)) {
 
             chute = true;
             gererChute();
@@ -259,6 +259,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
                    || placeLibre(getX() - 1, getY()));
     }
 
+    @Override
     public int compareTo(Tickable t) {
         return t.getNumeroPriorite() - getNumeroPriorite();
     }

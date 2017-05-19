@@ -21,7 +21,9 @@ public class SonToolKit {
     /**
      * Objets qui jouent les sons.
      */
-    private Sons sons1 = new Sons(), sons2 = new Sons(), sons3 = new Sons();
+    private final Sons sons1 = new Sons();
+    private final Sons sons2 = new Sons();
+    private final Sons sons3 = new Sons();
 
     /**
      * Cette méthode lance la méthode {@link Sons#jouer(String)} qui permet de

@@ -18,7 +18,7 @@ public class IaDirective extends Ia {
 
     private Noeud[][]    graphe;
     private Stack<Noeud> chemin;
-    private boolean bloquer = false;
+    private boolean bloquer;
 
     private Noeud diamantLePlusProche(Noeud depart) {
         LinkedList<Noeud> file = new LinkedList<Noeud>();
@@ -59,7 +59,7 @@ public class IaDirective extends Ia {
             }
             Set<Noeud> voisins = VoisinsNoeud(u);
             for (Noeud v : voisins) {
-                if (!((openList.contains(v) && v.getCout() < u.getCout() + 1) || closedList.contains(v))) {
+                if (!(openList.contains(v) && v.getCout() < u.getCout() + 1 || closedList.contains(v))) {
                     v.setPere(u);
                     v.setCout(u.getCout() + 1);
                     v.setHeuristique(

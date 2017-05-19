@@ -28,9 +28,9 @@ public abstract class Ennemi extends Tickable {
 
     @Override
     protected int contactAutreEntitee(Entitee entitee) {
-        if (entitee.getEnumeration() == (Rockford)) {
+        if (entitee.getEnumeration() == Rockford) {
             entitee.mourir();
-        } else if (entitee.getEnumeration() == (Amibe)) {
+        } else if (entitee.getEnumeration() == Amibe) {
             if (getClass().equals(Luciole.class)) { exploser(false); } else { exploser(true); }
             return 0;
         }
@@ -132,9 +132,9 @@ public abstract class Ennemi extends Tickable {
         if (!(isDroiteLibre() && isDerriereLibre() & isGaucheLibre() && isToutDroitLibre())) {
             return false;
         }
-        return (placeLibre(getX() + 1, getY() + 1)
-                && placeLibre(getX() - 1, getY() + 1) & placeLibre(getX() + 1, getY() - 1)
-                && placeLibre(getX() - 1, getY() - 1));
+        return placeLibre(getX() + 1, getY() + 1)
+               && placeLibre(getX() - 1, getY() + 1) & placeLibre(getX() + 1, getY() - 1)
+               && placeLibre(getX() - 1, getY() - 1);
     }
 
     /**

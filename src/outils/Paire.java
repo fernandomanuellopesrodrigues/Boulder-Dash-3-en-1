@@ -13,12 +13,12 @@ public class Paire<L, R> {
     /**
      * Objet 1.
      */
-    private L left;
+    private final L left;
 
     /**
      * Objet 2.
      */
-    private R right;
+    private final R right;
 
     /**
      * Constructeur Paire.

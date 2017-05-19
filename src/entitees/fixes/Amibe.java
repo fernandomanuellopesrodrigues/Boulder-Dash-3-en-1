@@ -39,7 +39,7 @@ public class Amibe extends Entitee {
                                                                                                       points.get(
                                                                                                         rng).y);
             Partie.gererNiveau.ajouterAmibe(
-              ((Amibe) Partie.gererNiveau.getNiveau().getMap()[points.get(rng).x][points.get(rng).y]));
+              (Amibe) Partie.gererNiveau.getNiveau().getMap()[points.get(rng).x][points.get(rng).y]);
             checkDetruireAmibes();
             return true;
         } else {
@@ -73,16 +73,14 @@ public class Amibe extends Entitee {
         Partie.gererNiveau.getListeAmibesAjout().clear();
     }
 
+    @Override
     public boolean mourir() {
         Partie.gererNiveau.getListeAmibes().remove(this);
         return super.mourir();
     }
 
     private boolean placeLibre(int x, int y) {
-        if (Partie.gererNiveau.getNiveau().getMap()[x][y].getClass().equals(Vide.class)
-            || Partie.gererNiveau.getNiveau().getMap()[x][y].getClass().equals(Poussiere.class)) {
-            return true;
-        }
-        return false;
+        return Partie.gererNiveau.getNiveau().getMap()[x][y].getClass().equals(Vide.class)
+               || Partie.gererNiveau.getNiveau().getMap()[x][y].getClass().equals(Poussiere.class);
     }
 }

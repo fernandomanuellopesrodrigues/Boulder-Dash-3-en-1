@@ -13,14 +13,14 @@ import static main.Constantes.NOMBRE_DE_TRY_GENERATION;
 
 public class IaEvolue extends Ia {
 
-    private List<Score> liste = new ArrayList<>();
-    private Score scoreActuel;
-    private int   nbGenerations;
-    private int         generationActuelle = 1;
-    private int         trysDeGeneration   = NOMBRE_DE_TRY_GENERATION;
-    private List<Score> liste2             = new ArrayList<>();
-    private double tailleCheminMaximale;
-    private int    nbObjectifs;
+    private final List<Score> liste = new ArrayList<>();
+    private       Score scoreActuel;
+    private final int   nbGenerations;
+    private       int         generationActuelle = 1;
+    private       int         trysDeGeneration   = NOMBRE_DE_TRY_GENERATION;
+    private final List<Score> liste2             = new ArrayList<>();
+    private final double tailleCheminMaximale;
+    private final int    nbObjectifs;
 
     public IaEvolue(int nbGenerations) {
         this.nbGenerations = nbGenerations;
@@ -30,7 +30,7 @@ public class IaEvolue extends Ia {
         for (int i = 0; i < NOMBRE_DE_TRY_GENERATION; i++) {
             Partie.finiEvolution = false;
             String chemin = "";
-            for (int j = 0; j < (tailleCheminMaximale); j++) {
+            for (int j = 0; j < tailleCheminMaximale; j++) {
                 chemin += Ia.directionRandom();
             }
             Score s;
@@ -68,15 +68,15 @@ public class IaEvolue extends Ia {
         while (!critereArret()) {
             System.out.println("Génération " + generationActuelle + "/" + nbGenerations);
             generationActuelle++;
-            for (int i = 0; i < (Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS)
+            for (int i = 0; i < NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS
                                 / 100; i++) {
                 liste2.add(liste.get(i));
             }
-            for (int i = 0; i < (Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE)
+            for (int i = 0; i < NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE
                                 / 100; i++) {
                 Partie.finiEvolution = false;
                 String chemin = "";
-                for (int j = 0; j < (tailleCheminMaximale); j++) {
+                for (int j = 0; j < tailleCheminMaximale; j++) {
                     chemin += Ia.directionRandom();
                 }
                 Score s;
@@ -84,13 +84,13 @@ public class IaEvolue extends Ia {
                 liste2.add(s);
             }
             for (int i = 0;
-                 i < (Constantes.NOMBRE_DE_TRY_GENERATION
-                      - ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS) / 100)
-                      - ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE) / 100));
+                 i < NOMBRE_DE_TRY_GENERATION
+                     - NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS / 100
+                     - NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE / 100;
                  i++) {
 
                 int rng = (int) (Math.random()
-                                 * (Constantes.POURCENTAGE_DES_SELECTIONNES * Constantes.NOMBRE_DE_TRY_GENERATION) /
+                                 * (Constantes.POURCENTAGE_DES_SELECTIONNES * NOMBRE_DE_TRY_GENERATION) /
                                  100.0);
                 Score s = liste.get(rng);
 
@@ -120,11 +120,7 @@ public class IaEvolue extends Ia {
     }
 
     public boolean critereArret() {
-        if (generationActuelle > nbGenerations) {
-            return true;
-        } else {
-            return false;
-        }
+        return generationActuelle > nbGenerations;
     }
 
     public Score ajouterScore() {

@@ -63,6 +63,7 @@ public class ControleurConsole {
 
         try {
             Thread t = new Thread() {
+                @Override
                 public void run() {
                     while (true) {
                         if (Coeur.running) {

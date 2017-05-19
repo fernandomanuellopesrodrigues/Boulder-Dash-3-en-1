@@ -48,12 +48,12 @@ public class GraphiqueConsole {
 		/*
 		 * Concat�ne diverses informations.
 		 */
-        s += ("Diamants : " + Partie.gererNiveau.getNbDiamants() + "/"
-              + Partie.gererNiveau.getNiveau().getDiamonds_required() + "\n");
+        s += "Diamants : " + Partie.gererNiveau.getNbDiamants() + "/"
+             + Partie.gererNiveau.getNiveau().getDiamonds_required() + "\n";
         s += "Score : " + Partie.gererNiveau.getScore() + "			Temps restant : "
              + Partie.gererNiveau.getTempsRestant() + " 		";
         s += "Niveau : " + Partie.niveau + "/" + Partie.ensembleDeNiveau.getNombre_de_niveaux() + "\n";
-        s += "Points/diamant : " + (Partie.gererNiveau.getNiveau().getDiamond_value()) + "	  (diamants bonus) : "
+        s += "Points/diamant : " + Partie.gererNiveau.getNiveau().getDiamond_value() + "	  (diamants bonus) : "
              + Partie.gererNiveau.getNiveau().getDiamond_value_bonus();
         s += "\n\n";
 

@@ -49,17 +49,17 @@ public class Coeur {
      * Si le programme calcule une strat�gie ou alors qu'il est en train
      * d'effectuer un changement de niveau il est en faux.
      */
-    public static boolean running = false;
+    public static boolean running;
 
     /**
      * Bool�an d�finissant si une partie est en mode temps graphique ou console.
      */
-    public static boolean graphique = false;
+    public static boolean graphique;
 
     /**
      * Bool�an d�finissant si une partie est en mode temps r�el.
      */
-    public static boolean tempsReel = false;
+    public static boolean tempsReel;
 
     /**
      * On initialsie l'objet qui effectue des FPS tout en limitant les FPS si

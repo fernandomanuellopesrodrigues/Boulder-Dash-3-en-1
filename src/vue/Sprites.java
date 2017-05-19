@@ -204,13 +204,13 @@ public class Sprites {
         if (Partie.gererNiveau.getTicks() < 2) {
             changerDirectionSpriteRockford(' ');
         } else if (rockford.getDirection() == ' '
-                   && compteurFPS % ((VITESSE_ANIM_ROCKFORD < FPS) ? FPS / (VITESSE_ANIM_ROCKFORD) : 1) == 0) {
+                   && compteurFPS % (VITESSE_ANIM_ROCKFORD < FPS ? FPS / VITESSE_ANIM_ROCKFORD : 1) == 0) {
             changerDirectionSpriteRockford(' ');
         } else if (rockford.getDirection() != ' '
                    &&
-                   compteurFPS % (((VITESSE_ANIM_ROCKFORD * 2) < FPS) ? FPS / (VITESSE_ANIM_ROCKFORD * 2) : 1) == 0) {
+                   compteurFPS % (VITESSE_ANIM_ROCKFORD * 2 < FPS ? FPS / (VITESSE_ANIM_ROCKFORD * 2) : 1) == 0) {
             if (rockford.getDirection() == 'd'
-                || (rockford.getDirection() != 'g' && rockford.getAncienneDirection() == 'd')) {
+                || rockford.getDirection() != 'g' && rockford.getAncienneDirection() == 'd') {
                 rockford.setAncienneDirection('d');
                 changerDirectionSpriteRockford('d');
             } else if (rockford.getDirection() == 'g' || rockford.getAncienneDirection() == 'g') {
@@ -258,7 +258,7 @@ public class Sprites {
             try {
                 File f = new File(cheminDossier + "/" + fileEntry.getName());
 
-                CHARGEMENT_SPRITES.put(fileEntry.getName(), (ImageIO.read(f)));
+                CHARGEMENT_SPRITES.put(fileEntry.getName(), ImageIO.read(f));
                 compteur++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -291,7 +291,7 @@ public class Sprites {
      * mettre le sprite du mur en titane.
      */
     public static void cacherSortie() {
-        Sprites.SPRITES_SORTIE.set(0, CHARGEMENT_SPRITES.get("titane.png"));
+        SPRITES_SORTIE.set(0, CHARGEMENT_SPRITES.get("titane.png"));
     }
 
     /**
@@ -299,7 +299,7 @@ public class Sprites {
      * mettre le sprite de la sortie.
      */
     public static void devoilerSortie() {
-        Sprites.SPRITES_SORTIE.set(0, CHARGEMENT_SPRITES.get("sortie.png"));
+        SPRITES_SORTIE.set(0, CHARGEMENT_SPRITES.get("sortie.png"));
     }
 
     /**

@@ -19,12 +19,12 @@ public class Score implements Comparable<Score> {
     /**
      * Entier repr�sentant le score obtenu dans cet essai.
      */
-    private int score;
+    private final int score;
 
     /**
      * Entier repr�sentant le nombre de tours durant l'essai.
      */
-    private int parcours;
+    private final int parcours;
 
     /**
      * String repr�sentant le chemin pris lors de cet essai.
@@ -71,11 +71,11 @@ public class Score implements Comparable<Score> {
         int score1 = 0;
         int score2 = 0;
         if (Partie.ia instanceof IaEvolue) {
-            score1 += (listeDiamants.size() * 10) + (chemin.length() - parcours) / 1.5;
-            score2 += (o.listeDiamants.size() * 10) + (o.chemin.length() - o.parcours) / 1.5;
+            score1 += listeDiamants.size() * 10 + (chemin.length() - parcours) / 1.5;
+            score2 += o.listeDiamants.size() * 10 + (o.chemin.length() - o.parcours) / 1.5;
         } else {
-            score1 += (listeDiamants.size() * 100) + (chemin.length() - parcours) / 30;
-            score2 += (o.listeDiamants.size() * 100) + (chemin.length() - parcours) / 30;
+            score1 += listeDiamants.size() * 100 + (chemin.length() - parcours) / 30;
+            score2 += o.listeDiamants.size() * 100 + (chemin.length() - parcours) / 30;
         }
         if (score2 > score1) {
             return 1;
@@ -97,12 +97,12 @@ public class Score implements Comparable<Score> {
             somme = listeDiamants.get(0).getLeft();
         }
         for (int i = 1; i < listeDiamants.size(); i++) {
-            somme += (listeDiamants.get(i).getLeft() - listeDiamants.get(i - 1).getLeft());
+            somme += listeDiamants.get(i).getLeft() - listeDiamants.get(i - 1).getLeft();
         }
         if (listeDiamants.isEmpty()) {
             return 10000;
         }
-        return somme / (listeDiamants.size());
+        return somme / listeDiamants.size();
     }
 
     /**

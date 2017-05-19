@@ -27,7 +27,7 @@ public class Niveau implements Cloneable {
      * Entier stockant le nombre de tours par secondes qu'il doit y avoir dans
      * ce niveau ci celui-ci est en mode temps r�el.
      */
-    private int caveDelay;
+    private final int caveDelay;
 
     /**
      * Entier stockant le temps maximum pour finir le niveau.
@@ -37,35 +37,35 @@ public class Niveau implements Cloneable {
     /**
      * Entier stockant le nombre de diamants requis pour finir le niveau.
      */
-    private int diamonds_required;
+    private final int diamonds_required;
 
     /**
      * Entier stockant la valeur en score des diamants dans ce niveau.
      */
-    private int diamond_value;
+    private final int diamond_value;
 
     /**
      * Entier stockant la valeur en score des diamants bonus dans ce niveau.
      */
-    private int diamond_value_bonus;
+    private final int diamond_value_bonus;
 
     /**
      * Entier stockant le nombre de tours entre chaque agrandissement de l'amibe
      * dans ce niveau.
      */
-    private int amoeba_time;
+    private final int amoeba_time;
 
     /**
      * Entier stockant le nombre d'utilisations max d'un mur magique dans ce
      * niveau.
      */
-    private int magic_wall_time;
+    private final int magic_wall_time;
 
     /**
      * Tableau � deux dimensions d'entit�es servant � repr�senter la r�partition
      * des divers �l�ments du niveau dans l'espace.
      */
-    private Entitee[][] map;
+    private final Entitee[][] map;
 
     /**
      * Le rockford du niveau, sert pour y stocker Rockford et ainsi y avoir
@@ -144,11 +144,7 @@ public class Niveau implements Cloneable {
         if (x > map.length - 1 || x < 0 || y < 0 || y > map[0].length - 1) {
             return false;
         }
-        if (map[x][y].getEnumeration().equals(enumeration)) {
-            return true;
-        } else {
-            return false;
-        }
+        return map[x][y].getEnumeration().equals(enumeration);
     }
 
     /**
@@ -161,8 +157,8 @@ public class Niveau implements Cloneable {
         List<Amibe> listeAmibes = new ArrayList<Amibe>();
         for (int i = 0; i < map.length; i++) {
             for (int j = map[i].length - 1; j >= 0; j--) {
-                if ((map[i][j]).getClass().equals(Amibe.class)) {
-                    listeAmibes.add(((Amibe) (map[i][j])));
+                if (map[i][j].getClass().equals(Amibe.class)) {
+                    listeAmibes.add((Amibe) map[i][j]);
                 }
             }
         }
@@ -188,6 +184,7 @@ public class Niveau implements Cloneable {
         return listeTickable;
     }
 
+    @Override
     public Niveau clone() {
         Entitee[][] newmap = new Entitee[map.length][map[0].length];
         for (int i = 0; i < map.length; i++) {

@@ -20,7 +20,7 @@ public class Noeud implements Comparable<Noeud> {
     /**
      * Le contenu du noeud.
      */
-    private Entitee entite;
+    private final Entitee entite;
 
     /**
      * Les coordon�es du Noeud.
@@ -40,7 +40,7 @@ public class Noeud implements Comparable<Noeud> {
     /**
      * La traversabilit� du noeud (utilis� en algorithmique de graphes).
      */
-    private boolean traversable;
+    private final boolean traversable;
 
     /**
      * Le noeud p�re (utilis� en algorithmique de graphes).
@@ -64,15 +64,12 @@ public class Noeud implements Comparable<Noeud> {
         this.y = entite.getY();
         this.cout = 0;
         this.heuristique = 0;
-        if (entite.getClass().equals(Diamant.class) || entite.getClass().equals(Vide.class)
-            || entite.getClass().equals(Poussiere.class)
-            || (entite.getClass().equals(Sortie.class) && ((Sortie) entite).isOuvert())) {
-            this.traversable = true;
-        } else {
-            this.traversable = false;
-        }
+        this.traversable = entite.getClass().equals(Diamant.class) || entite.getClass().equals(Vide.class)
+                           || entite.getClass().equals(Poussiere.class)
+                           || entite.getClass().equals(Sortie.class) && ((Sortie) entite).isOuvert();
     }
 
+    @Override
     public int compareTo(Noeud n) {
         if (heuristique > n.heuristique) {
             return 1;

@@ -52,6 +52,7 @@ public class Diamant extends Tickable {
         gererChute();
     }
 
+    @Override
     protected void exploser(boolean popDiamants) {
         sons.jouerSon1("explosion.wav", 1);
         for (int i = -1; i < 2; i++) {

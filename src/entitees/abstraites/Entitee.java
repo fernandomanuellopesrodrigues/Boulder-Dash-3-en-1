@@ -29,7 +29,7 @@ public abstract class Entitee implements Cloneable {
     /**
      * Id static permettant de mettre un identifiant différent à chaque entitée.
      */
-    public static long idTotal = 0;
+    public static long idTotal;
     /**
      * Outil permettant de jouer des sons.
      */
@@ -102,6 +102,7 @@ public abstract class Entitee implements Cloneable {
         return enumeration == e;
     }
 
+    @Override
     public Entitee clone() {
         if (getClass().equals(Mur.class)) {
             return new Mur(x, y);
@@ -246,7 +247,7 @@ public abstract class Entitee implements Cloneable {
         Rockford,
         Libellule,
         Luciole,
-        Bombe;
+        Bombe
     }
 
 }

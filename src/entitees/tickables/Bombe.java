@@ -31,6 +31,7 @@ public class Bombe extends Tickable {
         tempsRestantAvantExplosion--;
     }
 
+    @Override
     public boolean mourir() {
         if (tempsRestantAvantExplosion > 0) {
             tempsRestantAvantExplosion = -1;

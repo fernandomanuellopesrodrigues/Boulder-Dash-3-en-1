@@ -34,22 +34,22 @@ public class Fenetre extends JFrame implements KeyListener {
     /**
      * Constructeur Fenetre.
      * Elle ne prend pas de param�tres mais trouve les diff�rentes variables
-     * dans la classe {@link main.Constantes}.
+     * dans la classe {@link Constantes}.
      */
     public Fenetre() {
-        this.setTitle(Constantes.TITRE_FENETRE);
-        this.setSize(WIDTH_FENETRE, HEIGHT_FENETRE);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-        this.setResizable(true);
-        this.addKeyListener(this);
-        this.setVisible(false);
+        setTitle(Constantes.TITRE_FENETRE);
+        setSize(WIDTH_FENETRE, HEIGHT_FENETRE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(true);
+        addKeyListener(this);
+        setVisible(false);
     }
 
     /**
      * M�thode servant � rafraichir le titre de la fen�tre afin d'y inscrire le
      * nombre de frames par secondes et/ou le nombre de ticks par secondes en
-     * foncion des booleens de la classe {@link main.Constantes}.
+     * foncion des booleens de la classe {@link Constantes}.
      *
      * @param fps Le nombre de FPS.
      * @param tps Le nombre de TPS.
@@ -57,11 +57,11 @@ public class Fenetre extends JFrame implements KeyListener {
     public void setTitre() {
 
         if (Constantes.SYSOUT_FPS && Constantes.SYSOUT_TPS) {
-            this.setTitle("[" + fps + " FPS , " + tps + " TPS] " + Constantes.TITRE_FENETRE);
+            setTitle("[" + fps + " FPS , " + tps + " TPS] " + Constantes.TITRE_FENETRE);
         } else if (Constantes.SYSOUT_FPS) {
-            this.setTitle("[" + fps + " FPS] " + Constantes.TITRE_FENETRE);
+            setTitle("[" + fps + " FPS] " + Constantes.TITRE_FENETRE);
         } else if (Constantes.SYSOUT_TPS) {
-            this.setTitle("[" + tps + " TPS] " + Constantes.TITRE_FENETRE);
+            setTitle("[" + tps + " TPS] " + Constantes.TITRE_FENETRE);
         }
     }
 

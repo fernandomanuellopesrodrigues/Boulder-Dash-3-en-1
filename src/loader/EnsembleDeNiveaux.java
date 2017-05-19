@@ -14,8 +14,7 @@ public class EnsembleDeNiveaux {
     /**
      * La liste des niveaux.
      */
-    private List<Niveau> niveaux = new ArrayList<Niveau>();
-    ;
+    private final List<Niveau> niveaux = new ArrayList<Niveau>();
 
     /**
      * Le nombre de niveaux max de cet ensemble de niveaux.

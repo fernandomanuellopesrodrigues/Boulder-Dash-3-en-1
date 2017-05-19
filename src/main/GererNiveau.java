@@ -15,19 +15,23 @@ import outils.Score;
 
 public class GererNiveau {
 
-    private static long   compteurReset = 0;
+    private static long   compteurReset;
     private boolean tourParTour = true, demandeReset, demandeFin;
-    private int score, nbDiamants, tempsRestant, tempsTotal, compteurTicks;
-    private long tempsAuDebut = System.currentTimeMillis();
+    private       int score;
+    private       int nbDiamants;
+    private       int tempsRestant;
+    private final int tempsTotal;
+    private       int compteurTicks;
+    private final long tempsAuDebut = System.currentTimeMillis();
     private Niveau  niveau;
     private boolean finiSuccess;
     private char    toucheClavier;
-    private        String trajet        = "";
-    private List<Amibe>                listeAmibes        = new ArrayList<Amibe>();
-    private List<Tickable>             listeTickable      = new ArrayList<Tickable>();
-    private List<Amibe>                listeAmibesAjout   = new ArrayList<Amibe>();
-    private List<Tickable>             listeTickableAjout = new ArrayList<Tickable>();
-    private List<Paire<Integer, Long>> listeDiamants      = new ArrayList<Paire<Integer, Long>>();
+    private       String                     trajet             = "";
+    private final List<Amibe>                listeAmibes        = new ArrayList<Amibe>();
+    private final List<Tickable>             listeTickable      = new ArrayList<Tickable>();
+    private final List<Amibe>                listeAmibesAjout   = new ArrayList<Amibe>();
+    private final List<Tickable>             listeTickableAjout = new ArrayList<Tickable>();
+    private final List<Paire<Integer, Long>> listeDiamants      = new ArrayList<Paire<Integer, Long>>();
     public GererNiveau(Niveau niveau) {
         this.niveau = niveau;
         if (niveau.getCaveDelay() >= 1 && Coeur.tempsReel) {
@@ -202,7 +206,7 @@ public class GererNiveau {
             demandeReset = true;
             niveau.getRockford().mourir();
         }
-        tempsRestant = (int) (tempsTotal - ((temps - tempsAuDebut) / 1000));
+        tempsRestant = (int) (tempsTotal - (temps - tempsAuDebut) / 1000);
     }
 
     public void ajouterAmibe(Amibe e) {

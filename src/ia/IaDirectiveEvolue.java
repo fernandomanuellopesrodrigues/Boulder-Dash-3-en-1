@@ -14,12 +14,12 @@ import static main.Constantes.NOMBRE_DE_TRY_GENERATION;
 
 public class IaDirectiveEvolue extends Ia {
 
-    private List<Score> liste = new ArrayList<>();
-    private Score scoreActuel;
-    private int   nbGenerations;
-    private int         generationActuelle = 1;
-    private int         trysDeGeneration   = NOMBRE_DE_TRY_GENERATION;
-    private List<Score> liste2             = new ArrayList<>();
+    private final List<Score> liste = new ArrayList<>();
+    private       Score scoreActuel;
+    private final int   nbGenerations;
+    private       int         generationActuelle = 1;
+    private       int         trysDeGeneration   = NOMBRE_DE_TRY_GENERATION;
+    private final List<Score> liste2             = new ArrayList<>();
     private double tailleCheminMaximale;
     private int    nbObjectifs;
 
@@ -33,14 +33,14 @@ public class IaDirectiveEvolue extends Ia {
             GererNiveau g = Partie.gererNiveau;
             IaDirective ia = new IaDirective();
             for (int j = 0;
-                 j < (Partie.gererNiveau.getNiveau().getCaveDelay()
-                      * Partie.gererNiveau.getNiveau().getCave_time() * Constantes.VITESSE_JEU_TEMPS_REEL);
+                 j < Partie.gererNiveau.getNiveau().getCaveDelay()
+                     * Partie.gererNiveau.getNiveau().getCave_time() * Constantes.VITESSE_JEU_TEMPS_REEL;
                  j++) {
                 if (g.isDemandeReset() || g.isDemandeFin()) {
-                    while (g.getTrajet().length() + chemin.length() <= (Partie.gererNiveau.getNiveau().getCaveDelay()
-                                                                        *
-                                                                        Partie.gererNiveau.getNiveau().getCave_time() *
-                                                                        Constantes.VITESSE_JEU_TEMPS_REEL)) {
+                    while (g.getTrajet().length() + chemin.length() <= Partie.gererNiveau.getNiveau().getCaveDelay()
+                                                                       *
+                                                                       Partie.gererNiveau.getNiveau().getCave_time() *
+                                                                       Constantes.VITESSE_JEU_TEMPS_REEL) {
                         chemin += Ia.directionRandom();
                     }
                 } else {
@@ -83,18 +83,18 @@ public class IaDirectiveEvolue extends Ia {
         while (!critereArret()) {
             System.out.println("Génération " + generationActuelle + "/" + nbGenerations);
             generationActuelle++;
-            for (int i = 0; i < (Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS)
+            for (int i = 0; i < NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS
                                 / 100; i++) {
                 Score s = new Score(liste.get(i).getScore(), liste.get(i).getParcours(),
                                     liste.get(i).getListeDiamants());
                 s.setChemin(liste.get(i).getChemin());
                 liste2.add(s);
             }
-            for (int i = 0; i < (Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE)
+            for (int i = 0; i < NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE
                                 / 100; i++) {
                 Partie.finiEvolution = false;
                 String chemin = "";
-                for (int j = 0; j < (tailleCheminMaximale); j++) {
+                for (int j = 0; j < tailleCheminMaximale; j++) {
                     chemin += Ia.directionRandom();
                 }
                 Score s;
@@ -102,13 +102,13 @@ public class IaDirectiveEvolue extends Ia {
                 liste2.add(s);
             }
             for (int i = 0;
-                 i < (Constantes.NOMBRE_DE_TRY_GENERATION
-                      - ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS) / 100)
-                      - ((Constantes.NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE) / 100));
+                 i < NOMBRE_DE_TRY_GENERATION
+                     - NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS / 100
+                     - NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE / 100;
                  i++) {
 
                 int rng = (int) (Math.random()
-                                 * (Constantes.POURCENTAGE_DES_SELECTIONNES * Constantes.NOMBRE_DE_TRY_GENERATION) /
+                                 * (Constantes.POURCENTAGE_DES_SELECTIONNES * NOMBRE_DE_TRY_GENERATION) /
                                  100.0);
                 Score s = liste.get(rng);
 
@@ -139,9 +139,9 @@ public class IaDirectiveEvolue extends Ia {
                     // g = Partie.gererNiveau;
                     if (g.isDemandeReset() || g.isDemandeFin()) {
                         while (g.getTrajet().length()
-                               + chemin.length() <= (Partie.gererNiveau.getNiveau().getCaveDelay()
-                                                     * Partie.gererNiveau.getNiveau().getCave_time()
-                                                     * Constantes.VITESSE_JEU_TEMPS_REEL)) {
+                               + chemin.length() <= Partie.gererNiveau.getNiveau().getCaveDelay()
+                                                    * Partie.gererNiveau.getNiveau().getCave_time()
+                                                    * Constantes.VITESSE_JEU_TEMPS_REEL) {
                             chemin += Ia.directionRandom();
                         }
                     } else {
@@ -169,11 +169,7 @@ public class IaDirectiveEvolue extends Ia {
     }
 
     public boolean critereArret() {
-        if (generationActuelle > nbGenerations) {
-            return true;
-        } else {
-            return false;
-        }
+        return generationActuelle > nbGenerations;
     }
 
     public void ajouterScore() {

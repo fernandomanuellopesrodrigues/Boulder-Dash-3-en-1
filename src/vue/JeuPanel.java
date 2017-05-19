@@ -36,13 +36,13 @@ public class JeuPanel extends JPanel {
     /**
      * Le tableau d'entit�es qui situe dans l'espace les elements d'une partie.
      *
-     * @see entitees.abstraites.Entitee
+     * @see Entitee
      */
-    private Entitee[][] map;
+    private final Entitee[][] map;
 
     /**
      * Le compteur de FPS qui s'incr�mente � chaque appel de
-     * {@link vue.JeuPanel#paintComponent(Graphics)}.
+     * {@link JeuPanel#paintComponent(Graphics)}.
      */
     private long compteurFPS;
 
@@ -59,14 +59,14 @@ public class JeuPanel extends JPanel {
 
     /**
      * La methode servant a dessiner le niveau.
-     * Appell�e par la fen�tre � chaque {@link vue.Fenetre#repaint()}.
+     * Appell�e par la fen�tre � chaque {@link Fenetre#repaint()}.
      * Elle se sert du tableau d'entitees et du compteur de FPS.
-     * Elle r�cup�re la largeur du Panel {@link vue.JeuPanel#getWidth()}, le
+     * Elle r�cup�re la largeur du Panel {@link JeuPanel#getWidth()}, le
      * divise par la largeur du niveau, ainsi a chaque entit�e du niveau peut
      * �tre attribu�e une coordon�e. Idem pour la hauteur.
      *
-     * @see vue.Sprites#oneFrame(long, Rockford)
-     * @see vue.JeuPanel#getSprite(Entitee)
+     * @see Sprites#oneFrame(long, Rockford)
+     * @see JeuPanel#getSprite(Entitee)
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -85,7 +85,7 @@ public class JeuPanel extends JPanel {
 
         // Dessine le fond noir.
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight());
 
         // Parcours de toutes les entitees de la map.
         for (int i = 0; i < map[0].length; i++) {
@@ -96,7 +96,7 @@ public class JeuPanel extends JPanel {
 
                 // Dessine l'image en se basant sur i et j pour les coordonn�es.
                 if (image != null) {
-                    g.drawImage(image, (j) * largeur_case, (i) * hauteur_case, largeur_case, hauteur_case, this);
+                    g.drawImage(image, j * largeur_case, i * hauteur_case, largeur_case, hauteur_case, this);
                 }
             }
         }
@@ -107,7 +107,7 @@ public class JeuPanel extends JPanel {
      * Cette methode prend en parametre une entitee et renvoie une image en
      * fonction.
      * Elle va chercher l'image dans la base de donn�es de la classe
-     * {@link vue.Sprites}.
+     * {@link Sprites}.
      *
      * @param e L'entit�e dont on veut l'image.
      *

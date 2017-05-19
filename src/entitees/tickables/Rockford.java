@@ -17,7 +17,7 @@ public class Rockford extends Tickable {
 
     private char    ancienneDirection = 'd';
     private int     nombreDeBombe     = Constantes.NOMBRE_DE_BOMBES;
-    private boolean bombeAPoser       = false;
+    private boolean bombeAPoser;
 
     public Rockford(int x, int y) {
         super(x, y);
@@ -116,6 +116,7 @@ public class Rockford extends Tickable {
         }
     }
 
+    @Override
     protected void gererChute() {
         if (chute && placeLibre(getX(), getY() + 1)) {
             setDirection('b');
@@ -140,6 +141,7 @@ public class Rockford extends Tickable {
         return false;
     }
 
+    @Override
     public boolean mourir() {
         super.mourir();
         sons.jouerSon3("mortRockford.wav", 1);
@@ -182,7 +184,7 @@ public class Rockford extends Tickable {
     }
 
     public boolean camouflageActif() {
-        return getEnumeration() == Entitee.Entitees.Pierre;
+        return getEnumeration() == Pierre;
     }
 
     public char getAncienneDirection() {
