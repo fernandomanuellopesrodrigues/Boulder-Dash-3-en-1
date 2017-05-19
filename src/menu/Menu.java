@@ -6,8 +6,26 @@ import java.util.Scanner;
 
 import main.Coeur;
 
+/**
+ * La classe Menu contient le main ainsi que d'autres méthodes statics gérant la
+ * lecture des paramètres du programme.
+ * 
+ * Elle lance des méthodes de la classe {@link SousMenu} en fonction des
+ * paramètres entrés.
+ * 
+ * @author Murloc
+ *
+ */
 public class Menu {
 
+	/**
+	 * La méthode main.
+	 * 
+	 * Elle lance d'autres méthodes en fonction des paramètres.
+	 * 
+	 * @param args
+	 *            Les arguments
+	 */
 	public static void main(String[] args) {
 		if (args.length > 0) {
 			if (args[0].equals("-name")) {
@@ -33,6 +51,14 @@ public class Menu {
 
 	}
 
+	/**
+	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-lis",
+	 * elle teste si le nombre d'arguments entrés est correct puis lance
+	 * {@link SousMenu#lireInfos(String)} si oui.
+	 * 
+	 * @param args
+	 *            Les arguments.
+	 */
 	public static void lire(String[] args) {
 		if (args.length == 2) {
 			SousMenu.lireInfos(args[1]);
@@ -41,6 +67,17 @@ public class Menu {
 		}
 	}
 
+	/**
+	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-joue",
+	 * elle teste si le nombre d'arguments entrés est correct puis lance
+	 * d'autres méthodes si oui.
+	 * 
+	 * Lance la méthode {@link Menu#options()} au début pour savoir si oui ou
+	 * non le joueur veut jouer en mode console/fenêtré/temps réel.
+	 * 
+	 * @param args
+	 *            Les arguments.
+	 */
 	public static void jouer(String[] args) {
 		options();
 		if (args.length == 2) {
@@ -60,6 +97,19 @@ public class Menu {
 		}
 	}
 
+	/**
+	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-cal",
+	 * elle teste si le nombre d'arguments entrés est correct puis lance
+	 * d'autres méthodes si oui.
+	 * 
+	 * Elle lance {@link SousMenu#calculerStrategie(String, String, int)} si
+	 * l'ia voulue n'est pas évolutive ou
+	 * {@link SousMenu#calculerStrategieEvol(String, int, String, int)} si elle
+	 * l'est.
+	 * 
+	 * @param args
+	 *            Les arguments.
+	 */
 	public static void calculer(String[] args) {
 		if (args.length == 5) {
 			int niveau = -1;
@@ -89,6 +139,17 @@ public class Menu {
 		}
 	}
 
+	/**
+	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-rejoue",
+	 * elle teste si le nombre d'arguments entrés est correct puis lance
+	 * d'autres méthodes si oui.
+	 * 
+	 * Puis elle lance {@link SousMenu#rejouerNiveau(String, String, int)} si
+	 * tout est ok.
+	 * 
+	 * @param args
+	 *            Les arguments.
+	 */
 	public static void rejouer(String[] args) {
 		if (args.length == 5) {
 			Coeur.graphique = true;
@@ -108,6 +169,17 @@ public class Menu {
 		}
 	}
 
+	/**
+	 * Cette méthode est appelée si l'utilisateur a rentré l'argument "-simul",
+	 * elle teste si le nombre d'arguments entrés est correct puis lance
+	 * d'autres méthodes si oui.
+	 * 
+	 * Si tout est ok elle lance
+	 * {@link SousMenu#simulerNiveau(int, String, String, String, int)}.
+	 * 
+	 * @param args
+	 *            Les arguments.
+	 */
 	public static void simuler(String[] args) {
 		if (args.length == 7) {
 			int niveau = -1;
@@ -126,6 +198,15 @@ public class Menu {
 		}
 	}
 
+	/**
+	 * Cette méthode est lancée en début de programme et demande au joueur
+	 * diverses informations.
+	 * 
+	 * Elle change les booleans de {@link Coeur} en fonction des résultats.
+	 * 
+	 * Elle fait apparaitre la fenêtre {@link Coeur#FENETRE} si l'utilisateur
+	 * joue en mode fenêtré.
+	 */
 	public static void options() {
 
 		Scanner sc;

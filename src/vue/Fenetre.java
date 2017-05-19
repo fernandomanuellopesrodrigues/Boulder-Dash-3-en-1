@@ -58,11 +58,11 @@ public class Fenetre extends JFrame implements KeyListener {
 
 	/**
 	 * Méthode implémentée par l'interface {@link KeyListener} appelée quand une
-	 * touche vient d'être tapée.
+	 * touche vient d'être tapée. Ne fais rien car
+	 * {@link Fenetre#keyPressed(KeyEvent)} suffit.
 	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
-		CONTROLEUR.keyTyped(e);
 	}
 
 	/**

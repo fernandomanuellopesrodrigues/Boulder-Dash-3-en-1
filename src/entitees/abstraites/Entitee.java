@@ -18,18 +18,73 @@ import entitees.tickables.Rockford;
 import main.Partie;
 import outils.SonToolKit;
 
+/**
+ * Classe représentant les objets d'une partie.
+ * 
+ * A chaque case d'un niveau correspond une entitée.
+ * 
+ * @author Murloc
+ *
+ */
 public abstract class Entitee implements Cloneable {
+
+	/**
+	 * Des énumérations représentant les entitées.
+	 * 
+	 * Utiles pour pouvoir changer les comportements des entitées.
+	 * 
+	 * @author Murloc
+	 *
+	 */
 	public enum Entitees {
 		Vide, Amibe, Mur, MurEnTitane, MurMagique, Poussiere, Sortie, Diamant, Explosion, Pierre, Rockford, Libellule, Luciole, Bombe;
 	}
 
+	/**
+	 * Outil permettant de jouer des sons.
+	 */
 	protected SonToolKit sons = new SonToolKit();
+
+	/**
+	 * Enumeration propre à l'entitée.
+	 */
 	protected Entitees enumeration;
+
+	/**
+	 * Coordonnée de l'entitée.
+	 */
 	private int x, y;
+
+	/**
+	 * Id de l'entitée.
+	 */
 	private long id;
-	private boolean destructible, mort;
+
+	/**
+	 * Boolean permettant de savoir si l'entitée est destructible.
+	 */
+	private boolean destructible;
+
+	/**
+	 * Boolean permettant de savoir si l'entitée est morte.
+	 */
+	private boolean mort;
+
+	/**
+	 * Id static permettant de mettre un identifiant différent à chaque entitée.
+	 */
 	public static long idTotal = 0;
 
+	/**
+	 * Constructeur par défaut des entitées.
+	 * 
+	 * Crée une entitée vide.
+	 * 
+	 * @param x
+	 *            La coordonnée x de l'entitée.
+	 * @param y
+	 *            La coordonnée y de l'entitée.
+	 */
 	protected Entitee(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -39,6 +94,13 @@ public abstract class Entitee implements Cloneable {
 
 	}
 
+	/**
+	 * Fais mourir l'entitée.
+	 * 
+	 * Si elle est destructible crée une entitée vide à la place.
+	 * 
+	 * @return L'état de vie de l'entitée.
+	 */
 	public boolean mourir() {
 		if (destructible) {
 			Partie.gererNiveau.getNiveau().getMap()[x][y] = new Vide(x, y);
@@ -47,6 +109,14 @@ public abstract class Entitee implements Cloneable {
 		return mort;
 	}
 
+	/**
+	 * Compare si l'énumération passée en paramètre est la même que celle de
+	 * l'entitée.
+	 * 
+	 * @param e
+	 *            Entitée à comparer.
+	 * @return Le résultat de la comparaison.
+	 */
 	public boolean is(Entitees e) {
 		return enumeration == e;
 	}
@@ -81,10 +151,20 @@ public abstract class Entitee implements Cloneable {
 		}
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public int getX() {
 		return x;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public int getY() {
 		return y;
 	}
@@ -93,30 +173,68 @@ public abstract class Entitee implements Cloneable {
 		y = i;
 	}
 
+	/**
+	 * Un setter.
+	 * 
+	 * @param i
+	 *            L'objet en question.
+	 */
 	protected void setX(int i) {
 		x = i;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public boolean isDestructible() {
 		return destructible;
 	}
 
+	/**
+	 * Un setter.
+	 * 
+	 * @param destructible
+	 *            L'objet en question.
+	 */
 	public void setDestructible(boolean destructible) {
 		this.destructible = destructible;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public boolean isMort() {
 		return mort;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public Entitees getEnumeration() {
 		return enumeration;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public long getId() {
 		return id;
 	}
 
+	/**
+	 * Un setter.
+	 * 
+	 * @param id
+	 *            L'objet en question.
+	 */
 	public void setId(long id) {
 		this.id = id;
 	}

@@ -60,7 +60,7 @@ public class Score implements Comparable<Score> {
 	}
 
 	/**
-	 * Le compareTo de cet objet est basé sur des critères faits pour optimiser
+	 * Le compareTo de cet objet est basé sur des critères faits pour améliorer
 	 * les essais.
 	 */
 	@Override
@@ -128,6 +128,11 @@ public class Score implements Comparable<Score> {
 		return somme / (listeDiamants.size());
 	}
 
+	/**
+	 * Renvoie la moyenne des objets dans la liste {@link Score#listeDiamants}.
+	 * 
+	 * @return La moyenne.
+	 */
 	public float moyenne() {
 		int somme = 0;
 		for (Paire<Integer, Long> p : listeDiamants) {
@@ -139,30 +144,67 @@ public class Score implements Comparable<Score> {
 		return somme / (listeDiamants.size() + 1);
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public boolean isFini() {
 		return fini;
 	}
 
+	/**
+	 * Un setter.
+	 * 
+	 * @param fini
+	 *            L'objet en question.
+	 */
 	public void setFini(boolean fini) {
 		this.fini = fini;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public List<Paire<Integer, Long>> getListeDiamants() {
 		return listeDiamants;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public int getScore() {
 		return score;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public int getParcours() {
 		return parcours;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public String getChemin() {
 		return chemin;
 	}
 
+	/**
+	 * Un setter.
+	 * 
+	 * @param chemin
+	 *            L'objet en question.
+	 */
 	public void setChemin(String chemin) {
 		this.chemin = chemin;
 	}

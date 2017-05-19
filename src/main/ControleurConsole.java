@@ -5,11 +5,37 @@ import java.io.IOException;
 import jline.ConsoleReader;
 import vue.GraphiqueConsole;
 
+/**
+ * La classe ControleurConsole sert à gérer les entrées clavier et les tours de
+ * boucle du jeu quand celui-ci est en mode console.
+ * 
+ * @author Murloc
+ *
+ */
 public class ControleurConsole {
 
+	/**
+	 * Entiers représentants les touches du clavier qui servent à jouer. Ils
+	 * sont final pour pouvoi être utilisés dans un switch case.
+	 */
 	private final int TOUCHE_HAUT = 16, TOUCHE_BAS = 14, TOUCHE_GAUCHE = 2, TOUCHE_DROITE = 6, TOUCHE_ATTENTE = 10,
 			TOUCHE_RESET = 32;
 
+	/**
+	 * Méthode prenant en paramètre un objet GererNiveau.
+	 * 
+	 * Cette méthode s'occupe de gérer les tours durant la partie ainsi que les
+	 * entrées clavier.
+	 * 
+	 * Elle lance un thread qui affiche en boucle le niveau afin que celui-ci
+	 * mette à jour le temps restant en temps réel.
+	 * 
+	 * Elle effectue un tour de jeu quand le joueur appuye sur une des touches
+	 * qui sert à jouer.
+	 * 
+	 * @param g
+	 *            L'objet {@link GererNiveau} du niveau en question.
+	 */
 	public void run(GererNiveau g) {
 		Thread t = new Thread() {
 			public void run() {
@@ -75,6 +101,15 @@ public class ControleurConsole {
 		}
 	}
 
+	/**
+	 * Méthode appelée entre deux niveaux afin d'effectuer une pause et
+	 * d'attendre que le joueur appuye sur entrée pour continuer le jeu.
+	 * 
+	 * @param niveau
+	 *            Le niveau que le joueur vient de finir.
+	 * @param score
+	 *            Le score obtenu au niveau que le joueur vient de finir.
+	 */
 	public static void prochainNiveau(int niveau, int score) {
 
 		ConsoleReader console;

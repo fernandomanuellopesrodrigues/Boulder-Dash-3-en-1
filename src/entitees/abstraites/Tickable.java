@@ -124,7 +124,7 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 					Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,
 							getY() + j);
 			}
-			if (Coeur.graphique||popDiamants)
+			if (Coeur.graphique || popDiamants)
 				Partie.gererNiveau
 						.ajouterTickable((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]);
 		}
@@ -157,6 +157,16 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 		}
 	}
 
+	protected void bloquer() {
+		bloque = !(placeLibre(getX() + 1, getY()) || placeLibre(getX(), getY() + 1) || placeLibre(getX(), getY() - 1)
+				|| placeLibre(getX() - 1, getY()));
+	}
+
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public char getDirection() {
 		return direction;
 	}
@@ -165,6 +175,11 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 		this.direction = direction;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public boolean isActionEffectue() {
 		return actionEffectue;
 	}
@@ -173,13 +188,13 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 		this.actionEffectue = actionEffectue;
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public List<Entitees> getDeplacementsPossibles() {
 		return deplacementsPossibles;
-	}
-
-	protected void bloquer() {
-		bloque = !(placeLibre(getX() + 1, getY()) || placeLibre(getX(), getY() + 1) || placeLibre(getX(), getY() - 1)
-				|| placeLibre(getX() - 1, getY()));
 	}
 
 	public void setChute(boolean chute) {

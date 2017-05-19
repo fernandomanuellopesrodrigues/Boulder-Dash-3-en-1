@@ -6,32 +6,114 @@ import outils.Comparaison;
 import outils.Ecrivain;
 import outils.Score;
 
+/***
+ * La classe SousMenu n'est jamais instanciée. contient des méthodes statics
+ * gérant le lancement et la direction que doit prendre le programme au
+ * lancement.
+ * 
+ * Elle lance des méthodes de la classe {@link Partie}.
+ * 
+ * @author Murloc
+ *
+ */
 public class SousMenu {
 
+	/**
+	 * Lance une partie d'un seul niveau.
+	 * 
+	 * @param cheminFichierBDCFF
+	 *            Le chemin du fichier BDCFF où se trouve le niveau.
+	 * @param niveau
+	 *            Le numéro du niveau voulu.
+	 */
 	public static void lancerNiveau(String cheminFichierBDCFF, int niveau) {
 		Partie.commencerPartie(cheminFichierBDCFF, niveau);
 	}
 
+	/**
+	 * Lance une partie de tous les niveaux du fichier BDCFF.
+	 * 
+	 * @param cheminFichierBDCFF
+	 *            Le chemin du fichier BDCFF où se trouve le niveau.
+	 */
 	public static void lancerTousLesNiveaux(String cheminFichierBDCFF) {
 		Partie.commencerPartie(cheminFichierBDCFF);
 	}
 
+	/**
+	 * Affiche sur la console les infos d'un fichier BDCFF passé en paramètre.
+	 * 
+	 * @param cheminFichierBDCFF
+	 *            Le chemin du fichier BDCFF où se trouve le niveau.
+	 */
 	public static void lireInfos(String cheminFichierBDCFF) {
 		System.out.println(Loader.lireInfos(cheminFichierBDCFF));
 	}
 
+	/**
+	 * Crée un fichier DASH contenant le résultat du meilleur essai parmis les
+	 * stratégies tentés (Seulement les stratégies non évolutives ici).
+	 * 
+	 * @param strategie
+	 *            La stratégie voulue.
+	 * @param cheminFichierBDCFF
+	 *            Le chemin du fichier BDCFF où se trouve le niveau.
+	 * @param niveau
+	 *            Le numéro du niveau voulu.
+	 */
 	public static void calculerStrategie(String strategie, String cheminFichierBDCFF, int niveau) {
 		System.out.println("Calcul en cours...");
 		Partie.calculerStrategie(strategie, cheminFichierBDCFF, niveau);
-	}public static void calculerStrategieEvol(String strategie,int nbGenerations, String cheminFichierBDCFF, int niveau) {
+	}
+
+	/**
+	 * 
+	 * Crée un fichier DASH contenant le résultat du meilleur essai parmis les
+	 * stratégies tentés (Seulement les stratégies évolutives ici).
+	 * 
+	 * @param strategie
+	 *            La stratégie voulue.
+	 * @param nbGenerations
+	 * @param cheminFichierBDCFF
+	 *            Le chemin du fichier BDCFF où se trouve le niveau.
+	 * @param niveau
+	 *            Le numéro du niveau voulu.
+	 */
+	public static void calculerStrategieEvol(String strategie, int nbGenerations, String cheminFichierBDCFF,
+			int niveau) {
 		System.out.println("Calcul en cours...");
 		Partie.calculerStrategieEvolue(strategie, nbGenerations, cheminFichierBDCFF, niveau);
 	}
 
+	/**
+	 * Rejoue une partie d'un niveau en jouant les déplacements se trouvant dans
+	 * le fichier DASH passé en paramètre.
+	 * 
+	 * @param cheminFichierDASH
+	 *            Le chemin du fichier DASH.
+	 * @param cheminFichierBDCFF
+	 *            Le chemin du fichier BDCFF où se trouve le niveau.
+	 * @param niveau
+	 *            Le numéro du niveau voulu.
+	 */
 	public static void rejouerNiveau(String cheminFichierDASH, String cheminFichierBDCFF, int niveau) {
 		Partie.jouerFichier(cheminFichierBDCFF, niveau, Ecrivain.lireParcours(cheminFichierDASH));
 	}
 
+	/**
+	 * Affiche les meilleurs résultats des deux stratégies voulues.
+	 * 
+	 * @param nombrePartie
+	 *            Le nombre de partie voulues.
+	 * @param strategie1
+	 *            La stratégie 1 voulue.
+	 * @param strategie2
+	 *            La stratégie 2 voulue.
+	 * @param cheminFichierBDCFF
+	 *            Le chemin du fichier BDCFF où se trouve le niveau.
+	 * @param niveau
+	 *            Le numéro du niveau voulu.
+	 */
 	public static void simulerNiveau(int nombrePartie, String strategie1, String strategie2, String cheminFichierBDCFF,
 			int niveau) {
 		Partie.simulation = true;
