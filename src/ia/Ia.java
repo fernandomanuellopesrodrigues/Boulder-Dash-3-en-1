@@ -2,6 +2,11 @@ package ia;
 
 import entitees.abstraites.Entitee;
 
+/**
+ * 
+ * @author celso
+ *
+ */
 public abstract class Ia {
 
 	protected boolean reset = true;

@@ -19,9 +19,9 @@ import main.Partie;
 import outils.SonToolKit;
 
 /**
- * Classe repr�sentant les objets d'une partie.
+ * Classe représentant les objets d'une partie.
  * 
- * A chaque case d'un niveau correspond une entit�e.
+ * A chaque case d'un niveau correspond une entitée.
  * 
  * @author Murloc
  *
@@ -29,9 +29,9 @@ import outils.SonToolKit;
 public abstract class Entitee implements Cloneable {
 
 	/**
-	 * Des �num�rations repr�sentant les entit�es.
+	 * Des énumérations représentant les entitées.
 	 * 
-	 * Utiles pour pouvoir changer les comportements des entit�es.
+	 * Utiles pour pouvoir changer les comportements des entitées.
 	 * 
 	 * @author Murloc
 	 *
@@ -46,44 +46,44 @@ public abstract class Entitee implements Cloneable {
 	protected SonToolKit sons = new SonToolKit();
 
 	/**
-	 * Enumeration propre � l'entit�e.
+	 * Enumeration propre à l'entit�e.
 	 */
 	protected Entitees enumeration;
 
 	/**
-	 * Coordonn�e de l'entit�e.
+	 * Coordonnée de l'entitée.
 	 */
 	private int x, y;
 
 	/**
-	 * Id de l'entit�e.
+	 * Id de l'entitée.
 	 */
 	private long id;
 
 	/**
-	 * Boolean permettant de savoir si l'entit�e est destructible.
+	 * Boolean permettant de savoir si l'entitée est destructible.
 	 */
 	private boolean destructible;
 
 	/**
-	 * Boolean permettant de savoir si l'entit�e est morte.
+	 * Boolean permettant de savoir si l'entitée est morte.
 	 */
 	private boolean mort;
 
 	/**
-	 * Id static permettant de mettre un identifiant diff�rent � chaque entit�e.
+	 * Id static permettant de mettre un identifiant différent à chaque entitée.
 	 */
 	public static long idTotal = 0;
 
 	/**
-	 * Constructeur par d�faut des entit�es.
+	 * Constructeur par défaut des entitées.
 	 * 
-	 * Cr�e une entit�e vide.
+	 * Crée une entitée vide.
 	 * 
 	 * @param x
-	 *            La coordonn�e x de l'entit�e.
+	 *            La coordonnée x de l'entitée.
 	 * @param y
-	 *            La coordonn�e y de l'entit�e.
+	 *            La coordonnée y de l'entitée.
 	 */
 	protected Entitee(int x, int y) {
 		this.x = x;
@@ -95,11 +95,11 @@ public abstract class Entitee implements Cloneable {
 	}
 
 	/**
-	 * Fais mourir l'entit�e.
+	 * Fais mourir l'entitée.
 	 * 
-	 * Si elle est destructible cr�e une entit�e vide � la place.
+	 * Si elle est destructible crée une entitée vide à la place.
 	 * 
-	 * @return L'�tat de vie de l'entit�e.
+	 * @return L'état de vie de l'entitée.
 	 */
 	public boolean mourir() {
 		if (destructible) {
@@ -110,12 +110,12 @@ public abstract class Entitee implements Cloneable {
 	}
 
 	/**
-	 * Compare si l'�num�ration pass�e en param�tre est la m�me que celle de
-	 * l'entit�e.
+	 * Compare si l'énumération passée en paramètre est la même que celle de
+	 * l'entitée.
 	 * 
 	 * @param e
-	 *            Entit�e � comparer.
-	 * @return Le r�sultat de la comparaison.
+	 *            Entitée à comparer.
+	 * @return Le résultat de la comparaison.
 	 */
 	public boolean is(Entitees e) {
 		return enumeration == e;

@@ -42,6 +42,12 @@ public class IaDirective extends Ia {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param depart
+	 * @param objectif
+	 * @return
+	 */
 	private Stack<Noeud> cheminPlusCourt(Noeud depart, Noeud objectif) {
 		List<Noeud> closedList = new LinkedList<Noeud>();
 		Queue<Noeud> openList = new PriorityQueue<Noeud>();
@@ -66,6 +72,13 @@ public class IaDirective extends Ia {
 		return null;
 	}
 
+	/**
+	 * Retourne les voisins du noeud passé en paramètre.
+	 * 
+	 * @param u
+	 *            Le noeud dont on veut les voisins.
+	 * @return Un set des voisins du noeud en paramètre.
+	 */
 	private Set<Noeud> VoisinsNoeud(Noeud u) {
 		Set<Noeud> voisins = new HashSet<Noeud>();
 		if (positionValide(u.getX() - 1, u.getY())) {
@@ -83,6 +96,16 @@ public class IaDirective extends Ia {
 		return voisins;
 	}
 
+	/**
+	 * Vérifie que la case dont les coordonnées sont passées en paramètres est
+	 * dans la limite de carte.
+	 * 
+	 * @param x
+	 *            La coordonnée en x.
+	 * @param y
+	 *            La coordonnée en y.
+	 * @return Vrai si tel est le cas, faux sinon.
+	 */
 	private boolean positionValide(int x, int y) {
 		if (x >= 0 && x < graphe.length && y >= 0 && y < graphe[0].length) {
 			if (graphe[x][y].isTraversable()) {
@@ -92,6 +115,13 @@ public class IaDirective extends Ia {
 		return false;
 	}
 
+	/**
+	 * Reconstitue un chemin à partir du dernier noeud d'un chemin.
+	 * 
+	 * @param u
+	 *            Le dernier noeud.
+	 * @return Le chemin de noeuds.
+	 */
 	private Stack<Noeud> reconstituerChemin(Noeud u) {
 		Stack<Noeud> route = new Stack<Noeud>();
 		while (u.getPere() != null) {
@@ -160,10 +190,21 @@ public class IaDirective extends Ia {
 
 	}
 
+	/**
+	 * Un getter.
+	 * 
+	 * @return L'objet en question.
+	 */
 	public boolean isBloquer() {
 		return bloquer;
 	}
 
+	/**
+	 * Un setter.
+	 * 
+	 * @param bloquer
+	 *            L'objet en question.
+	 */
 	public void setBloquer(boolean bloquer) {
 		this.bloquer = bloquer;
 	}

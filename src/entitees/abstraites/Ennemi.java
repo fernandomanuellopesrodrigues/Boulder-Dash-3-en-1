@@ -5,8 +5,25 @@ import static entitees.abstraites.Entitee.Entitees.Rockford;
 
 import entitees.tickables.Luciole;
 
+/**
+ * Classe représentant les objets d'une partie qui sont mobiles et hostiles
+ * envers Rockford.
+ * 
+ * @author Murloc
+ *
+ */
 public abstract class Ennemi extends Tickable {
 
+	/**
+	 * Constructeur Ennemi.
+	 * 
+	 * Prend des coordonnées en paramètre.
+	 * 
+	 * @param x
+	 *            Coordonnée en x.
+	 * @param y
+	 *            Coordonnée en y.
+	 */
 	protected Ennemi(int x, int y) {
 		super(x, y);
 		getDeplacementsPossibles().add(Rockford);
@@ -27,6 +44,13 @@ public abstract class Ennemi extends Tickable {
 		return 1;
 	}
 
+	/**
+	 * Retourne vrai si la case face à l'objet est accessible pour lui.
+	 * 
+	 * En face c'est à dire en se basant sur la direction de l'objet.
+	 * 
+	 * @return Vrai si la case est disponible, faux sinon.
+	 */
 	protected boolean isToutDroitLibre() {
 		switch (getDirection()) {
 		case 'd':
@@ -42,6 +66,13 @@ public abstract class Ennemi extends Tickable {
 		}
 	}
 
+	/**
+	 * Retourne vrai si la case derrière à l'objet est accessible pour lui.
+	 * 
+	 * Derrière c'est à dire en se basant sur la direction de l'objet.
+	 * 
+	 * @return Vrai si la case est disponible, faux sinon.
+	 */
 	protected boolean isDerriereLibre() {
 		switch (getDirection()) {
 		case 'd':
@@ -57,6 +88,14 @@ public abstract class Ennemi extends Tickable {
 		}
 	}
 
+	/**
+	 * Retourne vrai si la case à gauche de l'objet est accessible pour lui.
+	 * 
+	 * A gauche de l'objet c'est à dire en se basant sur la direction de
+	 * l'objet.
+	 * 
+	 * @return Vrai si la case est disponible, faux sinon.
+	 */
 	protected boolean isGaucheLibre() {
 		switch (getDirection()) {
 		case 'd':
@@ -72,6 +111,14 @@ public abstract class Ennemi extends Tickable {
 		}
 	}
 
+	/**
+	 * Retourne vrai si la case à droite de l'objet est accessible pour lui.
+	 * 
+	 * A droite de l'objet c'est à dire en se basant sur la direction de
+	 * l'objet.
+	 * 
+	 * @return Vrai si la case est disponible, faux sinon.
+	 */
 	protected boolean isDroiteLibre() {
 		switch (getDirection()) {
 		case 'd':
@@ -87,6 +134,11 @@ public abstract class Ennemi extends Tickable {
 		}
 	}
 
+	/**
+	 * Retourne vrai si les 4 cases autour de l'objet sont accessibles pour lui.
+	 * 
+	 * @return Vrai si elles le sont, faux sinon.
+	 */
 	protected boolean isFullLibre() {
 		if (!(isDroiteLibre() && isDerriereLibre() & isGaucheLibre() && isToutDroitLibre())) {
 			return false;
@@ -96,6 +148,9 @@ public abstract class Ennemi extends Tickable {
 				&& placeLibre(getX() - 1, getY() - 1));
 	}
 
+	/**
+	 * Change la direction de l'objet dans le sens des aiguilles d'une montre.
+	 */
 	protected void tournerADroite() {
 		switch (getDirection()) {
 		case 'd':
@@ -115,6 +170,10 @@ public abstract class Ennemi extends Tickable {
 		}
 	}
 
+	/**
+	 * Change la direction de l'objet dans le sens inverse des aiguilles d'une
+	 * montre.
+	 */
 	protected void tournerAGauche() {
 		switch (getDirection()) {
 		case 'd':

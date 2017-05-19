@@ -8,7 +8,7 @@ import main.GererNiveau;
 import vue.GraphiqueConsole;
 
 /**
- * La classe ControleurConsole sert � g�rer les entr�es clavier et les tours de
+ * La classe ControleurConsole sert à gérer les entrées clavier et les tours de
  * boucle du jeu quand celui-ci est en mode console.
  * 
  * @author Murloc
@@ -17,23 +17,23 @@ import vue.GraphiqueConsole;
 public class ControleurConsole {
 
 	/**
-	 * Entiers repr�sentants les touches du clavier qui servent � jouer. Ils
-	 * sont final pour pouvoi �tre utilis�s dans un switch case.
+	 * Entiers représentants les touches du clavier qui servent à jouer. Ils
+	 * sont final pour pouvoi étre utilisés dans un switch case.
 	 */
 	private final int TOUCHE_HAUT = 16, TOUCHE_BAS = 14, TOUCHE_GAUCHE = 2, TOUCHE_DROITE = 6, TOUCHE_ATTENTE = 10,
 			TOUCHE_RESET = 32;
 
 	/**
-	 * M�thode prenant en param�tre un objet GererNiveau.
+	 * M�thode prenant en paramètre un objet GererNiveau.
 	 * 
-	 * Cette m�thode s'occupe de g�rer les tours durant la partie ainsi que les
-	 * entr�es clavier.
+	 * Cette méthode s'occupe de gérer les tours durant la partie ainsi que les
+	 * entrées clavier.
 	 * 
 	 * Elle lance un thread qui affiche en boucle le niveau afin que celui-ci
-	 * mette � jour le temps restant en temps r�el.
+	 * mette à jour le temps restant en temps réel.
 	 * 
 	 * Elle effectue un tour de jeu quand le joueur appuye sur une des touches
-	 * qui sert � jouer.
+	 * qui sert à jouer.
 	 * 
 	 * @param g
 	 *            L'objet {@link GererNiveau} du niveau en question.
@@ -104,8 +104,8 @@ public class ControleurConsole {
 	}
 
 	/**
-	 * M�thode appel�e entre deux niveaux afin d'effectuer une pause et
-	 * d'attendre que le joueur appuye sur entr�e pour continuer le jeu.
+	 * M�thode appelée entre deux niveaux afin d'effectuer une pause et
+	 * d'attendre que le joueur appuye sur entrée pour continuer le jeu.
 	 * 
 	 * @param niveau
 	 *            Le niveau que le joueur vient de finir.
