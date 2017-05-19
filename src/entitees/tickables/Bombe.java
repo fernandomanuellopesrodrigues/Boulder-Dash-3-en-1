@@ -8,37 +8,38 @@ import main.Partie;
 import static entitees.abstraites.Entitee.Entitees.Bombe;
 
 public class Bombe extends Tickable {
-	private int tempsRestantAvantExplosion = Constantes.BOOM;
 
-	protected Bombe(int x, int y) {
-		super(x, y);
-		enumeration = Bombe;
-		setDestructible(false);
-		Partie.gererNiveau.ajouterTickable(this);
-	}
+    private int tempsRestantAvantExplosion = Constantes.BOOM;
 
-	@Override
-	protected int contactAutreEntitee(Entitee entitee) {
-		return 0;
-	}
+    protected Bombe(int x, int y) {
+        super(x, y);
+        enumeration = Bombe;
+        setDestructible(false);
+        Partie.gererNiveau.ajouterTickable(this);
+    }
 
-	@Override
-	public void tick() {
-		if (tempsRestantAvantExplosion == 0 && !isMort()) {
-			exploser(false);
-		}
-		tempsRestantAvantExplosion--;
-	}
+    @Override
+    protected int contactAutreEntitee(Entitee entitee) {
+        return 0;
+    }
 
-	public boolean mourir() {
-		if (tempsRestantAvantExplosion > 0) {
-			tempsRestantAvantExplosion = -1;
-			exploser(false);			
-		}
-		return true;
-	}
+    @Override
+    public void tick() {
+        if (tempsRestantAvantExplosion == 0 && !isMort()) {
+            exploser(false);
+        }
+        tempsRestantAvantExplosion--;
+    }
 
-	public int getTempsRestantAvantExplosion() {
-		return tempsRestantAvantExplosion;
-	}
+    public boolean mourir() {
+        if (tempsRestantAvantExplosion > 0) {
+            tempsRestantAvantExplosion = -1;
+            exploser(false);
+        }
+        return true;
+    }
+
+    public int getTempsRestantAvantExplosion() {
+        return tempsRestantAvantExplosion;
+    }
 }

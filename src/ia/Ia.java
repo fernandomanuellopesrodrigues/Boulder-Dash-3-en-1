@@ -3,43 +3,41 @@ package ia;
 import entitees.abstraites.Entitee;
 
 /**
- * 
  * @author celso
- *
  */
 public abstract class Ia {
 
-	protected boolean reset = true;
+    protected boolean reset = true;
 
-	public char direction(Entitee[][] map) {
-		if (reset) {
-			initialiserTry();
-			reset = false;
-		}
-		return tick(map);
-	}
+    public static char directionRandom() {
+        int random = 1 + (int) (Math.random() * 5);
+        switch (random) {
+            case 1:
+                return 'h';
+            case 2:
+                return 'b';
+            case 3:
+                return 'd';
+            case 4:
+                return 'g';
+            default:
+                return 'a';
+        }
+    }
 
-	public abstract char tick(Entitee[][] map);
+    public char direction(Entitee[][] map) {
+        if (reset) {
+            initialiserTry();
+            reset = false;
+        }
+        return tick(map);
+    }
 
-	public abstract void initialiserTry();
+    public abstract char tick(Entitee[][] map);
 
-	public void reset() {
-		reset = true;
-	}
+    public abstract void initialiserTry();
 
-	public static char directionRandom() {
-		int random = 1 + (int) (Math.random() * 5);
-		switch (random) {
-		case 1:
-			return 'h';
-		case 2:
-			return 'b';
-		case 3:
-			return 'd';
-		case 4:
-			return 'g';
-		default:
-			return 'a';
-		}
-	}
+    public void reset() {
+        reset = true;
+    }
 }
