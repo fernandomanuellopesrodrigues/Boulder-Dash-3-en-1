@@ -12,10 +12,10 @@ import entitees.fixes.Sortie;
 import entitees.tickables.Rockford;
 
 /**
- * La classe Niveau sert à modéliser un niveau.
+ * La classe Niveau sert ï¿½ modï¿½liser un niveau.
  * 
- * Elle dispose d'un tableau à deux dimensions d'entitées pour représenter la
- * répartition des divers éléments du niveau dans l'espace ainsi que de nombreux
+ * Elle dispose d'un tableau ï¿½ deux dimensions d'entitï¿½es pour reprï¿½senter la
+ * rï¿½partition des divers ï¿½lï¿½ments du niveau dans l'espace ainsi que de nombreux
  * attributs entiers tel que le temps maximum, le nombre de diamants requis pour
  * finir le niveau etc...
  * 
@@ -27,7 +27,7 @@ public class Niveau implements Cloneable {
 
 	/**
 	 * Entier stockant le nombre de tours par secondes qu'il doit y avoir dans
-	 * ce niveau ci celui-ci est en mode temps réel.
+	 * ce niveau ci celui-ci est en mode temps rï¿½el.
 	 */
 	private int caveDelay;
 
@@ -64,14 +64,14 @@ public class Niveau implements Cloneable {
 	private int magic_wall_time;
 
 	/**
-	 * Tableau à deux dimensions d'entitées servant à représenter la répartition
-	 * des divers éléments du niveau dans l'espace.
+	 * Tableau ï¿½ deux dimensions d'entitï¿½es servant ï¿½ reprï¿½senter la rï¿½partition
+	 * des divers ï¿½lï¿½ments du niveau dans l'espace.
 	 */
 	private Entitee[][] map;
 
 	/**
 	 * Le rockford du niveau, sert pour y stocker Rockford et ainsi y avoir
-	 * accés facilement.
+	 * accï¿½s facilement.
 	 */
 	private Rockford rockford;
 
@@ -81,11 +81,11 @@ public class Niveau implements Cloneable {
 	 * Il initialiser les attributs.
 	 * 
 	 * @param map
-	 *            Tableau à deux dimensions d'entitées servant à représenter la
-	 *            répartition des divers éléments du niveau dans l'espace.
+	 *            Tableau ï¿½ deux dimensions d'entitï¿½es servant ï¿½ reprï¿½senter la
+	 *            rï¿½partition des divers ï¿½lï¿½ments du niveau dans l'espace.
 	 * @param caveDelay
 	 *            Entier stockant le nombre de tours par secondes qu'il doit y
-	 *            avoir dans ce niveau ci celui-ci est en mode temps réel.
+	 *            avoir dans ce niveau ci celui-ci est en mode temps rï¿½el.
 	 * @param cave_time
 	 *            Entier stockant le temps maximum pour finir le niveau.
 	 * @param diamonds_required
@@ -101,8 +101,8 @@ public class Niveau implements Cloneable {
 	 *            Entier stockant le nombre d'utilisations max d'un mur magique
 	 *            dans ce niveau.
 	 * @param magic_wall_time
-	 *            Tableau à deux dimensions d'entitées servant à représenter la
-	 *            répartition des divers éléments du niveau dans l'espace.
+	 *            Tableau ï¿½ deux dimensions d'entitï¿½es servant ï¿½ reprï¿½senter la
+	 *            rï¿½partition des divers ï¿½lï¿½ments du niveau dans l'espace.
 	 */
 	public Niveau(Entitee[][] map, int caveDelay, int cave_time, int diamonds_required, int diamond_value,
 			int diamond_value_bonus, int amoeba_time, int magic_wall_time) {
@@ -115,7 +115,7 @@ public class Niveau implements Cloneable {
 		this.amoeba_time = amoeba_time;
 		this.magic_wall_time = magic_wall_time;
 
-		// On cherche où se situe Rockford pour initialiser l'attribut.
+		// On cherche oï¿½ se situe Rockford pour initialiser l'attribut.
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j].getClass() == Rockford.class) {
@@ -126,7 +126,7 @@ public class Niveau implements Cloneable {
 	}
 
 	/**
-	 * Méthode cherchant où se trouve la sortie du niveau et la renvoyant.
+	 * Mï¿½thode cherchant oï¿½ se trouve la sortie du niveau et la renvoyant.
 	 * 
 	 * @return La sortie du niveau.
 	 */
@@ -142,16 +142,16 @@ public class Niveau implements Cloneable {
 	}
 
 	/**
-	 * Méthode testant si aux coordonnées indiquées il s'y trouve une entitée du
-	 * type passé en paramètre, renvoit vrai si oui.
+	 * Mï¿½thode testant si aux coordonnï¿½es indiquï¿½es il s'y trouve une entitï¿½e du
+	 * type passï¿½ en paramï¿½tre, renvoit vrai si oui.
 	 * 
 	 * @param x
-	 *            La coordonnée en x.
+	 *            La coordonnï¿½e en x.
 	 * @param y
-	 *            La coordonnée en y.
+	 *            La coordonnï¿½e en y.
 	 * @param enumeration
-	 *            Enumération du type de l'objet que l'on veut tester.
-	 * @return Le résultat du test.
+	 *            Enumï¿½ration du type de l'objet que l'on veut tester.
+	 * @return Le rï¿½sultat du test.
 	 */
 	public boolean testEntitee(int x, int y, Entitees enumeration) {
 		if (x > map.length - 1 || x < 0 || y < 0 || y > map[0].length - 1) {
@@ -165,7 +165,7 @@ public class Niveau implements Cloneable {
 	}
 
 	/**
-	 * Méthode cherchant toutes les amibes du niveau et les renvoyant sous la
+	 * Mï¿½thode cherchant toutes les amibes du niveau et les renvoyant sous la
 	 * forme d'une liste.
 	 * 
 	 * @return La liste contenant toutes les amibes du niveau.
@@ -183,7 +183,7 @@ public class Niveau implements Cloneable {
 	}
 
 	/**
-	 * Méthode cherchant tous les objets héritant de tickable du niveau et les
+	 * Mï¿½thode cherchant tous les objets hï¿½ritant de tickable du niveau et les
 	 * renvoyant sous la forme d'une liste.
 	 * 
 	 * @return La liste contenant tous les tickables du niveau.
@@ -302,4 +302,5 @@ public class Niveau implements Cloneable {
 	public Rockford getRockford() {
 		return rockford;
 	}
+
 }
