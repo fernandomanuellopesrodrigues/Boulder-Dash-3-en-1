@@ -86,12 +86,8 @@ public class Partie {
 			if (gererNiveau.tickLecture(direction) || gererNiveau.getNiveau().getRockford().isMort()) {
 				break;
 			}
-
 		}
-		/*
-		 * System.out.println(parcoursParcouru); System.out.println(parcours2);
-		 * System.out.println("\n\n\n\n\n");
-		 */
+		System.out.println(parcoursParcouru.length());
 		s = new Score(score, parcoursParcouru.length(), liste);
 		s.setChemin(parcours2);
 		if (gererNiveau.isDemandeFin()) {
@@ -160,8 +156,8 @@ public class Partie {
 		} else if (ia instanceof IaDirectiveEvolue) {
 			score = ((IaDirectiveEvolue) ia).debut();
 		}
-
-		System.out.println(score.getChemin().substring(0, score.getParcours() - 1));
+		System.out.println(score.getParcours());
+		System.out.println(score.getChemin().substring(0, score.getParcours()));
 		return score;
 	}
 

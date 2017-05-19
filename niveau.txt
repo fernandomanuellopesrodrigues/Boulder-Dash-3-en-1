@@ -622,11 +622,11 @@ Colors=Black Black Gray1 Red Green
 
 [map]
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-WP. Xrddc.rd.q  .rrwWw .  r.q .c qrw  cW
-Wr.qq.  r rd .wwrwrW. .qq..  q wr.r.q..W
-W.. .d.q  q q w . q . .   .qwrq c.   w W
-Wdcq.r   crqrr ..rw.cWr. r.rrcw..c.qd  W
-Wq.  rw Wwrqwwc.q .  ww. q dwr .rcc .d W
+WP. Xrdd..rd.q  .rrwWw .  r.q .c qrw  cW
+Wr....  r rd .wwrwrW. .qq..  q wr.r.q..W
+W.. .d..  q q w . q . .   .qwrq c.   w W
+Wd...r   .rqrr ..rw.cWr. r.rrcw..c.qd  W
+W..  rw Wwrqwwc.q .  ww. q dwr .rcc .d W
 W wq.q.wqq.wdrdMrx dW.  .  .qc.wrrcdw  W
 W  cqd  .cww q qdr. wd wwr rq q..r  qwrW
 W   .q  c.   d  q.r.. qr    rrxd  d rr.W
