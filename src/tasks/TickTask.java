@@ -5,43 +5,43 @@ import main.Constantes;
 import main.Partie;
 
 /**
- * La classe TickTask est une classe utilisée par l'objet {@link Coeur#tickTask}
+ * La classe TickTask est une classe utilisï¿½e par l'objet {@link Coeur#tickTask}
  * afin d'effectuer les tours de jeu automatiquement quand celui-ci est en temps
- * réel.
+ * rï¿½el.
  * 
- * Elle dispose de plusieurs atributs qui servent à compter le nombre de ticks
- * (tours) par secondes en temps réel.
+ * Elle dispose de plusieurs atributs qui servent ï¿½ compter le nombre de ticks
+ * (tours) par secondes en temps rï¿½el.
  * 
  * @author Murloc
  *
  */
 public class TickTask implements Runnable {
 	/**
-	 * Un compteur qui sert à compter le nombre de ticks (tours) par secondes en
-	 * temps réel.
+	 * Un compteur qui sert ï¿½ compter le nombre de ticks (tours) par secondes en
+	 * temps rï¿½el.
 	 */
 	public static double compteur1 = 0;
 
 	/**
-	 * Un compteur qui sert à compter le nombre de ticks (tours) par secondes en
-	 * temps réel.
+	 * Un compteur qui sert ï¿½ compter le nombre de ticks (tours) par secondes en
+	 * temps rï¿½el.
 	 */
 	public static double compteur2 = System.nanoTime();
 
 	/**
-	 * Un compteur qui sert à compter le nombre de ticks (tours) par secondes en
-	 * temps réel.
+	 * Un compteur qui sert ï¿½ compter le nombre de ticks (tours) par secondes en
+	 * temps rï¿½el.
 	 */
 	public static int compteur3 = 0;
 
 	/**
-	 * La méthode que l'objet {@link Coeur#tickTask} appelle un certain nombre
+	 * La mï¿½thode que l'objet {@link Coeur#tickTask} appelle un certain nombre
 	 * de fois par secondes.
 	 * 
 	 * Elle effectue un {@link Partie#tick()} si le booleen
-	 * {@link Coeur#running} est vrai et que le jeu est en mode temps réel.
+	 * {@link Coeur#running} est vrai et que le jeu est en mode temps rï¿½el.
 	 * 
-	 * Elle effectue également un repaint qui est utile dans certains cas.
+	 * Elle effectue ï¿½galement un repaint qui est utile dans certains cas.
 	 */
 	public void run() {
 		if (Coeur.running && !Partie.gererNiveau.isTourParTour()) {
@@ -51,6 +51,7 @@ public class TickTask implements Runnable {
 				compteur1 = System.nanoTime();
 				if (compteur1 - compteur2 > 1000000000) {
 					if (Constantes.SYSOUT_TPS) {
+						Coeur.FENETRE.setTps(compteur3);
 						Coeur.FENETRE.setTitre();
 					}
 					compteur2 = System.nanoTime();

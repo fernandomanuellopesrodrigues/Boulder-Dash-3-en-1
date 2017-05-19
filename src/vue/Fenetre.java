@@ -5,17 +5,18 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
+import main.Coeur;
 import main.Constantes;
 
 import static main.Coeur.CONTROLEUR;
 import static main.Constantes.*;
 
 /**
- * La classe Fenêtre hérite de JFrame et sert à gérer la fenêtre du mode
+ * La classe Fenï¿½tre hï¿½rite de JFrame et sert ï¿½ gï¿½rer la fenï¿½tre du mode
  * graphique du jeu.
  * 
- * Elle implémente la classe {@link KeyListener} afin de pouvoir récupérer les
- * entrées clavier.
+ * Elle implï¿½mente la classe {@link KeyListener} afin de pouvoir rï¿½cupï¿½rer les
+ * entrï¿½es clavier.
  * 
  * @see JFrame
  * 
@@ -25,9 +26,19 @@ import static main.Constantes.*;
 public class Fenetre extends JFrame implements KeyListener {
 
 	/**
+	 * Les FPS.
+	 */
+	private int fps;
+
+	/**
+	 * Les TPS (ticks par secondes).
+	 */
+	private int tps;
+
+	/**
 	 * Constructeur Fenetre.
 	 * 
-	 * Elle ne prend pas de paramètres mais trouve les différentes variables
+	 * Elle ne prend pas de paramï¿½tres mais trouve les diffï¿½rentes variables
 	 * dans la classe {@link main.Constantes}.
 	 */
 	public Fenetre() {
@@ -41,24 +52,29 @@ public class Fenetre extends JFrame implements KeyListener {
 	}
 
 	/**
-	 * Méthode servant à rafraichir le titre de la fenêtre afin d'y inscrire le
+	 * Mï¿½thode servant ï¿½ rafraichir le titre de la fenï¿½tre afin d'y inscrire le
 	 * nombre de frames par secondes et/ou le nombre de ticks par secondes en
 	 * foncion des booleens de la classe {@link main.Constantes}.
+	 * 
+	 * @param fps
+	 *            Le nombre de FPS.
+	 * @param tps
+	 *            Le nombre de TPS.
 	 */
 	public void setTitre() {
+
 		if (Constantes.SYSOUT_FPS && Constantes.SYSOUT_TPS) {
-			this.setTitle("[" + Constantes.SYSOUT_FPS + " FPS , " + Constantes.SYSOUT_TPS + " TPS] "
-					+ Constantes.TITRE_FENETRE);
+			this.setTitle("[" + fps + " FPS , " + tps + " TPS] " + Constantes.TITRE_FENETRE);
 		} else if (Constantes.SYSOUT_FPS) {
-			this.setTitle("[" + Constantes.SYSOUT_FPS + " FPS] " + Constantes.TITRE_FENETRE);
+			this.setTitle("[" + fps + " FPS] " + Constantes.TITRE_FENETRE);
 		} else if (Constantes.SYSOUT_TPS) {
-			this.setTitle("[" + Constantes.SYSOUT_TPS + " TPS] " + Constantes.TITRE_FENETRE);
+			this.setTitle("[" + tps + " TPS] " + Constantes.TITRE_FENETRE);
 		}
 	}
 
 	/**
-	 * Méthode implémentée par l'interface {@link KeyListener} appelée quand une
-	 * touche vient d'être tapée. Ne fais rien car
+	 * Mï¿½thode implï¿½mentï¿½e par l'interface {@link KeyListener} appelï¿½e quand une
+	 * touche vient d'ï¿½tre tapï¿½e. Ne fais rien car
 	 * {@link Fenetre#keyPressed(KeyEvent)} suffit.
 	 */
 	@Override
@@ -66,8 +82,8 @@ public class Fenetre extends JFrame implements KeyListener {
 	}
 
 	/**
-	 * Méthode implémentée par l'interface {@link KeyListener} appelée quand une
-	 * touche vient d'être enfoncée.
+	 * Mï¿½thode implï¿½mentï¿½e par l'interface {@link KeyListener} appelï¿½e quand une
+	 * touche vient d'ï¿½tre enfoncï¿½e.
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -75,11 +91,31 @@ public class Fenetre extends JFrame implements KeyListener {
 	}
 
 	/**
-	 * Méthode implémentée par l'interface {@link KeyListener} appelée quand une
-	 * touche vient d'être relâchée.
+	 * Mï¿½thode implï¿½mentï¿½e par l'interface {@link KeyListener} appelï¿½e quand une
+	 * touche vient d'ï¿½tre relï¿½chï¿½e.
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		CONTROLEUR.keyReleased(e);
+	}
+
+	/**
+	 * Un setter.
+	 * 
+	 * @param fps
+	 *            L'objet en question.
+	 */
+	public void setFps(int fps) {
+		this.fps = fps;
+	}
+
+	/**
+	 * Un setter.
+	 * 
+	 * @param tps
+	 *            L'objet en question.
+	 */
+	public void setTps(int tps) {
+		this.tps = tps;
 	}
 }

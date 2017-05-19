@@ -117,8 +117,14 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
 
 	protected void explosion(int i, int j, boolean popDiamants) {
 		if (Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j].mourir()) {
-			if (popDiamants)
+			if (popDiamants) {
 				Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Diamant(getX() + i, getY() + j);
+				if (((Diamant) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]).placeLibre(getX(),
+						getY() + 1)) {
+					((Diamant) Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j]).setChute(true);
+				}
+			}
+
 			else {
 				if (Coeur.graphique)
 					Partie.gererNiveau.getNiveau().getMap()[getX() + i][getY() + j] = new Explosion(getX() + i,

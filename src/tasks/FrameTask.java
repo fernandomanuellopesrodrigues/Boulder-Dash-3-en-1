@@ -6,41 +6,41 @@ import main.Partie;
 import vue.Fenetre;
 
 /**
- * La classe FrameTask est une classe utilisée par l'objet
+ * La classe FrameTask est une classe utilisï¿½e par l'objet
  * {@link Coeur#FRAME_TASK} afin d'effectuer les frames de jeu automatiquement
- * quand celui-ci est en temps réel.
+ * quand celui-ci est en temps rï¿½el.
  * 
- * Elle dispose de plusieurs atributs qui servent à compter le nombre de frames
- * par secondes en temps réel.
+ * Elle dispose de plusieurs atributs qui servent ï¿½ compter le nombre de frames
+ * par secondes en temps rï¿½el.
  * 
  * @author Murloc
  *
  */
 public class FrameTask implements Runnable {
 	/**
-	 * Un compteur qui sert à compter le nombre de ticks (tours) par secondes en
-	 * temps réel.
+	 * Un compteur qui sert ï¿½ compter le nombre de ticks (tours) par secondes en
+	 * temps rï¿½el.
 	 */
 	public static double compteur1 = 0;
 
 	/**
-	 * Un compteur qui sert à compter le nombre de ticks (tours) par secondes en
-	 * temps réel.
+	 * Un compteur qui sert ï¿½ compter le nombre de ticks (tours) par secondes en
+	 * temps rï¿½el.
 	 */
 	public static double compteur2 = System.nanoTime();
 
 	/**
-	 * Un compteur qui sert à compter le nombre de ticks (tours) par secondes en
-	 * temps réel.
+	 * Un compteur qui sert ï¿½ compter le nombre de ticks (tours) par secondes en
+	 * temps rï¿½el.
 	 */
 	public static int compteur3 = 0;
 
 	/**
-	 * La méthode que l'objet {@link Coeur#FRAME_TASK} appelle un certain nombre
+	 * La mï¿½thode que l'objet {@link Coeur#FRAME_TASK} appelle un certain nombre
 	 * de fois par secondes.
 	 * 
 	 * Elle effectue un {@link Fenetre#repaint()} si le booleen
-	 * {@link Coeur#running} est vrai, que le jeu est en mode temps réel et en
+	 * {@link Coeur#running} est vrai, que le jeu est en mode temps rï¿½el et en
 	 * mode graphique.
 	 * 
 	 */
@@ -52,6 +52,7 @@ public class FrameTask implements Runnable {
 				compteur1 = System.nanoTime();
 				if (compteur1 - compteur2 > 1000000000) {
 					if (Constantes.SYSOUT_FPS) {
+						Coeur.FENETRE.setFps(compteur3);
 						Coeur.FENETRE.setTitre();
 					}
 					compteur2 = System.nanoTime();

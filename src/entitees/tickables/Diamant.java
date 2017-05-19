@@ -22,9 +22,6 @@ public class Diamant extends Tickable {
 		getDeplacementsPossibles().add(Luciole);
 		getDeplacementsPossibles().add(Explosion);
 		enumeration = Diamant;
-		if (placeLibre(getX(), getY() + 1)) {
-			setChute(true);
-		}
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class Sons {
 			if (!desactive || audioStream == null) {
 				charger(son);
 			} else if (!AudioPlayer.player.isDaemon()) {
-				// AudioPlayer.player.start(audioStream);
+				AudioPlayer.player.start(audioStream);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
