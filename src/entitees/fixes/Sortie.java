@@ -1,18 +1,22 @@
 package entitees.fixes;
 
 import entitees.abstraites.Entitee;
-import main.Partie;
 
-import static entitees.abstraites.Entitee.Entitees.Sortie;
+import static entitees.abstraites.Entitee.Type.Sortie;
+import static main.Partie.gererNiveau;
 
-public class Sortie extends Entitee {
+public final class Sortie extends Entitee {
 
-    public Sortie(int x, int y) {
-        super(x, y);
-        enumeration = Sortie;
+    public Sortie(final int positionX, final int positionY) {
+        super(positionX, positionY, Sortie, false);
     }
 
-    public boolean isOuvert() {
-        return Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required();
+    @Override
+    public Entitee nouvelle() {
+        return new Sortie(getPositionX(), getPositionY());
+    }
+
+    public static boolean isOuvert() {
+        return gererNiveau.getNbDiamants() >= gererNiveau.getNiveau().getDiamondsRequired();
     }
 }

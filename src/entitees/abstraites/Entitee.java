@@ -1,136 +1,110 @@
 package entitees.abstraites;
 
-import entitees.fixes.Amibe;
-import entitees.fixes.Mur;
-import entitees.fixes.MurEnTitane;
-import entitees.fixes.MurMagique;
-import entitees.fixes.Poussiere;
-import entitees.fixes.Sortie;
-import entitees.fixes.Vide;
-import entitees.tickables.Diamant;
-import entitees.tickables.Explosion;
-import entitees.tickables.Libellule;
-import entitees.tickables.Luciole;
-import entitees.tickables.Pierre;
-import entitees.tickables.Rockford;
-import main.Partie;
-import outils.SonToolKit;
+import java.util.concurrent.atomic.AtomicLong;
 
-import static entitees.abstraites.Entitee.Entitees.Vide;
+import entitees.fixes.Vide;
+import main.Partie;
+
+import static entitees.abstraites.Entitee.Type.Vide;
 
 /**
- * Classe représentant les objets d'une partie.
- * A chaque case d'un niveau correspond une entitée.
+ * Classe repr\u00E9sentant les objets d'une partie.
+ * A chaque case d'un niveau correspond une entit\u00E9e.
  *
  * @author Murloc
  */
 public abstract class Entitee implements Cloneable {
 
     /**
-     * Id static permettant de mettre un identifiant différent à chaque entitée.
+     * Id static permettant de mettre un conteur diff\u00E9rent \u00E0 chaque entit\u00E9e.
      */
-    public static long idTotal;
-    /**
-     * Outil permettant de jouer des sons.
-     */
-    protected SonToolKit sons = new SonToolKit();
+    private static final AtomicLong conteur = new AtomicLong(0);
 
     /**
-     * Enumeration propre à l'entit�e.
+     * Enumeration propre \u00E0 l'entite.
      */
-    protected Entitees enumeration;
+    private Type type;
 
     /**
-     * Coordonnée de l'entitée.
+     * Coordonn\u00E9e de l'entit\u00E9e.
      */
-    private int x, y;
+    private int positionX;
+    private int positionY;
 
     /**
-     * Id de l'entitée.
+     * Id de l'entit\u00E9e.
      */
-    private long id;
+    private final long identitifant;
 
     /**
-     * Boolean permettant de savoir si l'entitée est destructible.
+     * Boolean permettant de savoir si l'entit\u00E9e est destructible.
      */
     private boolean destructible;
 
     /**
-     * Boolean permettant de savoir si l'entitée est morte.
+     * Boolean permettant de savoir si l'entit\u00E9e est morte.
      */
     private boolean mort;
 
     /**
-     * Constructeur par défaut des entitées.
-     * Crée une entitée vide.
+     * Constructeur par d\u00E9faut des entit\u00E9es.
+     * Cr\u00E9e une entit\u00E9e vide.
      *
-     * @param x La coordonnée x de l'entitée.
-     * @param y La coordonnée y de l'entitée.
+     * @param positionX La coordonn\u00E9e positionX de l'entit\u00E9e.
+     * @param positionY La coordonn\u00E9e positionY de l'entit\u00E9e.
      */
-    protected Entitee(int x, int y) {
-        this.x = x;
-        this.y = y;
-        enumeration = Vide;
-        id = idTotal;
-        idTotal++;
-
+    public Entitee(final int positionX, final int positionY, final Type type, final boolean destructible) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.type = type;
+        this.destructible = destructible;
+        this.identitifant = conteur.getAndIncrement();
     }
 
     /**
-     * Fais mourir l'entitée.
-     * Si elle est destructible crée une entitée vide à la place.
+     * Constructeur par d\u00E9faut des entit\u00E9es.
+     * Cr\u00E9e une entit\u00E9e vide.
      *
-     * @return L'état de vie de l'entitée.
+     * @param positionX La coordonn\u00E9e positionX de l'entit\u00E9e.
+     * @param positionY La coordonn\u00E9e positionY de l'entit\u00E9e.
+     */
+    @Deprecated
+    public Entitee(final int positionX, final int positionY) {
+        this(positionX, positionY, Vide, false);
+    }
+
+    /**
+     * Fais mourir l'entit\u00E9e.
+     * Si elle est destructible cr\u00E9e une entit\u00E9e vide \u00E0 la place.
+     *
+     * @return L'\u00E9tat de vie de l'entit\u00E9e.
      */
     public boolean mourir() {
         if (destructible) {
-            Partie.gererNiveau.getNiveau().getMap()[x][y] = new Vide(x, y);
+            Partie.gererNiveau.getNiveau().getMap()[positionX][positionY] = new Vide(positionX, positionY);
             mort = true;
         }
         return mort;
     }
 
     /**
-     * Compare si l'énumération passée en paramètre est la même que celle de
-     * l'entitée.
+     * Compare si l'\u00E9num\u00E9ration pass\u00E9e en param\u00E8tre est la m\u00EAme que celle de
+     * l'entit\u00E9e.
      *
-     * @param e Entitée à comparer.
+     * @param autre Entit\u00E9e \u00E0 comparer.
      *
-     * @return Le résultat de la comparaison.
+     * @return Le r\u00E9sultat de la comparaison.
      */
-    public boolean is(Entitees e) {
-        return enumeration == e;
+    public boolean checkType(final Type autre) {
+        return type == autre;
     }
+
+
+    public abstract Entitee nouvelle();
 
     @Override
     public Entitee clone() {
-        if (getClass().equals(Mur.class)) {
-            return new Mur(x, y);
-        } else if (getClass().equals(Diamant.class)) {
-            return new Diamant(x, y);
-        } else if (getClass().equals(Amibe.class)) {
-            return new Amibe(x, y);
-        } else if (getClass().equals(Luciole.class)) {
-            return new Luciole(x, y);
-        } else if (getClass().equals(Libellule.class)) {
-            return new Libellule(x, y);
-        } else if (getClass().equals(MurEnTitane.class)) {
-            return new MurEnTitane(x, y);
-        } else if (getClass().equals(Pierre.class)) {
-            return new Pierre(x, y);
-        } else if (getClass().equals(Poussiere.class)) {
-            return new Poussiere(x, y);
-        } else if (getClass().equals(Rockford.class)) {
-            return new Rockford(x, y);
-        } else if (getClass().equals(Sortie.class)) {
-            return new Sortie(x, y);
-        } else if (getClass().equals(MurMagique.class)) {
-            return new MurMagique(x, y, ((MurMagique) this).getMagicWallTime());
-        } else if (getClass().equals(Explosion.class)) {
-            return new Explosion(x, y);
-        } else {
-            return new Vide(x, y);
-        }
+        return nouvelle();
     }
 
     /**
@@ -138,8 +112,8 @@ public abstract class Entitee implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public int getX() {
-        return x;
+    public int getPositionX() {
+        return positionX;
     }
 
     /**
@@ -147,8 +121,8 @@ public abstract class Entitee implements Cloneable {
      *
      * @param i L'objet en question.
      */
-    protected void setX(int i) {
-        x = i;
+    public void setPositionX(int i) {
+        positionX = i;
     }
 
     /**
@@ -156,21 +130,12 @@ public abstract class Entitee implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public int getY() {
-        return y;
+    public int getPositionY() {
+        return positionY;
     }
 
-    protected void setY(int i) {
-        y = i;
-    }
-
-    /**
-     * Un getter.
-     *
-     * @return L'objet en question.
-     */
-    public boolean isDestructible() {
-        return destructible;
+    public void setPositionY(int i) {
+        positionY = i;
     }
 
     /**
@@ -182,6 +147,10 @@ public abstract class Entitee implements Cloneable {
         this.destructible = destructible;
     }
 
+    public boolean isDestructible() {
+        return destructible;
+    }
+
     /**
      * Un getter.
      *
@@ -191,13 +160,8 @@ public abstract class Entitee implements Cloneable {
         return mort;
     }
 
-    /**
-     * Un getter.
-     *
-     * @return L'objet en question.
-     */
-    public Entitees getEnumeration() {
-        return enumeration;
+    public void setType(final Type type) {
+        this.type = type;
     }
 
     /**
@@ -205,17 +169,8 @@ public abstract class Entitee implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * Un setter.
-     *
-     * @param id L'objet en question.
-     */
-    public void setId(long id) {
-        this.id = id;
+    public Type getType() {
+        return type;
     }
 
     /**
@@ -223,17 +178,17 @@ public abstract class Entitee implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public SonToolKit getSons() {
-        return sons;
+    public long getIdentitifant() {
+        return identitifant;
     }
 
     /**
-     * Des énumérations représentant les entitées.
-     * Utiles pour pouvoir changer les comportements des entitées.
+     * Des \u00E9num\u00E9rations repr\u00E9sentant les entit\u00E9es.
+     * Utiles pour pouvoir changer les comportements des entit\u00E9es.
      *
      * @author Murloc
      */
-    public enum Entitees {
+    public enum Type {
         Vide,
         Amibe,
         Mur,

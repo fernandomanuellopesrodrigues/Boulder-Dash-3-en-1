@@ -50,7 +50,7 @@ public class Totaux {
         afficherMessage(format("\n%s :\nDistance Moyenne : %s", strat, getLongueurMoyenne()));
         afficherMessage(format("Score Moyen : %s", getScoreMoyen()));
         afficherMessage(format("Temps Moyen : %s secondes.\n",
-                               getLongueurMoyenne() * gererNiveau.getNiveau().getCave_time() / 1000.0));
+                               getLongueurMoyenne() * gererNiveau.getNiveau().getCaveTime() / 1000.0));
     }
 
     private static void afficherMessage(final String msg) {

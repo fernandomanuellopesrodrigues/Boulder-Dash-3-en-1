@@ -2,48 +2,58 @@ package entitees.tickables;
 
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
-import main.Partie;
 
-import static entitees.abstraites.Entitee.Entitees.Diamant;
-import static entitees.abstraites.Entitee.Entitees.Explosion;
-import static entitees.abstraites.Entitee.Entitees.Libellule;
-import static entitees.abstraites.Entitee.Entitees.Luciole;
-import static entitees.abstraites.Entitee.Entitees.MurMagique;
-import static entitees.abstraites.Entitee.Entitees.Rockford;
+import static entitees.abstraites.Entitee.Type.Diamant;
+import static entitees.abstraites.Entitee.Type.Explosion;
+import static entitees.abstraites.Entitee.Type.Libellule;
+import static entitees.abstraites.Entitee.Type.Luciole;
+import static entitees.abstraites.Entitee.Type.MurMagique;
+import static entitees.abstraites.Entitee.Type.Rockford;
+import static entitees.tickables.Rockford.ramasserDiamant;
+import static main.Constantes.BAS;
+import static main.Partie.SONS;
+import static main.Partie.checkEntite;
 
-public class Diamant extends Tickable {
+public final class Diamant extends Tickable {
 
-    public Diamant(int x, int y) {
-        super(x, y);
-        setDestructible(true);
-        getDeplacementsPossibles().add(Rockford);
-        getDeplacementsPossibles().add(MurMagique);
-        getDeplacementsPossibles().add(Libellule);
-        getDeplacementsPossibles().add(Luciole);
-        getDeplacementsPossibles().add(Explosion);
-        enumeration = Diamant;
+    public Diamant(final int positionX, final int positionY) {
+        super(positionX, positionY, Diamant, true);
+        addDeplacementPossible(Rockford, MurMagique, Libellule, Luciole, Explosion);
     }
 
     @Override
-    protected int contactAutreEntitee(Entitee entitee) {
-        setDirection('b');
-        if (entitee.is(Rockford)) {
-            mourir();
-            ((Rockford) entitee).ramasserDiamant(this);
-            return -1;
-        } else if (entitee.is(MurMagique)) {
-            return 0;
-        } else if (entitee.is(Libellule)) {
-            exploser(true);
-            return 0;
-        } else if (entitee.is(Luciole)) {
-            exploser(false);
-            return 0;
-        } else if (entitee.is(Explosion)) {
-            mourir();
-            return -1;
+    public Entitee nouvelle() {
+        return new Diamant(getPositionX(), getPositionY());
+    }
+
+    @Override
+    public int contactAutreEntitee(final Entitee entitee) {
+        setDirection(BAS);
+        int retour = 1;
+        switch (entitee.getType()) {
+            case Rockford:
+                mourir();
+                ramasserDiamant(this);
+                retour = -1;
+                break;
+            case Libellule:
+                exploser(true);
+                retour = 0;
+                break;
+            case Luciole:
+                exploser(false);
+                retour = 0;
+                break;
+            case Explosion:
+                mourir();
+                retour = -1;
+                break;
+            case MurMagique:
+                retour = 0;
+                break;
+            default:
         }
-        return 1;
+        return retour;
     }
 
     @Override
@@ -53,8 +63,8 @@ public class Diamant extends Tickable {
     }
 
     @Override
-    protected void exploser(boolean popDiamants) {
-        sons.jouerSon1("explosion.wav", 1);
+    public void exploser(final boolean popDiamants) {
+        SONS.jouerSonExplosion();
         for (int i = -1; i < 2; i++) {
             for (int j = 0; j <= 2; j++) {
                 explosion(i, j, popDiamants);
@@ -62,8 +72,13 @@ public class Diamant extends Tickable {
         }
     }
 
+    @Override
+    public int getNumeroPriorite() {
+        return 3;
+    }
+
     private void rockfordEndessous() {
-        if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1].is(Rockford)) {
+        if (checkEntite(getPositionX(), getPositionY() + 1, Rockford)) {
             setChute(true);
         }
     }

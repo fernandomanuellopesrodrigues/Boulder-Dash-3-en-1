@@ -7,80 +7,85 @@ import java.util.List;
 import entitees.abstraites.Entitee;
 import entitees.tickables.Diamant;
 import entitees.tickables.Pierre;
-import main.Partie;
 
-import static entitees.abstraites.Entitee.Entitees.Amibe;
+import static entitees.abstraites.Entitee.Type.Amibe;
+import static entitees.abstraites.Entitee.Type.Poussiere;
+import static entitees.abstraites.Entitee.Type.Vide;
+import static java.lang.Math.random;
+import static main.Constantes.MAX_AMIBES;
+import static main.Partie.checkEntite;
+import static main.Partie.gererNiveau;
+import static main.Partie.setEntiteParPosition;
 
-public class Amibe extends Entitee {
+public final class Amibe extends Entitee {
 
-    public Amibe(int x, int y) {
-        super(x, y);
-        setDestructible(true);
-        enumeration = Amibe;
+    public Amibe(final int positionX, final int positionY) {
+        super(positionX, positionY, Amibe, true);
+    }
+
+    @Override
+    public Entitee nouvelle() {
+        return new Amibe(getPositionX(), getPositionY());
     }
 
     public boolean sePropager() {
-        List<Point> points = new ArrayList<Point>();
-        if (placeLibre(getX() + 1, getY())) {
-            points.add(new Point(getX() + 1, getY()));
+        final List<Point> points = new ArrayList<>(4);
+        if (placeLibre(getPositionX() + 1, getPositionY())) {
+            points.add(new Point(getPositionX() + 1, getPositionY()));
         }
-        if (placeLibre(getX() - 1, getY())) {
-            points.add(new Point(getX() - 1, getY()));
+        if (placeLibre(getPositionX() - 1, getPositionY())) {
+            points.add(new Point(getPositionX() - 1, getPositionY()));
         }
-        if (placeLibre(getX(), getY() - 1)) {
-            points.add(new Point(getX(), getY() - 1));
+        if (placeLibre(getPositionX(), getPositionY() - 1)) {
+            points.add(new Point(getPositionX(), getPositionY() - 1));
         }
-        if (placeLibre(getX(), getY() + 1)) {
-            points.add(new Point(getX(), getY() + 1));
+        if (placeLibre(getPositionX(), getPositionY() + 1)) {
+            points.add(new Point(getPositionX(), getPositionY() + 1));
         }
-        if (!points.isEmpty()) {
-            int rng = (int) (Math.random() * points.size());
-            Partie.gererNiveau.getNiveau().getMap()[points.get(rng).x][points.get(rng).y] = new Amibe(points.get(rng).x,
-                                                                                                      points.get(
-                                                                                                        rng).y);
-            Partie.gererNiveau.ajouterAmibe(
-              (Amibe) Partie.gererNiveau.getNiveau().getMap()[points.get(rng).x][points.get(rng).y]);
-            checkDetruireAmibes();
-            return true;
-        } else {
+        if (points.isEmpty()) {
             return false;
         }
+        final int rng = (int) (random() * points.size());
+        final Amibe amibe = new Amibe(points.get(rng).x, points.get(rng).y);
+        setEntiteParPosition(points.get(rng).x, points.get(rng).y, amibe);
+        gererNiveau.ajouterAmibe(amibe);
+        checkDetruireAmibes();
+        return true;
+
     }
 
-    private void checkDetruireAmibes() {
-        if (Partie.gererNiveau.getListeAmibes().size() >= 200) {
-            for (Amibe amibe : Partie.gererNiveau.getListeAmibes()) {
-                Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()] = new Pierre(amibe.getX(),
-                                                                                                 amibe.getY());
+    private static void checkDetruireAmibes() {
+        if (gererNiveau.getListeAmibes().size() >= MAX_AMIBES) {
+            gererNiveau.getListeAmibes().addAll(gererNiveau.getListeAmibesAjout());
+            for (final Amibe amibe : gererNiveau.getListeAmibes()) {
+                final int px = amibe.getPositionX();
+                final int py = amibe.getPositionY();
+                setEntiteParPosition(px, py, new Pierre(px, py));
             }
-            for (Amibe amibe : Partie.gererNiveau.getListeAmibesAjout()) {
-                Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()] = new Pierre(amibe.getX(),
-                                                                                                 amibe.getY());
-            }
-            Partie.gererNiveau.getListeAmibes().clear();
-            Partie.gererNiveau.getListeAmibesAjout().clear();
+            gererNiveau.getListeAmibes().clear();
+            gererNiveau.getListeAmibesAjout().clear();
         }
     }
 
-    public void transformerTousLesAmibesEnDiamant() {
-        for (Amibe amibe : Partie.gererNiveau.getListeAmibes()) {
-            Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()] = new Diamant(amibe.getX(),
-                                                                                              amibe.getY());
-            Partie.gererNiveau
-              .ajouterTickable((Diamant) Partie.gererNiveau.getNiveau().getMap()[amibe.getX()][amibe.getY()]);
+    public static void transformerTousLesAmibesEnDiamant() {
+        for (final Amibe amibe : gererNiveau.getListeAmibes()) {
+            final int px = amibe.getPositionX();
+            final int py = amibe.getPositionY();
+            final Diamant diamant = new Diamant(px, py);
+            setEntiteParPosition(px, py, diamant);
+            gererNiveau.ajouterTickable(diamant);
         }
-        Partie.gererNiveau.getListeAmibes().clear();
-        Partie.gererNiveau.getListeAmibesAjout().clear();
+        gererNiveau.getListeAmibes().clear();
+        gererNiveau.getListeAmibesAjout().clear();
     }
 
     @Override
     public boolean mourir() {
-        Partie.gererNiveau.getListeAmibes().remove(this);
+        gererNiveau.getListeAmibes().remove(this);
         return super.mourir();
     }
 
-    private boolean placeLibre(int x, int y) {
-        return Partie.gererNiveau.getNiveau().getMap()[x][y].getClass().equals(Vide.class)
-               || Partie.gererNiveau.getNiveau().getMap()[x][y].getClass().equals(Poussiere.class);
+    private static boolean placeLibre(final int positionX, final int positionY) {
+        return checkEntite(positionX, positionY, Vide) || checkEntite(positionX, positionY, Poussiere);
     }
 }

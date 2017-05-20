@@ -2,27 +2,38 @@ package ia;
 
 import entitees.abstraites.Entitee;
 
+import static java.lang.Math.random;
+import static main.Constantes.AUTRE;
+import static main.Constantes.BAS;
+import static main.Constantes.DROITE;
+import static main.Constantes.GAUCHE;
+import static main.Constantes.HAUT;
+
 /**
  * Created by celso on 28/04/17.
  */
 public class IaRandom extends Ia {
 
     @Override
-    public char tick(Entitee[][] map) {
-        int random = 1 + (int) (Math.random() * 5);
-
+    public char tick(final Entitee[][] map) {
+        final int random = 1 + (int) (random() * 5);
+        char direction = AUTRE;
         switch (random) {
             case 1:
-                return 'h';
+                direction = HAUT;
+                break;
             case 2:
-                return 'b';
+                direction = BAS;
+                break;
             case 3:
-                return 'd';
+                direction = DROITE;
+                break;
             case 4:
-                return 'g';
+                direction = GAUCHE;
+                break;
             default:
-                return 'a';
         }
+        return direction;
     }
 
     @Override

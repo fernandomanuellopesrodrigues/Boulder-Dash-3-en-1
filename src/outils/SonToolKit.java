@@ -12,7 +12,11 @@ import main.Constantes;
  */
 public class SonToolKit {
 
+    private long compteur1;
     private long compteur2;
+    private long compteur3;
+    private long compteur4;
+    private long compteur5;
     private long compteur6;
 
     /**
@@ -23,44 +27,88 @@ public class SonToolKit {
     private final Sons sons3 = new Sons();
 
     /**
-     * Cette m\u00E9thode lance la m\u00E9thode {@link Sons#jouer(String)} qui permet de
+     * Cette méthode lance la méthode {@link Sons#jouer(String)} qui permet de
      * jouer son.
-     * Mais elle permet d'\u00E9viter le spam de son, ainsi si on met en deuxi\u00E8me
-     * param\u00E8tre 100, alors le son ne pourra pas \u00EAtre jouer avant une seconde
-     * m\u00EAme si on rapelle cette m\u00E9thode.
-     * Une fois que la m\u00E9thode joue un son, elle ne peut pas en jouer un autre.
-     *  */
-    public void jouerSonAmoeba() {
-        if (Constantes.SONS) {
-            /*
-      Compteurs permettant de g\u00E9rer les diff\u00E9rents timers qui d\u00E9clenchent les
-      SONS.
+     * Mais elle permet d'éviter le spam de son, ainsi si on met en deuxième
+     * paramètre 100, alors le son ne pourra pas être jouer avant une seconde
+     * même si on rapelle cette méthode.
+     * Une fois que la méthode joue un son, elle ne peut pas en jouer un autre.
+     *
+     * @param nom Nom du fichier sonore.
+     * @param delaiEnCentiSecondes Délait avant de rejouer ce son.
      */
-            final long compteur1 = System.currentTimeMillis();
-            if (compteur1 - compteur2 > 965 * 10) {
-                sons1.jouer("amoeba.wav");
+    private void jouerSon1(final String nom, final int delaiEnCentiSecondes) {
+        if (Constantes.SONS) {
+            compteur1 = System.currentTimeMillis();
+            if (compteur1 - compteur2 > delaiEnCentiSecondes * 10) {
+                sons1.jouer(nom);
                 compteur2 = System.currentTimeMillis();
             }
         }
     }
 
     /**
-     * Cette m\u00E9thode lance la m\u00E9thode {@link Sons#jouer(String)} qui permet de
+     * Cette méthode lance la méthode {@link Sons#jouer(String)} qui permet de
      * jouer son.
-     * Mais elle permet d'\u00E9viter le spam de son, ainsi si on met en deuxi\u00E8me
-     * param\u00E8tre 100, alors le son ne pourra pas \u00EAtre jouer avant une seconde
-     * m\u00EAme si on rapelle cette m\u00E9thode.
-     * Une fois que la m\u00E9thode joue un son, elle ne peut pas en jouer un autre.
+     * Mais elle permet d'éviter le spam de son, ainsi si on met en deuxième
+     * paramètre 100, alors le son ne pourra pas être jouer avant une seconde
+     * même si on rapelle cette méthode.
+     * Une fois que la méthode joue un son, elle ne peut pas en jouer un autre.
      *
+     * @param nom Nom du fichier sonore.
      */
-    public void jouerSonExplosionDiamant() {
+    private void jouerSon2(final String nom, final int delaiEnCentiSecondes) {
         if (Constantes.SONS) {
-            final long compteur5 = System.currentTimeMillis();
-            if (compteur5 - compteur6 > 1 * 10) {
-                sons3.jouer("explosionDiamant.wav");
+            compteur3 = System.currentTimeMillis();
+            if (compteur3 - compteur4 > delaiEnCentiSecondes * 10) {
+                sons2.jouer(nom);
+                compteur4 = System.currentTimeMillis();
+            }
+        }
+    }
+
+    /**
+     * Cette méthode lance la méthode {@link Sons#jouer(String)} qui permet de
+     * jouer son.
+     * Mais elle permet d'éviter le spam de son, ainsi si on met en deuxième
+     * paramètre 100, alors le son ne pourra pas être jouer avant une seconde
+     * même si on rapelle cette méthode.
+     * Une fois que la méthode joue un son, elle ne peut pas en jouer un autre.
+     *
+     * @param nom Nom du fichier sonore.
+     */
+    private void jouerSon3(final String nom, final int delaiEnCentiSecondes) {
+        if (Constantes.SONS) {
+            compteur5 = System.currentTimeMillis();
+            if (compteur5 - compteur6 > delaiEnCentiSecondes * 10) {
+                sons3.jouer(nom);
                 compteur6 = System.currentTimeMillis();
             }
         }
+    }
+
+    public void jouerSonAmoeba() {
+        jouerSon1("amoeba.wav", 965);
+    }
+
+    public void jouerSonExplosionDiamant() {
+        jouerSon3("explosionDiamant.wav", 10);
+    }
+
+    public void jouerSonStone() {
+        jouerSon1("stone.wav", 1);
+    }
+
+    public void jouerSonExplosion() {
+        jouerSon1("explosion.wav", 1);
+    }
+
+    public void jouerSonWalkEart() {
+        jouerSon1("walk_earth.wav", 1);
+    }
+
+    public void jouerSonMortRockford() {
+        jouerSon3("mortRockford.wav", 1);
     }
 
     /**

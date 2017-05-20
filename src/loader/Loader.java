@@ -2,6 +2,7 @@ package loader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 import entitees.abstraites.Entitee;
 import entitees.fixes.Amibe;
@@ -17,91 +18,76 @@ import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
 
+import static java.lang.System.err;
+import static java.lang.System.exit;
+
 /**
- * La classe Loader n'est jamais instanci�e, elle sert � cr�er des ensembles de
- * niveaux � partir des fichiers BDCFF.
+ * La classe Loader n'est jamais instanciee, elle sert a creer des ensembles de
+ * niveaux a partir des fichiers BDCFF.
  *
  * @author Murloc
  * @see EnsembleDeNiveaux
  */
-public class Loader {
+public final class Loader {
+
+    private Loader() {}
 
     /**
-     * Cette m�thode prend en param�tre un fichier BDCFF et renvoie un ensemble
-     * de niveaux ayant la liste de tous les niveaux pr�sents dans le fichier
+     * Cette methode prend en parametre un fichier BDCFF et renvoie un ensemble
+     * de niveaux ayant la liste de tous les niveaux presents dans le fichier
      * BDCFF.
-     * Elle d�coupe les fichiers en bouts de string qu'elle envoie �
-     * {@link Loader#charger_niveau(String)} qui en fait des objets
+     * Elle decoupe les fichiers en bouts de string qu'elle envoie a
+     * {@link Loader#chargerNiveau(String)} qui en fait des objets
      * {@link Niveau}.
      *
      * @param chemin Le chemin du fichier BDCFF.
      *
      * @return Ensemble de niveaux contenant la liste de tous les niveaux
-     * pr�sents dans le fichier BDCFF.
+     * presents dans le fichier BDCFF.
      */
-    public static EnsembleDeNiveaux charger_ensemble_de_niveaux(String chemin) {
-
-        EnsembleDeNiveaux ensemble;
-        String[] niveaux;
-
-        try {
-            // lecture du fichier
-            FileReader lecteur = new FileReader(chemin);
-            BufferedReader in = new BufferedReader(lecteur);
-
-            // r�cup�ration du fichier
-            String ensemble_du_fichier = "";
+    public static EnsembleDeNiveaux chargerEnsembleDeNiveaux(final String chemin) {
+        try (BufferedReader in = new BufferedReader(new FileReader(chemin))) {
+            // recuperation du fichier
+            final StringBuilder builder = new StringBuilder(10);
             String s;
             while ((s = in.readLine()) != null) {
-                ensemble_du_fichier += "\n" + s;
+                builder.append("\n").append(s);
             }
-            in.close();
-            ensemble_du_fichier = ensemble_du_fichier.replace("-", "");
-            ensemble_du_fichier = ensemble_du_fichier.replace("[cave]", "-[cave]");
+            final String ensembleDuFichier = builder.toString().replace("-", "").replace("[cave]", "-[cave]");
+            final String[] niveaux = ensembleDuFichier.split("-");
 
-            niveaux = ensemble_du_fichier.split("-");
-
-            // r�cup�ration des infromations de l'ensemble de niveaux
-            String ensemble_de_niveaux_informations = niveaux[0];
-            int nombre_de_niveaux = Integer.valueOf(getStr(ensemble_de_niveaux_informations, "Caves=", "\n"));
-            ensemble = new EnsembleDeNiveaux(nombre_de_niveaux);
-            // r�cup�ration des niveaux
-            for (int i = 1; i <= ensemble.getNombre_de_niveaux(); i++) {
-                Niveau niveau = charger_niveau(niveaux[i]);
-                if (!niveau.equals(null)) { ensemble.ajouterNiveau(niveau); }
+            // recuperation des infromations de l'ensemble de niveaux
+            final String ensembleDeNiveauxInformations = niveaux[0];
+            final int nombreDeNiveaux = Integer.valueOf(getStr(ensembleDeNiveauxInformations, "Caves=", "\n"));
+            final EnsembleDeNiveaux ensemble = new EnsembleDeNiveaux(nombreDeNiveaux);
+            // recuperation des niveaux
+            for (int i = 1; i <= ensemble.getNombreDeNiveaux(); i++) {
+                final Niveau niveau = chargerNiveau(niveaux[i]);
+                if (niveau != null) {
+                    ensemble.ajouterNiveau(niveau);
+                }
             }
-
             ensemble.setNbNiveaux(ensemble.getNiveaux().size());
             return ensemble;
-        } catch (Exception e) {
-            System.err.println("Impossible de charger les niveaux.");
+        } catch (final IOException ignored) {
+            err.println("Impossible de charger les niveaux.");
+            exit(-1);
             return null;
         }
 
     }
 
     /**
-     * M�thode qui prend en param�tre un string contenant un niveau boulder dash
+     * M�thode qui prend en parametre un string contenant un niveau boulder dash
      * et en fait un objet {@link Niveau}.
      *
      * @param niveau Le string contenant un niveau boulder dash.
      *
-     * @return Le niveau mod�lis� � partir du string.
+     * @return Le niveau mode lis à partir du string.
      */
-    private static Niveau charger_niveau(String niveau) {
-        String diamond;
-
-        try {
-            diamond = getStr(niveau, "DiamondValue=", "\n");
-        } catch (Exception e) {
-            diamond = "";
-        }
-        String map_string;
-        try {
-            map_string = getStr(niveau, "[map]\n", "[/map]");
-        } catch (Exception e) {
-            return null;
-        }
+    private static Niveau chargerNiveau(final String niveau) {
+        final String diamond = getStr(niveau, "DiamondValue=", "\n");
+        final String maps = getStr(niveau, "[map]\n", "[/map]");
         int caveDelay;
         try {
             caveDelay = Integer.valueOf(getStr(niveau, "CaveDelay=", "\n"));
@@ -149,7 +135,7 @@ public class Loader {
             magic_wall_time = -1;
         }
 
-        String[] lignes = map_string.split("\n");
+        String[] lignes = maps.split("\n");
         int mapHauteur = lignes.length;
         int mapLongueur = lignes[1].length();
         Entitee[][] map = new Entitee[mapLongueur][mapHauteur];
@@ -195,7 +181,7 @@ public class Loader {
             String ensemble_de_niveaux_informations = niveaux[0];
             return ensemble_de_niveaux_informations;
         } catch (Exception e) {
-            System.err.println("Impossible de charger le niveau");
+            err.println("Impossible de charger le niveau");
             return "\n";
         }
     }
@@ -203,7 +189,7 @@ public class Loader {
     /**
      * Cette m�thode cr�e un objet {@link Entitee} � partir de diverses
      * informations.
-     * Elle est appel�e par {@link Loader#charger_niveau(String)} pour cr�er la
+     * Elle est appel�e par {@link Loader#chargerNiveau(String)} pour cr�er la
      * carte du niveau.
      *
      * @param car Le caract�re repr�sentant l'entit�e.
@@ -245,32 +231,32 @@ public class Loader {
     }
 
     /**
-     * Prend un string en param�tre et renvoit un sous-string se trouvant dans
-     * le premier string qui est d�limit� par le deuxi�me string et le troisi�me
-     * string tous deux en param�tre.*
+     * Prend un string en parametre et renvoit un sous-string se trouvant dans
+     * le premier string qui est delimite par le deuxieme string et le troisieme
+     * string tous deux en parametre.*
      *
      * @param texte Le string source.
-     * @param string1 Le d�limiteur 1.
-     * @param string2 Le d�limiteur 2.
+     * @param basliseEntrante Le delimiteur 1.
+     * @param baliseSortante Le delimiteur 2.
      *
-     * @return Le r�sultat.
+     * @return Le resultat.
      */
-    private static String getStr(String texte, String string1, String string2) {
-        String s = getStr(texte, string1);
-        return s.substring(s.indexOf(string1) + 1, s.indexOf(string2));
+    private static String getStr(final String texte, final String basliseEntrante, final String baliseSortante) {
+        final String str = getStr(texte, basliseEntrante);
+        return str.substring(str.indexOf(basliseEntrante) + 1, str.indexOf(baliseSortante));
     }
 
     /**
-     * Prend un string en param�tre et renvoit un sous-string se trouvant dans
-     * le premier string qui est d�limit� par le deuxi�me string en param�tre.
+     * Prend un string en parametre et renvoit un sous-string se trouvant dans
+     * le premier string qui est delimite par le deuxieme string en parametre.
      *
      * @param texte Le string source.
-     * @param string1 Le d�limiteur.
+     * @param baliseEntrante Le delimiteur.
      *
-     * @return Le r�sultat.
+     * @return Le resultat.
      */
-    private static String getStr(String texte, String string1) {
-        return texte.substring(texte.indexOf(string1) + string1.length());
+    private static String getStr(final String texte, final String baliseEntrante) {
+        return texte.substring(texte.indexOf(baliseEntrante) + baliseEntrante.length());
     }
 
 }

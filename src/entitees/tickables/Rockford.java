@@ -2,95 +2,97 @@ package entitees.tickables;
 
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
-import main.Constantes;
-import main.Partie;
 
-import static entitees.abstraites.Entitee.Entitees.*;
-import static entitees.abstraites.Entitee.Entitees.Diamant;
-import static entitees.abstraites.Entitee.Entitees.Explosion;
-import static entitees.abstraites.Entitee.Entitees.Libellule;
-import static entitees.abstraites.Entitee.Entitees.Luciole;
-import static entitees.abstraites.Entitee.Entitees.Pierre;
-import static entitees.abstraites.Entitee.Entitees.Rockford;
+import static entitees.abstraites.Entitee.Type.*;
+import static entitees.abstraites.Entitee.Type.Diamant;
+import static entitees.abstraites.Entitee.Type.Explosion;
+import static entitees.abstraites.Entitee.Type.Libellule;
+import static entitees.abstraites.Entitee.Type.Luciole;
+import static entitees.abstraites.Entitee.Type.Pierre;
+import static entitees.abstraites.Entitee.Type.Rockford;
+import static main.Constantes.BAS;
+import static main.Constantes.BOMB;
+import static main.Constantes.CACHER;
+import static main.Constantes.DROITE;
+import static main.Constantes.GAUCHE;
+import static main.Constantes.HAUT;
+import static main.Constantes.NOMBRE_DE_BOMBES;
+import static main.Partie.SONS;
+import static main.Partie.checkEntite;
+import static main.Partie.gererNiveau;
+import static main.Partie.setEntiteParPosition;
 
-public class Rockford extends Tickable {
+public final class Rockford extends Tickable {
 
-    private char    ancienneDirection = 'd';
-    private int     nombreDeBombe     = Constantes.NOMBRE_DE_BOMBES;
+    private char ancienneDirection = DROITE;
+    private int  nombreDeBombe     = NOMBRE_DE_BOMBES;
     private boolean bombeAPoser;
 
-    public Rockford(int x, int y) {
-        super(x, y);
-        setDestructible(true);
+    public Rockford(final int positionX, final int positionY) {
+        super(positionX, positionY, Rockford, true);
         setDirection(' ');
-        getDeplacementsPossibles().add(Poussiere);
-        getDeplacementsPossibles().add(Diamant);
-        getDeplacementsPossibles().add(Pierre);
-        getDeplacementsPossibles().add(Sortie);
-        getDeplacementsPossibles().add(Amibe);
-        getDeplacementsPossibles().add(Libellule);
-        getDeplacementsPossibles().add(Luciole);
-        getDeplacementsPossibles().add(Explosion);
-        enumeration = Rockford;
-    }
-
-    public void ramasserDiamant(Diamant d) {
-        if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {
-            Partie.gererNiveau
-              .setScore(Partie.gererNiveau.getScore() + Partie.gererNiveau.getNiveau().getDiamond_value_bonus());
-        } else {
-            Partie.gererNiveau
-              .setScore(Partie.gererNiveau.getScore() + Partie.gererNiveau.getNiveau().getDiamond_value());
-        }
-        Partie.gererNiveau.incrementerNbDiamants(d);
+        addDeplacementPossible(Poussiere, Diamant, Pierre, Sortie, Amibe, Libellule, Luciole, Explosion);
     }
 
     @Override
-    protected int contactAutreEntitee(Entitee entitee) {
-        if (entitee.is(Pierre)) {
-            if (entitee.getX() - getX() > 0
-                && Partie.gererNiveau.getNiveau().getMap()[entitee.getX() + 1][entitee.getY()].is(Vide)) {
-                ((entitees.tickables.Pierre) entitee).setDirection('d');
-                ((entitees.tickables.Pierre) entitee).seDeplacer();
-            } else if (entitee.getX() - getX() < 0
-                       && Partie.gererNiveau.getNiveau().getMap()[entitee.getX() - 1][entitee.getY()].is(Vide)) {
-                ((entitees.tickables.Pierre) entitee).setDirection('g');
-                ((entitees.tickables.Pierre) entitee).seDeplacer();
-            }
-            return 0;
-        } else if (entitee.is(Diamant)) {
-            entitee.mourir();
-            ramasserDiamant((Diamant) entitee);
-            return 1;
-        } else if (entitee.is(Sortie)) {
-            if (Partie.gererNiveau.getNbDiamants() >= Partie.gererNiveau.getNiveau().getDiamonds_required()) {
-                Partie.gererNiveau.setFiniSuccess(true);
-                Partie.gererNiveau.setDemandeFin(true);
-                return 1;
-            }
-            return 0;
-        } else if (entitee.is(Amibe)) {
-            mourir();
-            return -1;
-        } else if (entitee.is(Explosion)) {
-            mourir();
-            return -1;
-        } else if (entitee.is(Libellule)) {
-            mourir();
-            return -1;
-        } else if (entitee.is(Luciole)) {
-            mourir();
-            return -1;
+    public Entitee nouvelle() {
+        return new Rockford(getPositionX(), getPositionY());
+    }
+
+    public static void ramasserDiamant(final Diamant diamant) {
+        if (gererNiveau.getNbDiamants() >= gererNiveau.getNiveau().getDiamondsRequired()) {
+            gererNiveau.setScore(gererNiveau.getScore() + gererNiveau.getNiveau().getDiamondValueBonus());
+        } else {
+            gererNiveau.setScore(gererNiveau.getScore() + gererNiveau.getNiveau().getDiamondValue());
         }
-        return 1;
+        gererNiveau.incrementerNbDiamants(diamant);
+    }
+
+    @Override
+    public int contactAutreEntitee(final Entitee entitee) {
+        int retour = 0;
+        final int positionX = entitee.getPositionX();
+        final int positionY = entitee.getPositionY();
+        switch (entitee.getType()) {
+            case Pierre:
+                if (positionX - getPositionX() > 0 && checkEntite(positionX + 1, positionY, Vide)) {
+                    ((Pierre) entitee).setDirection(DROITE);
+                } else if (positionX - getPositionX() < 0 && checkEntite(positionX - 1, positionY, Vide)) {
+                    ((Pierre) entitee).setDirection(GAUCHE);
+                }
+                ((Pierre) entitee).seDeplacer();
+                break;
+            case Diamant:
+                entitee.mourir();
+                ramasserDiamant((Diamant) entitee);
+                retour = 1;
+                break;
+            case Sortie:
+                if (gererNiveau.getNbDiamants() >= gererNiveau.getNiveau().getDiamondsRequired()) {
+                    gererNiveau.setFiniSuccess(true);
+                    gererNiveau.setDemandeFin(true);
+                    retour = 1;
+                }
+                break;
+            case Amibe:
+            case Explosion:
+            case Libellule:
+            case Luciole:
+                mourir();
+                retour = -1;
+                break;
+            default:
+                retour = 1;
+        }
+        return retour;
     }
 
     @Override
     public void tick() {
-        setDirection(Partie.gererNiveau.getToucheClavier());
+        setDirection(gererNiveau.getToucheClavier());
         checkCamouflage();
-        if (enumeration == Rockford) {
-            if (getDirection() == 'B') {
+        if (getType() == Rockford) {
+            if (getDirection() == BOMB) {
                 poserBombe();
             } else if (deplacement()) {
                 checkBombe();
@@ -99,44 +101,52 @@ public class Rockford extends Tickable {
     }
 
     private void checkBombe() {
-        if (bombeAPoser == true && !Partie.gererNiveau.isTourParTour()) {
-            int x = 0, y = 0;
-            if (getDirection() == 'h') {
+        if (bombeAPoser && !gererNiveau.isTourParTour()) {
+            int x = 0;
+            int y = 0;
+            if (getDirection() == HAUT) {
                 y = -1;
-            } else if (getDirection() == 'd') {
+            } else if (getDirection() == DROITE) {
                 x = 1;
-            } else if (getDirection() == 'g') {
+            } else if (getDirection() == GAUCHE) {
                 x = -1;
-            } else if (getDirection() == 'b') {
+            } else if (getDirection() == BAS) {
                 y = 1;
             }
-            Partie.gererNiveau.getNiveau().getMap()[getX() - x][getY() - y] = new Bombe(getX() - x, getY() - y);
+            setEntiteParPosition(getPositionX() - x, getPositionY() - y,
+                                 new Bombe(getPositionX() - x, getPositionY() - y));
             bombeAPoser = false;
             nombreDeBombe--;
         }
     }
 
     @Override
-    protected void gererChute() {
-        if (chute && placeLibre(getX(), getY() + 1)) {
-            setDirection('b');
+    public void gererChute() {
+        if (isChute() && placeLibre(getPositionX(), getPositionY() + 1)) {
+            setDirection(BAS);
             seDeplacer();
-        } else if (Partie.gererNiveau.getNiveau().testEntitee(getX(), getY() + 1, Vide)) {
-            chute = true;
+        } else if (checkEntite(getPositionX(), getPositionY() + 1, Vide)) {
+            setChute(true);
             gererChute();
         } else {
-            if (!placeLibre(getX(), getY() + 1)) {
-                chute = false;
+            if (!placeLibre(getPositionX(), getPositionY() + 1)) {
+                setChute(false);
             }
             glisser();
         }
+    }
 
+    @Override
+    public int getNumeroPriorite() {
+        return 5;
     }
 
     private boolean deplacement() {
         if (getDirection() != ' ') {
-            sons.jouerSon1("walk_earth.wav", 1);
-            if (seDeplacer()) { return true; }
+            SONS.jouerSonWalkEart();
+            if (seDeplacer()) {
+                return true;
+            }
         }
         return false;
     }
@@ -144,21 +154,21 @@ public class Rockford extends Tickable {
     @Override
     public boolean mourir() {
         super.mourir();
-        sons.jouerSon3("mortRockford.wav", 1);
-        Partie.gererNiveau.setDemandeReset(true);
+        SONS.jouerSonMortRockford();
+        gererNiveau.setDemandeReset(true);
         return true;
     }
 
-    public void checkCamouflage() {
-        if (Partie.gererNiveau.getToucheClavier() == 'p' && enumeration == Rockford) {
+    private void checkCamouflage() {
+        if (gererNiveau.getToucheClavier() == CACHER && getType() == Rockford) {
             seCamoufler();
-        } else if (enumeration == Pierre && Partie.gererNiveau.getToucheClavier() != 'p') {
+        } else if (getType() == Pierre && gererNiveau.getToucheClavier() != CACHER) {
             seDecamoufler();
         }
     }
 
     private void seCamoufler() {
-        enumeration = Pierre;
+        setType(Pierre);
         getDeplacementsPossibles().remove(Poussiere);
         getDeplacementsPossibles().remove(Diamant);
         getDeplacementsPossibles().remove(Sortie);
@@ -168,7 +178,7 @@ public class Rockford extends Tickable {
     }
 
     private void seDecamoufler() {
-        enumeration = Rockford;
+        setType(Rockford);
         getDeplacementsPossibles().add(Poussiere);
         getDeplacementsPossibles().add(Diamant);
         getDeplacementsPossibles().add(Sortie);
@@ -177,14 +187,14 @@ public class Rockford extends Tickable {
         getDeplacementsPossibles().remove(Amibe);
     }
 
-    public void poserBombe() {
+    private void poserBombe() {
         if (nombreDeBombe > 0) {
             bombeAPoser = true;
         }
     }
 
     public boolean camouflageActif() {
-        return getEnumeration() == Pierre;
+        return getType() == Pierre;
     }
 
     public char getAncienneDirection() {

@@ -49,14 +49,14 @@ public class ScorePanel extends JPanel {
          * Dessine les diverses informations.
 		 */
         g.drawString("Diamants : " + Partie.gererNiveau.getNbDiamants() + "/"
-                     + Partie.gererNiveau.getNiveau().getDiamonds_required(), getWidth() / 19, getHeight() / 2);
+                     + Partie.gererNiveau.getNiveau().getDiamondsRequired(), getWidth() / 19, getHeight() / 2);
         g.drawString("Score : " + Partie.gererNiveau.getScore(), getWidth() * 18 / 70, getHeight() / 2);
         g.drawString("Temps restant : " + Partie.gererNiveau.getTempsRestant(), getWidth() * 42 / 100, getHeight() / 2);
-        g.drawString("Niveau : " + Partie.niveau + "/" + Partie.ensembleDeNiveau.getNombre_de_niveaux(),
+        g.drawString("Niveau : " + Partie.niveau + "/" + Partie.ensembleDeNiveau.getNombreDeNiveaux(),
                      getWidth() * 19 / 30, getHeight() / 2);
-        g.drawString("Points/diamant : " + Partie.gererNiveau.getNiveau().getDiamond_value(), getWidth() * 41 / 50,
+        g.drawString("Points/diamant : " + Partie.gererNiveau.getNiveau().getDiamondValue(), getWidth() * 41 / 50,
                      getHeight() * 12 / 30);
-        g.drawString("(bonus) : " + Partie.gererNiveau.getNiveau().getDiamond_value_bonus(), getWidth() * 42 / 50,
+        g.drawString("(bonus) : " + Partie.gererNiveau.getNiveau().getDiamondValueBonus(), getWidth() * 42 / 50,
                      getHeight() * 22 / 30);
 
     }

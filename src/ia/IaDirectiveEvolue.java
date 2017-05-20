@@ -10,52 +10,28 @@ import main.GererNiveau;
 import main.Partie;
 import outils.Score;
 
+import static java.lang.Math.random;
+import static java.lang.System.out;
 import static main.Constantes.NOMBRE_DE_TRY_GENERATION;
+import static main.Constantes.POURCENTAGE_DE_ALEATOIRE;
+import static main.Constantes.POURCENTAGE_DE_SURVIVANTS;
+import static main.Constantes.VITESSE_JEU_TEMPS_REEL;
+import static main.Partie.ensembleDeNiveau;
+import static main.Partie.finiEvolution;
+import static main.Partie.gererNiveau;
 
 public class IaDirectiveEvolue extends Ia {
 
-    private final List<Score> liste = new ArrayList<>();
-    private       Score scoreActuel;
-    private final int   nbGenerations;
-    private       int         generationActuelle = 1;
-    private       int         trysDeGeneration   = NOMBRE_DE_TRY_GENERATION;
-    private final List<Score> liste2             = new ArrayList<>();
-    private double tailleCheminMaximale;
-    private int    nbObjectifs;
+    private final List<Score> scoreDirective = new ArrayList<>(10);
+    private final List<Score> scoreAleatoire = new ArrayList<>(10);
+    private final int nbGenerations;
+    private int generationActuelle = 1;
+    private int trysDeGeneration   = NOMBRE_DE_TRY_GENERATION;
 
-    public IaDirectiveEvolue(int nbGenerations) {
+
+    public IaDirectiveEvolue(final int nbGenerations) {
         this.nbGenerations = nbGenerations;
-        String chemin;
-        for (int i = 0; i < NOMBRE_DE_TRY_GENERATION; i++) {
-            Partie.gererNiveau = new GererNiveau(Partie.ensembleDeNiveau.getNiveaux().get(Partie.niveau - 1).clone());
-            Partie.finiEvolution = false;
-            chemin = "";
-            GererNiveau g = Partie.gererNiveau;
-            IaDirective ia = new IaDirective();
-            for (int j = 0;
-                 j < Partie.gererNiveau.getNiveau().getCaveDelay()
-                     * Partie.gererNiveau.getNiveau().getCave_time() * Constantes.VITESSE_JEU_TEMPS_REEL;
-                 j++) {
-                if (g.isDemandeReset() || g.isDemandeFin()) {
-                    while (g.getTrajet().length() + chemin.length() <= Partie.gererNiveau.getNiveau().getCaveDelay()
-                                                                       *
-                                                                       Partie.gererNiveau.getNiveau().getCave_time() *
-                                                                       Constantes.VITESSE_JEU_TEMPS_REEL) {
-                        chemin += Ia.directionRandom();
-                    }
-                } else {
-                    g.tickIaDirevol(ia);
-                }
-            }
-
-            chemin = g.getTrajet() + chemin;
-            Score s;
-            s = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, chemin);
-            liste.add(s);
-        }
-
-        Collections.sort(liste);
-
+        computeScoresDirective();
     }
 
     @Override
@@ -70,126 +46,115 @@ public class IaDirectiveEvolue extends Ia {
         } else {
             trysDeGeneration = NOMBRE_DE_TRY_GENERATION;
             if (generationActuelle > nbGenerations) {
-                Partie.gererNiveau.setTrajet(liste.get(0).getChemin());
-                Partie.gererNiveau.setScore(liste.get(0).getScore());
+                gererNiveau.setTrajet(scoreDirective.get(0).getChemin());
+                gererNiveau.setScore(scoreDirective.get(0).getScore());
                 Partie.finNiveau();
             }
             generationActuelle++;
         }
     }
 
-    public Score debut() {
-        Score aReturn;
-        while (!critereArret()) {
-            System.out.println("Génération " + generationActuelle + "/" + nbGenerations);
-            generationActuelle++;
-            for (int i = 0; i < NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS
-                                / 100; i++) {
-                Score s = new Score(liste.get(i).getScore(), liste.get(i).getParcours(),
-                                    liste.get(i).getListeDiamants());
-                s.setChemin(liste.get(i).getChemin());
-                liste2.add(s);
-            }
-            for (int i = 0; i < NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE
-                                / 100; i++) {
-                Partie.finiEvolution = false;
-                String chemin = "";
-                for (int j = 0; j < tailleCheminMaximale; j++) {
-                    chemin += Ia.directionRandom();
-                }
-                Score s;
-                s = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, chemin);
-                liste2.add(s);
-            }
-            for (int i = 0;
-                 i < NOMBRE_DE_TRY_GENERATION
-                     - NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_SURVIVANTS / 100
-                     - NOMBRE_DE_TRY_GENERATION * Constantes.POURCENTAGE_DE_ALEATOIRE / 100;
-                 i++) {
-
-                int rng = (int) (Math.random()
-                                 * (Constantes.POURCENTAGE_DES_SELECTIONNES * NOMBRE_DE_TRY_GENERATION) /
-                                 100.0);
-                Score s = liste.get(rng);
-
-                Partie.gererNiveau = new GererNiveau(
-                                                      Partie.ensembleDeNiveau.getNiveaux()
-                                                                             .get(Partie.niveau - 1)
-                                                                             .clone());
-                int tailleMutation = 2;
-                String chemin = "";
-                GererNiveau g = Partie.gererNiveau;
-                if (g.isDemandeFin()) {
-                    tailleMutation = 0;
-                }
-                IaDirective ia = new IaDirective();
-                for (int j = 0; j < s.getParcours() - tailleMutation; j++) {
-                    g.tickIaController(ia, s.getChemin().charAt(j));
-                    // System.out.println(g.getNiveau().getRockford().getX() + "
-                    // ; " + g.getNiveau().getRockford().getY());
-                }
-                // System.out.println(" ");
-                for (int j = s.getParcours() - tailleMutation; j < s.getParcours(); j++) {
-                    char c = Ia.directionRandom();
-                    g.tickIaController(ia, c);
-                    // System.out.print(c);
-                }
-                // System.out.println(finChemin);
-                for (int j = s.getParcours(); j < s.getChemin().length(); j++) {
-                    // g = Partie.gererNiveau;
-                    if (g.isDemandeReset() || g.isDemandeFin()) {
-                        while (g.getTrajet().length()
-                               + chemin.length() <= Partie.gererNiveau.getNiveau().getCaveDelay()
-                                                    * Partie.gererNiveau.getNiveau().getCave_time()
-                                                    * Constantes.VITESSE_JEU_TEMPS_REEL) {
-                            chemin += Ia.directionRandom();
-                        }
-                    } else {
-                        g.tickIaDirevol(ia);
+    private void computeScoresDirective() {
+        for (int i = 0; i < NOMBRE_DE_TRY_GENERATION; i++) {
+            gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(Partie.niveau - 1).clone());
+            finiEvolution = false;
+            final StringBuilder chemin = new StringBuilder();
+            final GererNiveau gererNiveau = Partie.gererNiveau;
+            final IaDirective directive = new IaDirective();
+            final int caveDelay = Partie.gererNiveau.getNiveau().getCaveDelay();
+            final int caveTime = Partie.gererNiveau.getNiveau().getCaveTime();
+            final double time = caveDelay * caveTime * VITESSE_JEU_TEMPS_REEL;
+            for (int j = 0; j < time; j++) {
+                if (gererNiveau.isDemandeReset() || gererNiveau.isDemandeFin()) {
+                    while (gererNiveau.getTrajet().length() + chemin.length() <= time) {
+                        chemin.append(Ia.directionRandom());
                     }
+                } else {
+                    gererNiveau.tickIaDirevol(directive);
                 }
-                chemin = g.getTrajet() + chemin;
-                s.setChemin(chemin);
-                // s.setChemin(s.getChemin().substring(0, s.getParcours() -
-                // tailleMutation) + finChemin);
-                s = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, chemin);
-                liste2.add(s);
             }
-            liste.clear();
-            for (int i = 0; i < liste2.size(); i++) {
-                liste.add(liste2.get(i));
-            }
-            liste2.clear();
-            Collections.sort(liste);
-
+            final String trajet = gererNiveau.getTrajet() + chemin;
+            final Score score = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, trajet);
+            scoreDirective.add(score);
         }
-
-        aReturn = liste.get(0);
-        return aReturn;
+        Collections.sort(scoreDirective);
     }
 
-    public boolean critereArret() {
+    public Score computeScores() {
+        while (!critereArret()) {
+            out.printf("Génération %d/%d%n", generationActuelle, nbGenerations);
+            generationActuelle++;
+            final int survivants = NOMBRE_DE_TRY_GENERATION * POURCENTAGE_DE_SURVIVANTS;
+            for (int i = 0; i < survivants / 100; i++) {
+                final Score unScore = scoreDirective.get(i);
+                final Score score = new Score(unScore.getScore(), unScore.getParcours(), unScore.getListDiamants());
+                score.setChemin(unScore.getChemin());
+                scoreAleatoire.add(score);
+            }
+            final int aleatoires = NOMBRE_DE_TRY_GENERATION * POURCENTAGE_DE_ALEATOIRE;
+            for (int i = 0; i < aleatoires / 100; i++) {
+                finiEvolution = false;
+                final StringBuilder chemin = new StringBuilder();
+                // FIXME a calculer
+                int tailleCheminMaximale = 1;
+                for (int j = 0; j < tailleCheminMaximale; j++) {
+                    chemin.append(Ia.directionRandom());
+                }
+                final Score score = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, chemin.toString());
+                scoreAleatoire.add(score);
+            }
+            for (int i = 0; i < NOMBRE_DE_TRY_GENERATION - survivants / 100 - aleatoires / 100; i++) {
+                final int rng =
+                  (int) (random() * (Constantes.POURCENTAGE_DES_SELECTIONNES * NOMBRE_DE_TRY_GENERATION) / 100);
+                Score score = scoreDirective.get(rng);
+                gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(Partie.niveau - 1).clone());
+                int tailleMutation = 2;
+                final StringBuilder chemin = new StringBuilder(10);
+                final GererNiveau niveau = gererNiveau;
+                if (niveau.isDemandeFin()) {
+                    tailleMutation = 0;
+                }
+                final IaDirective ia = new IaDirective();
+                for (int j = 0; j < score.getParcours() - tailleMutation; j++) {
+                    niveau.tickIaController(ia, score.getChemin().charAt(j));
+                }
+                for (int j = score.getParcours() - tailleMutation; j < score.getParcours(); j++) {
+                    final char direction = Ia.directionRandom();
+                    niveau.tickIaController(ia, direction);
+                }
+                for (int j = score.getParcours(); j < score.getChemin().length(); j++) {
+                    // niveau = Partie.gererNiveau;
+                    if (niveau.isDemandeReset() || niveau.isDemandeFin()) {
+                        final double cheminMax = gererNiveau.getNiveau().getCaveDelay()
+                                         * gererNiveau.getNiveau().getCaveTime()
+                                         * VITESSE_JEU_TEMPS_REEL;
+                        while (niveau.getTrajet().length() + chemin.length() <= cheminMax) {
+                            chemin.append(Ia.directionRandom());
+                        }
+                    } else {
+                        niveau.tickIaDirevol(ia);
+                    }
+                }
+                final String parcours  = niveau.getTrajet() + chemin;
+                score.setChemin(parcours);
+                // score.setChemin(score.getChemin().substring(0, score.getParcours() -
+                // tailleMutation) + finChemin);
+                final Score fichierScore = Partie.jouerFichierScore(Partie.cheminFichier, Partie.niveau, parcours);
+                scoreAleatoire.add(fichierScore);
+            }
+            scoreDirective.clear();
+            for (final Score aScoreAleatoire : scoreAleatoire) {
+                scoreDirective.add(aScoreAleatoire);
+            }
+            scoreAleatoire.clear();
+            Collections.sort(scoreDirective);
+        }
+        return scoreDirective.get(0);
+    }
+
+    private boolean critereArret() {
         return generationActuelle > nbGenerations;
     }
 
-    public void ajouterScore() {
-        scoreActuel = new Score(Partie.gererNiveau.getScore(), Partie.gererNiveau.getTrajet().length(),
-                                Partie.gererNiveau.getListeDiamants());
-        scoreActuel.setChemin(Partie.parcours);
-        liste.add(scoreActuel);
-        Collections.sort(liste);
-    }
-
-    public int getNbGenerations() {
-        return nbGenerations;
-    }
-
-    public int getGenerationActuelle() {
-        return generationActuelle;
-    }
-
-    public int getNbObjectifs() {
-        return nbObjectifs;
-    }
 
 }

@@ -3,19 +3,19 @@ package main;
 import java.awt.BorderLayout;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import controleurs.ControleurConsole;
+import entitees.abstraites.Entitee;
+import entitees.abstraites.Entitee.Type;
 import ia.Ia;
 import ia.IaDirective;
 import ia.IaDirectiveEvolue;
 import ia.IaEvolue;
 import ia.IaRandom;
 import loader.EnsembleDeNiveaux;
-import loader.Loader;
 import menu.SousMenu;
 import outils.Ecrivain;
 import outils.Paire;
@@ -26,9 +26,12 @@ import vue.GraphiqueConsole;
 import vue.JeuPanel;
 import vue.ScorePanel;
 
+import static java.lang.System.out;
+import static loader.Loader.chargerEnsembleDeNiveaux;
+
 public class Partie {
 
-    public static final List<Integer> SCORES = new ArrayList<Integer>();
+    public static final List<Integer> SCORES = new ArrayList<>(10);
     public static String            cheminFichier;
     public static boolean           finiEvolution;
     public static EnsembleDeNiveaux ensembleDeNiveau;
@@ -37,52 +40,64 @@ public class Partie {
     public static boolean           tousLesNiveaux;
     public static boolean           IA;
     public static Ia                ia;
-    public static boolean           lecture, simulation;
-    public static String parcours;
-    public static SonToolKit sons      = new SonToolKit();
-    static        DateFormat df        = new SimpleDateFormat("dd:MM:yyyy_HH:mm:ss");
-    static        Date       today     = Calendar.getInstance().getTime();
-    static        String     dateDebut = df.format(today);
+    public static boolean           lecture;
+    public static boolean           simulation;
+    public static String            parcours;
+    public static final  SonToolKit SONS = new SonToolKit();
+    private static final DateFormat DF   = SimpleDateFormat.("dd:MM:yyyy_HH:mm:ss");
+    private static final LocalDateTime TODAY     = LocalDateTime.now();
+    private static final String        DATEDEBUT = DF.format(TODAY);
 
-    public static void commencerPartie(String chemin) {
-        ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(chemin);
-        tousLesNiveaux = true;
-        niveau = 1;
-        lancerNiveau();
-    }
-
-    public static void commencerPartie(String chemin, int niveau) {
-        ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(chemin);
-        tousLesNiveaux = false;
-        Partie.niveau = niveau;
-        lancerNiveau();
-    }
-
-    public static void jouerFichier(String cheminFichierBDCFF, int niveau, String parcours) {
-        ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
-        cheminFichier = cheminFichierBDCFF;
-        tousLesNiveaux = false;
-        Partie.niveau = niveau;
-        lecture = true;
-        Partie.parcours = parcours;
-        lancerNiveau();
-    }
-
-    public static Score jouerFichierScore(String chemin, int niveau, String parcours) {
-        ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(chemin);
+    private static void initialiserNiveaux(final String chemin) {
         cheminFichier = chemin;
+        ensembleDeNiveau = chargerEnsembleDeNiveaux(chemin);
         tousLesNiveaux = false;
-        Partie.niveau = niveau;
+        niveau = 1;
+    }
+
+    public static void commencerPartie(final String chemin) {
+        initialiserNiveaux(chemin);
+        tousLesNiveaux = true;
+        lancerNiveau();
+    }
+
+    public static void commencerPartie(final String chemin, final int niv) {
+        initialiserNiveaux(chemin);
+        niveau = niv;
+        lancerNiveau();
+    }
+
+    public static void commencerPartie(final String chemin, final int niv, final String parc) {
+        initialiserNiveaux(chemin);
+        niveau = niv;
         lecture = true;
-        Partie.parcours = parcours;
-        String parcours2 = parcours;
-        gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
-        Score s;
+        parcours = parc;
+        lancerNiveau();
+    }
+
+    public static Entitee getEntiteParPosition(final int positionX, final int positionY) {
+        return gererNiveau.getNiveau().getMap()[positionX][positionY];
+    }
+
+    public static void setEntiteParPosition(final int positionX, final int positionY, final Entitee entitee) {
+        gererNiveau.getNiveau().getMap()[positionX][positionY] = entitee;
+    }
+
+    public static boolean checkEntite(final int positionX, final int positionY, final Type type) {
+        return gererNiveau.getNiveau().testEntitee(positionX, positionY, type);
+    }
+
+    public static Score jouerFichierScore(final String chemin, final int niv, final String parc) {
+        initialiserNiveaux(chemin);
+        niveau = niv;
+        lecture = true;
+        parcours = parc;
+        gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1));
         String parcoursParcouru = "";
-        int score = 0;
+        int scores = 0;
         List<Paire<Integer, Long>> liste = null;
-        while (parcours.length() > 0 && !gererNiveau.isDemandeReset() && !gererNiveau.isDemandeFin()) {
-            char direction = parcours.charAt(0);
+        while (!parcours.isEmpty() && !gererNiveau.isDemandeReset() && !gererNiveau.isDemandeFin()) {
+            final char direction = parcours.charAt(0);
             parcours = parcours.substring(1, parcours.length());
             parcoursParcouru += direction;
             liste = gererNiveau.getListeDiamants();
@@ -91,14 +106,10 @@ public class Partie {
                 break;
             }
         }
-        s = new Score(score, parcoursParcouru.length(), liste);
-        s.setChemin(parcours2);
-        if (gererNiveau.isDemandeFin()) {
-            s.setFini(true);
-        } else {
-            s.setFini(false);
-        }
-        return s;
+        final Score score = new Score(scores, parcoursParcouru.length(), liste);
+        score.setChemin(parc);
+        score.setFini(gererNiveau.isDemandeFin());
+        return score;
     }
 
     public static void resetNiveau() {
@@ -119,8 +130,7 @@ public class Partie {
 
     public static Score calculerStrategie(String strategie, String cheminFichierBDCFF, int niveau) {
         IA = true;
-
-        ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
+        ensembleDeNiveau = chargerEnsembleDeNiveaux(cheminFichierBDCFF);
         Partie.niveau = niveau;
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
         if (strategie.equals("-simplet")) {
@@ -143,7 +153,7 @@ public class Partie {
                                                 int niveau) {
         IA = true;
         cheminFichier = cheminFichierBDCFF;
-        ensembleDeNiveau = Loader.charger_ensemble_de_niveaux(cheminFichierBDCFF);
+        ensembleDeNiveau = chargerEnsembleDeNiveaux(cheminFichierBDCFF);
         Partie.niveau = niveau;
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
 
@@ -157,7 +167,7 @@ public class Partie {
         if (ia instanceof IaEvolue) {
             score = ((IaEvolue) ia).debut();
         } else if (ia instanceof IaDirectiveEvolue) {
-            score = ((IaDirectiveEvolue) ia).debut();
+            score = ((IaDirectiveEvolue) ia).computeScores();
         }
 
         SousMenu.finIA(score);
@@ -165,7 +175,7 @@ public class Partie {
     }
 
     public static void finNiveau() {
-        sons.stopAll();
+        SONS.stopAll();
         finiEvolution = true;
         Coeur.running = false;
         if (!lecture && !simulation) {
@@ -174,7 +184,7 @@ public class Partie {
         if (tousLesNiveaux) {
             SCORES.add(gererNiveau.getScore());
         }
-        if (tousLesNiveaux && niveau < ensembleDeNiveau.getNombre_de_niveaux()) {
+        if (tousLesNiveaux && niveau < ensembleDeNiveau.getNombreDeNiveaux()) {
             if (!Coeur.graphique) {
                 ControleurConsole.prochainNiveau(niveau, gererNiveau.getScore());
             }
@@ -197,7 +207,7 @@ public class Partie {
                 GraphiqueConsole.afficherScoreTousLesNiveaux(SCORES);
 
             } else {
-                GraphiqueConsole.afficherScoreUnNiveau(niveau, gererNiveau.getScore());
+                afficherScoreUnNiveau(niveau, gererNiveau.getScore());
             }
         }
     }
@@ -207,23 +217,20 @@ public class Partie {
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
         Coeur.running = true;
         if (Coeur.graphique) {
-            Thread t = new Thread() {
-                @Override
-                public void run() {
-                    while (true) {
-                        if (Coeur.running) {
-                            gererNiveau.gererTemps();
-                            if (gererNiveau.isDemandeReset()) {
-                                gererNiveau.tick();
-                            }
-                        }
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
+            Thread t = new Thread(() -> {
+                while (true) {
+                    if (Coeur.running) {
+                        gererNiveau.gererTemps();
+                        if (gererNiveau.isDemandeReset()) {
+                            gererNiveau.tick();
                         }
                     }
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                    }
                 }
-            };
+            });
             t.start();
             Coeur.setTicks((int) (ensembleDeNiveau.getNiveaux().get(niveau - 1).getCaveDelay()
                                   * Constantes.VITESSE_JEU_TEMPS_REEL));
@@ -281,9 +288,21 @@ public class Partie {
         } else {
             chemin += "Essais_Humain/";
         }
-        chemin += dateDebut + "/";
+        chemin += DATEDEBUT + "/";
 
         Ecrivain.ecrire(essai, "Niveau_" + niveau + ".dash", chemin);
         return chemin + "Niveau_" + niveau + ".dash";
+    }
+
+    /**
+     * Affiche le score a la fin d'un niveau.
+     *
+     * @param niveau Le niveau fini.
+     * @param score Le score a afficher.
+     */
+    public static void afficherScoreUnNiveau(final int niveau, final int score) {
+        if (!IA && !lecture) {
+            out.printf("FIN DU JEU , SCORE DU NIVEAU %d : %d.\n%n", niveau, score);
+        }
     }
 }

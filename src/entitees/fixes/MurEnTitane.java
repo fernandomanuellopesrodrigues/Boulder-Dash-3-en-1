@@ -2,12 +2,16 @@ package entitees.fixes;
 
 import entitees.abstraites.Entitee;
 
-import static entitees.abstraites.Entitee.Entitees.MurEnTitane;
+import static entitees.abstraites.Entitee.Type.MurEnTitane;
 
-public class MurEnTitane extends Entitee {
+public final class MurEnTitane extends Entitee {
 
-    public MurEnTitane(int x, int y) {
-        super(x, y);
-        enumeration = MurEnTitane;
+    public MurEnTitane(final int positionX, final int positionY) {
+        super(positionX, positionY, MurEnTitane, false);
+    }
+
+    @Override
+    public Entitee nouvelle() {
+        return new MurEnTitane(getPositionX(), getPositionY());
     }
 }

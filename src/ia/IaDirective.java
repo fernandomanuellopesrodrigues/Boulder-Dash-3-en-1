@@ -9,32 +9,39 @@ import java.util.Set;
 import java.util.Stack;
 
 import entitees.abstraites.Entitee;
-import entitees.tickables.Diamant;
+import entitees.abstraites.Entitee.Type;
+import entitees.fixes.Sortie;
 import loader.Niveau;
-import main.Partie;
 import outils.Noeud;
 
-public class IaDirective extends Ia {
+import static main.Constantes.AUTRE;
+import static main.Constantes.BAS;
+import static main.Constantes.DROITE;
+import static main.Constantes.GAUCHE;
+import static main.Constantes.HAUT;
+import static main.Partie.gererNiveau;
+
+public final class IaDirective extends Ia {
 
     private Noeud[][]    graphe;
     private Stack<Noeud> chemin;
-    private boolean bloquer;
+    private boolean      bloquer;
 
-    private Noeud diamantLePlusProche(Noeud depart) {
-        LinkedList<Noeud> file = new LinkedList<Noeud>();
+    private Noeud diamantLePlusProche(final Noeud depart) {
+        final LinkedList<Noeud> file = new LinkedList<>();
         file.add(depart);
         depart.setCout(0);
-        depart.setEtat('a');
+        depart.setEtat(AUTRE);
         while (!file.isEmpty()) {
-            Noeud u = file.removeFirst();
-            Set<Noeud> voisins = VoisinsNoeud(u);
-            for (Noeud v : voisins) {
-                if (v.getEtat() != 'a') {
-                    file.add(v);
-                    v.setCout(u.getCout() + 1);
-                    v.setEtat('a');
-                    if (v.getEntite().getClass().equals(Diamant.class)) {
-                        return v;
+            final Noeud first = file.removeFirst();
+            final Set<Noeud> voisins = getVoisinsNoeud(first);
+            for (final Noeud voisin : voisins) {
+                if (voisin.getEtat() != AUTRE) {
+                    file.add(voisin);
+                    voisin.setCout(first.getCout() + 1);
+                    voisin.setEtat(AUTRE);
+                    if (voisin.getEntite().getType() == Type.Diamant) {
+                        return voisin;
                     }
                 }
             }
@@ -48,66 +55,67 @@ public class IaDirective extends Ia {
      * @param objectif
      * @return
      */
-    private Stack<Noeud> cheminPlusCourt(Noeud depart, Noeud objectif) {
-        List<Noeud> closedList = new LinkedList<Noeud>();
-        Queue<Noeud> openList = new PriorityQueue<Noeud>();
+    private Stack<Noeud> cheminPlusCourt(final Noeud depart, final Noeud objectif) {
+        final Queue<Noeud> openList = new PriorityQueue<>(10);
         openList.add(depart);
         while (!openList.isEmpty()) {
-            Noeud u = openList.poll();
-            if (u.getX() == objectif.getX() && u.getY() == objectif.getY()) {
-                return reconstituerChemin(u);
+            final Noeud poll = openList.poll();
+            if (poll.getPositionX() == objectif.getPositionX() && poll.getPositionY() == objectif.getPositionY()) {
+                return reconstituerChemin(poll);
             }
-            Set<Noeud> voisins = VoisinsNoeud(u);
-            for (Noeud v : voisins) {
-                if (!(openList.contains(v) && v.getCout() < u.getCout() + 1 || closedList.contains(v))) {
-                    v.setPere(u);
-                    v.setCout(u.getCout() + 1);
-                    v.setHeuristique(
-                      v.getCout() + Math.abs(objectif.getX() - v.getX()) + Math.abs(objectif.getY() - v.getY()));
-                    openList.add(v);
+            final Set<Noeud> voisins = getVoisinsNoeud(poll);
+            final List<Noeud> closedList = new LinkedList<>();
+            for (final Noeud noeud : voisins) {
+                if (!(openList.contains(noeud) && noeud.getCout() < poll.getCout() + 1 || closedList.contains(noeud))) {
+                    noeud.setPere(poll);
+                    noeud.setCout(poll.getCout() + 1);
+                    noeud.setHeuristique(
+                      noeud.getCout() + Math.abs(objectif.getPositionX() - noeud.getPositionX()) +
+                      Math.abs(objectif.getPositionY() - noeud.getPositionY()));
+                    openList.add(noeud);
                 }
             }
-            closedList.add(u);
+            closedList.add(poll);
         }
         return null;
     }
 
     /**
-     * Retourne les voisins du noeud passé en paramètre.
+     * Retourne les voisins du noeud pass\u00E9 en param\u00E8tre.
      *
-     * @param u Le noeud dont on veut les voisins.
+     * @param noeud Le noeud dont on veut les voisins.
      *
-     * @return Un set des voisins du noeud en paramètre.
+     * @return Un set des voisins du noeud en param\u00E8tre.
      */
-    private Set<Noeud> VoisinsNoeud(Noeud u) {
-        Set<Noeud> voisins = new HashSet<Noeud>();
-        if (positionValide(u.getX() - 1, u.getY())) {
-            voisins.add(graphe[u.getX() - 1][u.getY()]);
+    private Set<Noeud> getVoisinsNoeud(final Noeud noeud) {
+        final Set<Noeud> voisins = new HashSet<>(10);
+        if (positionValide(noeud.getPositionX() - 1, noeud.getPositionY())) {
+            voisins.add(graphe[noeud.getPositionX() - 1][noeud.getPositionY()]);
         }
-        if (positionValide(u.getX() + 1, u.getY())) {
-            voisins.add(graphe[u.getX() + 1][u.getY()]);
+        if (positionValide(noeud.getPositionX() + 1, noeud.getPositionY())) {
+            voisins.add(graphe[noeud.getPositionX() + 1][noeud.getPositionY()]);
         }
-        if (positionValide(u.getX(), u.getY() - 1)) {
-            voisins.add(graphe[u.getX()][u.getY() - 1]);
+        if (positionValide(noeud.getPositionX(), noeud.getPositionY() - 1)) {
+            voisins.add(graphe[noeud.getPositionX()][noeud.getPositionY() - 1]);
         }
-        if (positionValide(u.getX(), u.getY() + 1)) {
-            voisins.add(graphe[u.getX()][u.getY() + 1]);
+        if (positionValide(noeud.getPositionX(), noeud.getPositionY() + 1)) {
+            voisins.add(graphe[noeud.getPositionX()][noeud.getPositionY() + 1]);
         }
         return voisins;
     }
 
     /**
-     * Vérifie que la case dont les coordonnées sont passées en paramètres est
+     * V\u00E9rifie que la case dont les coordonn\u00E9es sont pass\u00E9es en param\u00E8tres est
      * dans la limite de carte.
      *
-     * @param x La coordonnée en x.
-     * @param y La coordonnée en y.
+     * @param coordX La coordonn\u00E9e en coordX.
+     * @param coordY La coordonn\u00E9e en coordY.
      *
      * @return Vrai si tel est le cas, faux sinon.
      */
-    private boolean positionValide(int x, int y) {
-        if (x >= 0 && x < graphe.length && y >= 0 && y < graphe[0].length) {
-            if (graphe[x][y].isTraversable()) {
+    private boolean positionValide(final int coordX, final int coordY) {
+        if (coordX >= 0 && coordX < graphe.length && coordY >= 0 && coordY < graphe[0].length) {
+            if (graphe[coordX][coordY].isTraversable()) {
                 return true;
             }
         }
@@ -115,75 +123,72 @@ public class IaDirective extends Ia {
     }
 
     /**
-     * Reconstitue un chemin à partir du dernier noeud d'un chemin.
+     * Reconstitue un chemin \u00E0 partir du dernier noeud d'un chemin.
      *
-     * @param u Le dernier noeud.
+     * @param noeud Le dernier noeud.
      *
      * @return Le chemin de noeuds.
      */
-    private Stack<Noeud> reconstituerChemin(Noeud u) {
-        Stack<Noeud> route = new Stack<Noeud>();
-        while (u.getPere() != null) {
-            route.push(u);
-            u = u.getPere();
+    private Stack<Noeud> reconstituerChemin(Noeud noeud) {
+        final Stack<Noeud> route = new Stack<>();
+        while (noeud.getPere() != null) {
+            route.push(noeud);
+            noeud = noeud.getPere();
         }
         return route;
     }
 
     @Override
-    public char tick(Entitee[][] map) {
-        Niveau niveau = Partie.gererNiveau.getNiveau();
-        graphe = new Noeud[map.length][map[0].length];
+    public char tick(final Entitee[][] map) {
+        final Niveau niveau = gererNiveau.getNiveau();
+        this.graphe = new Noeud[map.length][map[0].length];
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 graphe[i][j] = new Noeud(map[i][j]);
             }
         }
         bloquer = false;
-        char direction;
-
         graphe = new Noeud[map.length][map[0].length];
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 graphe[i][j] = new Noeud(map[i][j]);
             }
         }
-        if (niveau.getSortie() != null && !niveau.getSortie().isOuvert()) {
-            Noeud diamant = diamantLePlusProche(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()]);
+        final int rockPX = niveau.getRockford().getPositionX();
+        final int rockPY = niveau.getRockford().getPositionY();
+        if (niveau.getSortie() != null && !Sortie.isOuvert()) {
+            final Noeud diamant = diamantLePlusProche(graphe[rockPX][rockPY]);
             if (diamant != null) {
-                chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()], diamant);
-                if (chemin == null || chemin.isEmpty()) { bloquer = true; }
+                chemin = cheminPlusCourt(graphe[rockPX][rockPY], diamant);
+                if (chemin == null || chemin.isEmpty()) {
+                    bloquer = true;
+                }
             } else {
                 bloquer = true;
             }
         } else {
             if (niveau.getSortie() != null) {
-                chemin = cheminPlusCourt(graphe[niveau.getRockford().getX()][niveau.getRockford().getY()],
-                                         graphe[niveau.getSortie().getX()][niveau.getSortie().getY()]);
+                final int sortiePX = niveau.getSortie().getPositionX();
+                final int sortiePY = niveau.getSortie().getPositionY();
+                chemin = cheminPlusCourt(graphe[rockPX][rockPY], graphe[sortiePX][sortiePY]);
             }
-            if (chemin == null || chemin.isEmpty()) { bloquer = true; }
+            if (chemin == null || chemin.isEmpty()) {
+                bloquer = true;
+            }
         }
-
-        if (!bloquer) {
-            if (niveau.getRockford().getX() > chemin.peek().getX()) { direction = 'g'; } else if (niveau.getRockford()
-                                                                                                        .getX() < chemin
-                                                                                                                    .peek()
-
-                                                                                                                    .getX()) {
-                direction = 'd';
-            } else if (
-                     niveau.getRockford()
-                           .getY() >
-                     chemin.peek()
-                           .getY()) {
-                direction = 'h';
-            } else {
-                direction = 'b';
-            }
+        if (bloquer) {
+            return Ia.directionRandom();
+        }
+        final int peekPX = chemin.peek().getPositionX();
+        final int peekPY = chemin.peek().getPositionY();
+        final char direction;
+        if (rockPX > peekPX) {
+            direction = GAUCHE;
+        } else if (rockPX < peekPX) {
+            direction = DROITE;
         } else {
-            direction = Ia.directionRandom();
+            direction = rockPY > peekPY ? HAUT : BAS;
         }
-
         return direction;
     }
 
@@ -191,24 +196,6 @@ public class IaDirective extends Ia {
     public void initialiserTry() {
         // TODO Auto-generated method stub
 
-    }
-
-    /**
-     * Un getter.
-     *
-     * @return L'objet en question.
-     */
-    public boolean isBloquer() {
-        return bloquer;
-    }
-
-    /**
-     * Un setter.
-     *
-     * @param bloquer L'objet en question.
-     */
-    public void setBloquer(boolean bloquer) {
-        this.bloquer = bloquer;
     }
 
 }

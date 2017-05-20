@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import entitees.abstraites.Entitee;
-import entitees.abstraites.Entitee.Entitees;
+import entitees.abstraites.Entitee.Type;
 import entitees.abstraites.Tickable;
 import entitees.fixes.Amibe;
 import entitees.fixes.Sortie;
@@ -136,15 +136,15 @@ public class Niveau implements Cloneable {
      *
      * @param x La coordonn�e en x.
      * @param y La coordonn�e en y.
-     * @param enumeration Enum�ration du type de l'objet que l'on veut tester.
+     * @param type Enum�ration du type de l'objet que l'on veut tester.
      *
      * @return Le r�sultat du test.
      */
-    public boolean testEntitee(int x, int y, Entitees enumeration) {
+    public boolean testEntitee(int x, int y, Type type) {
         if (x > map.length - 1 || x < 0 || y < 0 || y > map[0].length - 1) {
             return false;
         }
-        return map[x][y].getEnumeration().equals(enumeration);
+        return map[x][y].getType().equals(enumeration);
     }
 
     /**
@@ -201,7 +201,7 @@ public class Niveau implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public int getCave_time() {
+    public int getCaveTime() {
         return cave_time;
     }
 
@@ -219,7 +219,7 @@ public class Niveau implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public int getDiamonds_required() {
+    public int getDiamondsRequired() {
         return diamonds_required;
     }
 
@@ -228,7 +228,7 @@ public class Niveau implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public int getDiamond_value() {
+    public int getDiamondValue() {
         return diamond_value;
     }
 
@@ -237,7 +237,7 @@ public class Niveau implements Cloneable {
      *
      * @return L'objet en question.
      */
-    public int getDiamond_value_bonus() {
+    public int getDiamondValueBonus() {
         return diamond_value_bonus;
     }
 

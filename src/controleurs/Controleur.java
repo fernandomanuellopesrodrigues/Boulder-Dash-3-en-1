@@ -115,8 +115,8 @@ public class Controleur {
         if (getMax() == 0) {
             return ' ';
         }
-        int x = Partie.gererNiveau.getNiveau().getRockford().getX();
-        int y = Partie.gererNiveau.getNiveau().getRockford().getY();
+        int x = Partie.gererNiveau.getNiveau().getRockford().getPositionX();
+        int y = Partie.gererNiveau.getNiveau().getRockford().getPositionY();
         if (hautInt == getMax() && (!hautwas || haut)) {
             if (Partie.gererNiveau.getNiveau().getRockford().placeLibre(x, y - 1)) {
                 return 'h';

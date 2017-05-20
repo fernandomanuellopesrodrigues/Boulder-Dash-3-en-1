@@ -37,7 +37,7 @@ public class GererNiveau {
         if (niveau.getCaveDelay() >= 1 && Coeur.tempsReel) {
             tourParTour = false;
         }
-        tempsRestant = niveau.getCave_time();
+        tempsRestant = niveau.getCaveTime();
         tempsTotal = tempsRestant;
         for (int i = 0; i < niveau.getMap().length; i++) {
             for (int j = 0; j < niveau.getMap()[i].length; j++) {
@@ -68,7 +68,7 @@ public class GererNiveau {
             toucheClavier = ia.direction(niveau.getMap());
             trajet += toucheClavier;
 
-            if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
+            if (compteurTicks >= niveau.getCaveTime() * niveau.getCaveDelay()) {
                 compteurReset++;
                 if (ia.getClass().equals(IaEvolue.class)) {
                     s = ((IaEvolue) ia).ajouterScore();
@@ -94,7 +94,7 @@ public class GererNiveau {
             toucheClavier = ia.direction(niveau.getMap());
             trajet += toucheClavier;
 
-            if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
+            if (compteurTicks >= niveau.getCaveTime() * niveau.getCaveDelay()) {
                 compteurReset++;
                 if (ia.getClass().equals(IaEvolue.class)) {
                     ((IaEvolue) ia).ajouterScore();
@@ -119,7 +119,7 @@ public class GererNiveau {
             toucheClavier = c;
             trajet += c;
 
-            if (compteurTicks >= niveau.getCave_time() * niveau.getCaveDelay()) {
+            if (compteurTicks >= niveau.getCaveTime() * niveau.getCaveDelay()) {
                 compteurReset++;
                 if (ia.getClass().equals(IaEvolue.class)) {
                     ((IaEvolue) ia).ajouterScore();
@@ -183,10 +183,10 @@ public class GererNiveau {
     public void gererLesAmibes() {
         // son
         if (listeAmibes.isEmpty()) {
-            Partie.sons.stopSon1();
+            Partie.SONS.stopSon1();
         }
         if (!getListeAmibes().isEmpty()) {
-            Partie.sons.jouerSon1("amoeba.wav", 965);
+            Partie.SONS.jouerSonAmoeba();
         }
         // fin son
         if (listeAmibes.size() > 0 && niveau.getAmoeba_time() != -1 && compteurTicks % niveau.getAmoeba_time() == 0) {
@@ -196,7 +196,7 @@ public class GererNiveau {
                     return;
                 }
             }
-            listeAmibes.get(0).transformerTousLesAmibesEnDiamant();
+            Amibe.transformerTousLesAmibesEnDiamant();
         }
     }
 
@@ -212,7 +212,7 @@ public class GererNiveau {
     public void ajouterAmibe(Amibe e) {
         boolean ok = true;
         for (Amibe a : listeAmibes) {
-            if (a.getId() == e.getId()) {
+            if (a.getIdentitifant() == e.getIdentitifant()) {
                 ok = false;
                 break;
             }
@@ -223,7 +223,7 @@ public class GererNiveau {
     public void ajouterTickable(Tickable e) {
         boolean ok = true;
         for (Tickable a : listeTickable) {
-            if (a.getId() == e.getId()) {
+            if (a.getIdentitifant() == e.getIdentitifant()) {
                 ok = false;
                 break;
             }
@@ -261,8 +261,8 @@ public class GererNiveau {
     }
 
     public void incrementerNbDiamants(Diamant d) {
-        d.getSons().jouerSon3("explosionDiamant.wav", 1);
-        listeDiamants.add(new Paire<Integer, Long>(compteurTicks, d.getId()));
+        d.getSons().jouerSonExplosionDiamant();
+        listeDiamants.add(new Paire<Integer, Long>(compteurTicks, d.getIdentitifant()));
         nbDiamants++;
     }
 

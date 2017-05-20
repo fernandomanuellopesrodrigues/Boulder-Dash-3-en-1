@@ -4,66 +4,75 @@ import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
 import entitees.tickables.Diamant;
 import entitees.tickables.Pierre;
-import main.Partie;
 
-import static entitees.abstraites.Entitee.Entitees.Diamant;
-import static entitees.abstraites.Entitee.Entitees.MurMagique;
-import static entitees.abstraites.Entitee.Entitees.Vide;
+import static entitees.abstraites.Entitee.Type.Diamant;
+import static entitees.abstraites.Entitee.Type.MurMagique;
+import static entitees.abstraites.Entitee.Type.Pierre;
+import static entitees.abstraites.Entitee.Type.Vide;
+import static main.Partie.checkEntite;
+import static main.Partie.gererNiveau;
+import static main.Partie.getEntiteParPosition;
+import static main.Partie.setEntiteParPosition;
 
-public class MurMagique extends Tickable {
+public final class MurMagique extends Tickable {
 
     private int magicWallTime;
 
-    public MurMagique(int x, int y, int magicWallTime) {
-        super(x, y);
+    public MurMagique(final int positionX, final int positionY, final int magicWallTime) {
+        super(positionX, positionY, MurMagique, true);
         this.magicWallTime = magicWallTime;
-        setDestructible(true);
-        enumeration = MurMagique;
     }
 
-    public int getMagicWallTime() {
-        return magicWallTime;
+    @Override
+    public Entitee nouvelle() {
+        return new MurMagique(getPositionX(), getPositionY(), magicWallTime);
     }
 
-    public void decrementerMagicWallTime() {
+    private void decrementerMagicWallTime() {
         magicWallTime--;
         if (magicWallTime <= 0) {
             mourir();
-            Partie.gererNiveau.getNiveau().getMap()[getX()][getY()] = new Mur(getX(), getY());
+            setEntiteParPosition(getPositionX(), getPositionY(), new Mur(getPositionX(), getPositionY()));
         }
     }
 
-    public boolean traverser() {
-        if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1].is(Vide)) {
-            if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].is(Diamant)) {
-                Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].mourir();
-                Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1] = new Pierre(getX(), getY() + 1);
-                Partie.gererNiveau
-                  .ajouterTickable((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1]);
-                decrementerMagicWallTime();
-                return true;
-            } else if (Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1] instanceof Pierre) {
-                Partie.gererNiveau.getNiveau().getMap()[getX()][getY() - 1].mourir();
-                Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1] = new Diamant(getX(), getY() + 1);
-                Partie.gererNiveau
-                  .ajouterTickable((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1]);
-                ((Tickable) Partie.gererNiveau.getNiveau().getMap()[getX()][getY() + 1]).setChute(true);
-                decrementerMagicWallTime();
-                return true;
-            }
+    private boolean traverser() {
+        final int px = getPositionX();
+        final int py = getPositionY();
+        if (!checkEntite(px, py + 1, Vide)) {
+            return false;
         }
-        return false;
+        if (checkEntite(px, py - 1, Diamant)) {
+            getEntiteParPosition(px, py - 1).mourir();
+            final Pierre pierre = new Pierre(px, py + 1);
+            setEntiteParPosition(px, py + 1, pierre);
+            gererNiveau.ajouterTickable(pierre);
+            decrementerMagicWallTime();
+        } else if (checkEntite(px, py - 1, Pierre)) {
+            getEntiteParPosition(px, py - 1).mourir();
+            final Diamant diamant = new Diamant(px, py + 1);
+            setEntiteParPosition(px, py + 1, diamant);
+            gererNiveau.ajouterTickable(diamant);
+            diamant.setChute(true);
+            decrementerMagicWallTime();
+        }
+        return true;
 
     }
 
     @Override
-    protected int contactAutreEntitee(Entitee entitee) {
+    public int contactAutreEntitee(Entitee entitee) {
         return 0;
     }
 
     @Override
     public void tick() {
         traverser();
+    }
+
+    @Override
+    public int getNumeroPriorite() {
+        return 1;
     }
 
 }

@@ -24,9 +24,9 @@ public class IaEvolue extends Ia {
 
     public IaEvolue(int nbGenerations) {
         this.nbGenerations = nbGenerations;
-        this.nbObjectifs = Partie.gererNiveau.getNiveau().getDiamonds_required() + 1;
+        this.nbObjectifs = Partie.gererNiveau.getNiveau().getDiamondsRequired() + 1;
         this.tailleCheminMaximale = Partie.gererNiveau.getNiveau().getCaveDelay()
-                                    * Partie.gererNiveau.getNiveau().getCave_time() * Constantes.VITESSE_JEU_TEMPS_REEL;
+                                    * Partie.gererNiveau.getNiveau().getCaveTime() * Constantes.VITESSE_JEU_TEMPS_REEL;
         for (int i = 0; i < NOMBRE_DE_TRY_GENERATION; i++) {
             Partie.finiEvolution = false;
             String chemin = "";

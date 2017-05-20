@@ -2,24 +2,27 @@ package entitees.tickables;
 
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
-import main.Constantes;
-import main.Partie;
 
-import static entitees.abstraites.Entitee.Entitees.Bombe;
+import static entitees.abstraites.Entitee.Type.Bombe;
+import static main.Constantes.BOOM;
+import static main.Partie.gererNiveau;
 
-public class Bombe extends Tickable {
+public final class Bombe extends Tickable {
 
-    private int tempsRestantAvantExplosion = Constantes.BOOM;
+    private int tempsRestantAvantExplosion = BOOM;
 
-    protected Bombe(int x, int y) {
-        super(x, y);
-        enumeration = Bombe;
-        setDestructible(false);
-        Partie.gererNiveau.ajouterTickable(this);
+    public Bombe(final int positionX, final int positionY) {
+        super(positionX, positionY, Bombe, false);
+        gererNiveau.ajouterTickable(this);
     }
 
     @Override
-    protected int contactAutreEntitee(Entitee entitee) {
+    public Entitee nouvelle() {
+        return new Bombe(getPositionX(), getPositionY());
+    }
+
+    @Override
+    public int contactAutreEntitee(final Entitee entitee) {
         return 0;
     }
 
@@ -29,6 +32,11 @@ public class Bombe extends Tickable {
             exploser(false);
         }
         tempsRestantAvantExplosion--;
+    }
+
+    @Override
+    public int getNumeroPriorite() {
+        return 1;
     }
 
     @Override

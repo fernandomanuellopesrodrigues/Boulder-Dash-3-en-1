@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * La classe EnsembleDeNiveaux sert � enregistrer des ensembles d'objets
+ * La classe EnsembleDeNiveaux sert a enregistrer des ensembles d'objets
  * {@link Niveau}.
  *
  * @author Murloc
@@ -14,7 +14,7 @@ public class EnsembleDeNiveaux {
     /**
      * La liste des niveaux.
      */
-    private final List<Niveau> niveaux = new ArrayList<Niveau>();
+    private final List<Niveau> niveaux = new ArrayList<>(10);
 
     /**
      * Le nombre de niveaux max de cet ensemble de niveaux.
@@ -23,35 +23,38 @@ public class EnsembleDeNiveaux {
 
     /**
      * Constructeur EnsembleDeNiveaux.
-     * Prend en param�tre le nombre de niveaux que contiendra cet ensemble et
+     * Prend en parametre le nombre de niveaux que contiendra cet ensemble et
      * initialise l'attribut.
      *
-     * @param nombre_de_niveaux Le nombre de niveaux.
+     * @param nombreDeNiveaux Le nombre de niveaux.
      */
-    public EnsembleDeNiveaux(int nombre_de_niveaux) {
-        this.nbNiveaux = nombre_de_niveaux;
+    public EnsembleDeNiveaux(final int nombreDeNiveaux) {
+        this.nbNiveaux = nombreDeNiveaux;
     }
 
     /**
-     * Ajoute un niveau � l'ensemble de niveaux si la limite n'a pas �t�
+     * Ajoute un niveau a l'ensemble de niveaux si la limite n'a pas ete
      * atteinte.
      *
-     * @param niveau Le niveau � ajouter.
+     * @param niveau Le niveau a ajouter.
      *
      * @return Vrai si l'ajout a eu lieu, faux sinon.
      */
-    public boolean ajouterNiveau(Niveau niveau) {
-        if (niveaux.size() < nbNiveaux) { return niveaux.add(niveau); }
-        return false;
+    public boolean ajouterNiveau(final Niveau niveau) {
+        return niveaux.size() < nbNiveaux && niveaux.add(niveau);
     }
 
     public String toString() {
-        String s = "";
-        for (Niveau niveau : niveaux) {
-            s += niveau;
-            s += "\n_____________________\n\n";
+        final StringBuilder builder = new StringBuilder(20);
+        for (final Niveau niveau : niveaux) {
+            builder.append(niveau)
+                   .append("\n_____________________\n\n");
         }
-        return s;
+        return builder.toString();
+    }
+
+    private int getNbNiveaux() {
+        return nbNiveaux;
     }
 
     /**
@@ -59,7 +62,7 @@ public class EnsembleDeNiveaux {
      *
      * @param nbNiveaux L'objet en question.
      */
-    public void setNbNiveaux(int nbNiveaux) {
+    public void setNbNiveaux(final int nbNiveaux) {
         this.nbNiveaux = nbNiveaux;
     }
 
@@ -68,7 +71,7 @@ public class EnsembleDeNiveaux {
      *
      * @return L'objet en question.
      */
-    public int getNombre_de_niveaux() {
+    public int getNombreDeNiveaux() {
         return nbNiveaux;
     }
 

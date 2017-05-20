@@ -33,8 +33,8 @@ public interface Constantes {
     // Chemin relatif du dossier contenant les sprites du jeu.
     String CHEMIN_DOSSIER_SPRITES = "ressources/images";
 
-    // Chemin relatif du dossier contenant les sons du jeu.
-    String CHEMIN_DOSSIER_SONS = "ressources/sons/";
+    // Chemin relatif du dossier contenant les SONS du jeu.
+    String CHEMIN_DOSSIER_SONS = "ressources/SONS/";
 
     // Entier indiquant la vitesse globale du jeu en mode temps r\u00E9el.
     double VITESSE_JEU_TEMPS_REEL = 1.3;
@@ -57,7 +57,7 @@ public interface Constantes {
     // Booleen sevant \u00E0 activer l'affichage des TPS sur la fen\u00E9tre.
     boolean SYSOUT_TPS = true;
 
-    // Booleen servant \u00E0 activer les sons.
+    // Booleen servant \u00E0 activer les SONS.
     boolean SONS = true;
 
 	/*
@@ -74,4 +74,20 @@ public interface Constantes {
     int POURCENTAGE_DES_SELECTIONNES = 30;
     int POURCENTAGE_DE_ALEATOIRE     = 0;
     int VALEUR_SCORE_MOYENNE         = 750;
+
+    /**
+     * differentes directions
+     */
+    char BAS    = 'b';
+    char DROITE = 'd';
+    char GAUCHE = 'g';
+    char HAUT   = 'h';
+    char BOMB   = 'B';
+    char CACHER = 'p';
+    char AUTRE  = 'a';
+
+    /**
+     * max amibes
+     */
+    int MAX_AMIBES = 200;
 }

@@ -1,6 +1,7 @@
 package vue;
 
 import java.util.List;
+import java.util.Objects;
 
 import entitees.abstraites.Entitee;
 import entitees.fixes.Amibe;
@@ -17,117 +18,121 @@ import entitees.tickables.Rockford;
 import loader.Niveau;
 import main.Partie;
 
+import static java.lang.System.out;
+
 /**
  * La classe GraphiqueConsole n'est jamais instanci�e, elle sert uniquement �
- * stocker des m�thodes en rapport avec l'affichage du jeu en mode console.
+ * stocker des methodes en rapport avec l'affichage du jeu en mode console.
  *
  * @author Murloc
  */
-public class GraphiqueConsole {
+public final class GraphiqueConsole {
+
+    private GraphiqueConsole() {}
 
     /**
      * Affiche un niveau en mode console.
      *
-     * @param niveau Le niveau � afficher.
+     * @param niveau Le niveau a afficher.
      */
-    public static void afficher(Niveau niveau) {
+    public static void afficher(final Niveau niveau) {
         // Get la map du niveau.
-        Entitee[][] map = niveau.getMap();
+        final Entitee[][] map = niveau.getMap();
 
 		/*
-         * Initialise un string auquel va �tre concat�n� la repr�sentation du
-		 * niveau, ce string sera affich� � la fin de la m�thode.
+         * Initialise un string auquel va etre concatene la representation du
+		 * niveau, ce string sera affiche a la fin de la methode.
 		 */
-        String s = "";
+        StringBuilder builder = new StringBuilder(10);
 
-        // Concat�ne beaucoup de retours � la ligne pour un meilleur rendu.
+        // Concatene beaucoup de retours a la ligne pour un meilleur rendu.
         for (int i = 0; i <= 30; i++) {
-            s += "\n";
+            builder.append('\n');
         }
 
 		/*
-		 * Concat�ne diverses informations.
+         * Concatene diverses informations.
 		 */
-        s += "Diamants : " + Partie.gererNiveau.getNbDiamants() + "/"
-             + Partie.gererNiveau.getNiveau().getDiamonds_required() + "\n";
-        s += "Score : " + Partie.gererNiveau.getScore() + "			Temps restant : "
-             + Partie.gererNiveau.getTempsRestant() + " 		";
-        s += "Niveau : " + Partie.niveau + "/" + Partie.ensembleDeNiveau.getNombre_de_niveaux() + "\n";
-        s += "Points/diamant : " + Partie.gererNiveau.getNiveau().getDiamond_value() + "	  (diamants bonus) : "
-             + Partie.gererNiveau.getNiveau().getDiamond_value_bonus();
-        s += "\n\n";
+        builder.append("Diamants : ")
+         .append(Partie.gererNiveau.getNbDiamants())
+         .append("/")
+         .append(Partie.gererNiveau.getNiveau().getDiamondsRequired())
+         .append("\n")
+         .append("Score : ")
+         .append(Partie.gererNiveau.getScore())
+         .append("			Temps restant : ")
+         .append(Partie.gererNiveau.getTempsRestant())
+         .append(" 		")
+         .append("Niveau : ")
+         .append(Partie.niveau)
+         .append("/")
+         .append(Partie.ensembleDeNiveau.getNombreDeNiveaux())
+         .append("\n")
+         .append("Points/diamant : ")
+         .append(Partie.gererNiveau.getNiveau().getDiamondValue())
+         .append("	  (diamants bonus) : ")
+         .append(Partie.gererNiveau.getNiveau().getDiamondValueBonus())
+         .append("\n\n");
 
         // Parcours de toutes les entitees de la map.
         for (int i = 0; i < map[0].length; i++) {
             for (int j = 0; j < map.length; j++) {
-                // Concat�ne un caract�re sp�cifique suivant l'entit�e.
-                s += getCharDeEntitee(map[j][i]);
+                // Concatene un caractere specifique suivant l'entitee.
+                builder.append(getCharDeEntitee(map[j][i]));
             }
-            s += "\n";
+            builder.append('\n');
         }
         // Affiche le string.
-        System.out.println(s);
+        out.println(builder);
     }
 
     /**
-     * Retourne un caract�re sp�ficique suivant l'entit�e en param�tre.
+     * Retourne un caractere speficique suivant l'entitee en parametre.
      *
-     * @param e L'entit�e dont on veut le caract�re.
+     * @param entitee L'entitee dont on veut le caractere.
      *
-     * @return Le caract�re propre � l'entit�e. Renvoie ' ' si l'enti�e est
-     * inconnue (ou si c'est l'entit�e Vide).
+     * @return Le caractere propre a l'entitee. Renvoie ' ' si l'entitee est
+     * inconnue (ou si c'est l'entitee Vide).
      */
-    public static char getCharDeEntitee(Entitee e) {
-        // Get la classe de l'entit�e.
-        Class<? extends Entitee> l = e.getClass();
+    private static char getCharDeEntitee(final Entitee entitee) {
+        // Get la classe de l'entitee.
+        Class<? extends Entitee> classz = entitee.getClass();
 
-        // Cr�e le char qui va �tre renvoy�.
+        // Cree le char qui va etre renvoye.
         char s = ' ';
 
 		/*
-		 * Compare la classe avec les classes des entit�es, puis affecte le char
+         * Compare la classe avec les classes des entitees, puis affecte le char
 		 * correspondant au string.
 		 */
-        if (l.equals(Rockford.class)) {
+        if (Objects.equals(classz, Rockford.class)) {
             s = 'P';
-        } else if (l.equals(Mur.class)) {
+        } else if (Objects.equals(classz, Mur.class)) {
             s = 'w';
-        } else if (l.equals(Diamant.class)) {
+        } else if (Objects.equals(classz, Diamant.class)) {
             s = 'd';
-        } else if (l.equals(Amibe.class)) {
+        } else if (Objects.equals(classz, Amibe.class)) {
             s = 'a';
-        } else if (l.equals(Luciole.class)) {
+        } else if (Objects.equals(classz, Luciole.class)) {
             s = 'q';
-        } else if (l.equals(Libellule.class)) {
+        } else if (Objects.equals(classz, Libellule.class)) {
             s = 'o';
-        } else if (l.equals(MurEnTitane.class)) {
+        } else if (Objects.equals(classz, MurEnTitane.class)) {
             s = 'W';
-        } else if (l.equals(Pierre.class)) {
+        } else if (Objects.equals(classz, Pierre.class)) {
             s = 'r';
-        } else if (l.equals(Poussiere.class)) {
+        } else if (Objects.equals(classz, Poussiere.class)) {
             s = '.';
-        } else if (l.equals(Sortie.class)) {
-            if (((Sortie) e).isOuvert()) {
+        } else if (Objects.equals(classz, Sortie.class)) {
+            if (Sortie.isOuvert()) {
                 s = 'X';
             } else {
                 s = 'W';
             }
-        } else if (l.equals(MurMagique.class)) {
+        } else if (Objects.equals(classz, MurMagique.class)) {
             s = 'M';
         }
         return s;
-    }
-
-    /**
-     * Affiche le score � la fin d'un niveau.
-     *
-     * @param niveau Le niveau fini.
-     * @param score Le score � afficher.
-     */
-    public static void afficherScoreUnNiveau(int niveau, int score) {
-        if (!Partie.IA && !Partie.lecture) {
-            System.out.println("FIN DU JEU , SCORE DU NIVEAU " + niveau + " : " + score + ".\n");
-        }
     }
 
     /**
@@ -136,11 +141,11 @@ public class GraphiqueConsole {
      * @param scores La liste des scores � afficher.
      */
     public static void afficherScoreTousLesNiveaux(List<Integer> scores) {
-        System.out.println("FIN DU JEU , SCORE DES NIVEAUX : \n");
+        out.println("FIN DU JEU , SCORE DES NIVEAUX : \n");
         for (int i = 0; i < scores.size(); i++) {
-            System.out.println("                         Niveau " + (i + 1) + " : " + scores.get(i) + "\n");
+            out.println("                         Niveau " + (i + 1) + " : " + scores.get(i) + "\n");
         }
-        System.out.println("\n");
+        out.println("\n");
     }
 
 }

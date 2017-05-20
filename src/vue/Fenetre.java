@@ -6,15 +6,16 @@ import javax.swing.JFrame;
 
 import main.Constantes;
 
+import static java.lang.String.format;
 import static main.Coeur.CONTROLEUR;
 import static main.Constantes.HEIGHT_FENETRE;
 import static main.Constantes.WIDTH_FENETRE;
 
 /**
- * La classe Fen�tre h�rite de JFrame et sert � g�rer la fen�tre du mode
+ * La classe Fenetre herite de JFrame et sert \u00E0 gerer la fenetre du mode
  * graphique du jeu.
- * Elle impl�mente la classe {@link KeyListener} afin de pouvoir r�cup�rer les
- * entr�es clavier.
+ * Elle implemente la classe {@link KeyListener} afin de pouvoir recuperer les
+ * entrees clavier.
  *
  * @author Murloc
  * @see JFrame
@@ -33,13 +34,13 @@ public class Fenetre extends JFrame implements KeyListener {
 
     /**
      * Constructeur Fenetre.
-     * Elle ne prend pas de param�tres mais trouve les diff�rentes variables
+     * Elle ne prend pas de parametres mais trouve les differentes variables
      * dans la classe {@link Constantes}.
      */
     public Fenetre() {
         setTitle(Constantes.TITRE_FENETRE);
         setSize(WIDTH_FENETRE, HEIGHT_FENETRE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
         addKeyListener(this);
@@ -47,48 +48,44 @@ public class Fenetre extends JFrame implements KeyListener {
     }
 
     /**
-     * M�thode servant � rafraichir le titre de la fen�tre afin d'y inscrire le
+     * Methode servant a rafraichir le titre de la fenetre afin d'y inscrire le
      * nombre de frames par secondes et/ou le nombre de ticks par secondes en
      * foncion des booleens de la classe {@link Constantes}.
-     *
-     * @param fps Le nombre de FPS.
-     * @param tps Le nombre de TPS.
      */
     public void setTitre() {
-
         if (Constantes.SYSOUT_FPS && Constantes.SYSOUT_TPS) {
-            setTitle("[" + fps + " FPS , " + tps + " TPS] " + Constantes.TITRE_FENETRE);
+            setTitle(format("[%d FPS , %d TPS] %s", fps, tps, Constantes.TITRE_FENETRE));
         } else if (Constantes.SYSOUT_FPS) {
-            setTitle("[" + fps + " FPS] " + Constantes.TITRE_FENETRE);
+            setTitle(format("[%d FPS] %s", fps, Constantes.TITRE_FENETRE));
         } else if (Constantes.SYSOUT_TPS) {
-            setTitle("[" + tps + " TPS] " + Constantes.TITRE_FENETRE);
+            setTitle(format("[%d TPS] %s", tps, Constantes.TITRE_FENETRE));
         }
     }
 
     /**
-     * M�thode impl�ment�e par l'interface {@link KeyListener} appel�e quand une
-     * touche vient d'�tre tap�e. Ne fais rien car
+     * Methode implementee par l'interface {@link KeyListener} appelee quand une
+     * touche vient d'etre tapee. Ne fais rien car
      * {@link Fenetre#keyPressed(KeyEvent)} suffit.
      */
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(final KeyEvent e) {
     }
 
     /**
-     * M�thode impl�ment�e par l'interface {@link KeyListener} appel�e quand une
-     * touche vient d'�tre enfonc�e.
+     * Methode implementee par l'interface {@link KeyListener} appelee quand une
+     * touche vient d'etre enfoncee.
      */
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(final KeyEvent e) {
         CONTROLEUR.keyPressed(e);
     }
 
     /**
-     * M�thode impl�ment�e par l'interface {@link KeyListener} appel�e quand une
-     * touche vient d'�tre rel�ch�e.
+     * Methode implementee par l'interface {@link KeyListener} appelee quand une
+     * touche vient d'etre relachee.
      */
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(final KeyEvent e) {
         CONTROLEUR.keyReleased(e);
     }
 
@@ -97,7 +94,7 @@ public class Fenetre extends JFrame implements KeyListener {
      *
      * @param fps L'objet en question.
      */
-    public void setFps(int fps) {
+    public void setFps(final int fps) {
         this.fps = fps;
     }
 
@@ -106,7 +103,7 @@ public class Fenetre extends JFrame implements KeyListener {
      *
      * @param tps L'objet en question.
      */
-    public void setTps(int tps) {
+    public void setTps(final int tps) {
         this.tps = tps;
     }
 }

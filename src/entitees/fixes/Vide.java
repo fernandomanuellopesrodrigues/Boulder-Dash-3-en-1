@@ -2,13 +2,16 @@ package entitees.fixes;
 
 import entitees.abstraites.Entitee;
 
-import static entitees.abstraites.Entitee.Entitees.Vide;
+import static entitees.abstraites.Entitee.Type.Vide;
 
-public class Vide extends Entitee {
+public final class Vide extends Entitee {
 
-    public Vide(int x, int y) {
-        super(x, y);
-        setDestructible(true);
-        enumeration = Vide;
+    public Vide(final int positionX, final int positionY) {
+        super(positionX, positionY, Vide, true);
+    }
+
+    @Override
+    public Entitee nouvelle() {
+        return new Vide(getPositionX(), getPositionY());
     }
 }

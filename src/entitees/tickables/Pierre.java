@@ -5,37 +5,37 @@ import java.util.List;
 
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Tickable;
-import main.Partie;
 
-import static entitees.abstraites.Entitee.Entitees.Amibe;
-import static entitees.abstraites.Entitee.Entitees.Explosion;
-import static entitees.abstraites.Entitee.Entitees.Libellule;
-import static entitees.abstraites.Entitee.Entitees.Luciole;
-import static entitees.abstraites.Entitee.Entitees.MurMagique;
-import static entitees.abstraites.Entitee.Entitees.Pierre;
-import static entitees.abstraites.Entitee.Entitees.Rockford;
-import static entitees.abstraites.Entitee.Entitees.Vide;
+import static entitees.abstraites.Entitee.Type.Amibe;
+import static entitees.abstraites.Entitee.Type.Explosion;
+import static entitees.abstraites.Entitee.Type.Libellule;
+import static entitees.abstraites.Entitee.Type.Luciole;
+import static entitees.abstraites.Entitee.Type.MurMagique;
+import static entitees.abstraites.Entitee.Type.Pierre;
+import static entitees.abstraites.Entitee.Type.Rockford;
+import static entitees.abstraites.Entitee.Type.Vide;
+import static main.Constantes.BAS;
+import static main.Partie.SONS;
+import static main.Partie.checkEntite;
 
-public class Pierre extends Tickable {
+public final class Pierre extends Tickable {
 
-    private final List<Entitees> deplacementsPossiblesChute = new ArrayList<Entitees>();
+    private final List<Type> deplacementsPossiblesChute = new ArrayList<>(10);
 
-    public Pierre(int x, int y) {
-        super(x, y);
-        setDestructible(true);
-        getDeplacementsPossibles().add(Rockford);
-        getDeplacementsPossibles().add(Luciole);
-        getDeplacementsPossibles().add(Libellule);
-        getDeplacementsPossibles().add(Amibe);
-        getDeplacementsPossibles().add(MurMagique);
-        getDeplacementsPossibles().add(Explosion);
+    public Pierre(final int positionX, final int positionY) {
+        super(positionX, positionY, Pierre, true);
+        addDeplacementPossible(Rockford, Luciole, Libellule, Amibe, MurMagique, Explosion);
         deplacementsPossiblesChute.add(Vide);
-        enumeration = Pierre;
+    }
+
+    @Override
+    public Entitee nouvelle() {
+        return new Pierre(getPositionX(), getPositionY());
     }
 
     @Override
     public void tick() {
-        if (!bloque || chute) {
+        if (!isBloque() || isChute()) {
             gererChute();
         } else {
             glisser();
@@ -44,33 +44,30 @@ public class Pierre extends Tickable {
     }
 
     @Override
-    protected int contactAutreEntitee(Entitee entitee) {
-
-        setDirection('b');
-        if (entitee.is(Rockford)) {
-            exploser(false);
-            return 0;
-        } else if (entitee.is(MurMagique)) {
-            return 0;
-        } else if (entitee.is(Libellule)) {
-            exploser(true);
-            return 0;
-        } else if (entitee.is(Luciole)) {
-            exploser(false);
-            return 0;
-        } else if (entitee.is(Amibe)) {
-            return 0;
-        } else if (entitee.is(Explosion)) {
-            exploser(false);
-            return 0;
+    public int contactAutreEntitee(final Entitee entitee) {
+        setDirection(BAS);
+        int retour = 0;
+        switch (entitee.getType()) {
+            case Explosion:
+            case Luciole:
+            case Rockford:
+                exploser(false);
+                break;
+            case Amibe:
+            case MurMagique:
+                break;
+            case Libellule:
+                exploser(true);
+                break;
+            default:
+                retour = 1;
         }
-        return 1;
-
+        return retour;
     }
 
     @Override
-    protected void exploser(boolean popDiamants) {
-        sons.jouerSon1("explosion.wav", 1);
+    public void exploser(final boolean popDiamants) {
+        SONS.jouerSonExplosion();
         for (int i = -1; i < 2; i++) {
             for (int j = 0; j <= 2; j++) {
                 explosion(i, j, popDiamants);
@@ -79,13 +76,18 @@ public class Pierre extends Tickable {
     }
 
     @Override
-    protected void bloquer() {
-        bloque = !placeLibreChute(getX(), getY() + 1);
+    public int getNumeroPriorite() {
+        return 3;
     }
 
-    protected boolean placeLibreChute(int x, int y) {
-        for (Entitees e : deplacementsPossiblesChute) {
-            if (Partie.gererNiveau.getNiveau().getMap()[x][y].getEnumeration().equals(e)) {
+    @Override
+    public void bloquer() {
+        setBloque(!placeLibreChute(getPositionX(), getPositionY() + 1));
+    }
+
+    private boolean placeLibreChute(final int positionX, final int positionY) {
+        for (final Type type : deplacementsPossiblesChute) {
+            if (checkEntite(positionX, positionY, type)) {
                 return true;
             }
         }

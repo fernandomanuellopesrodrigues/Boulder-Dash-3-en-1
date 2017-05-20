@@ -173,7 +173,7 @@ public class JeuPanel extends JPanel {
 			 * Si la porte est ouverte renvoit l'image de la sortie, sinon
 			 * renvoie l'image d'une pierre.
 			 */
-            if (((Sortie) e).isOuvert()) {
+            if (Sortie.isOuvert()) {
                 return Sprites.SPRITES_SORTIE.get(1);
             } else {
                 return Sprites.SPRITES_SORTIE.get(0);

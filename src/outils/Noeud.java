@@ -63,14 +63,14 @@ public class Noeud implements Comparable<Noeud> {
      */
     public Noeud(final Entitee entite) {
         this.entite = entite;
-        this.positionX = entite.getX();
-        this.positionY = entite.getY();
+        this.positionX = entite.getPositionX();
+        this.positionY = entite.getPositionY();
         this.cout = 0;
         this.heuristique = 0;
         this.traversable = Objects.equals(entite.getClass(), Diamant.class)
                            || Objects.equals(entite.getClass(), Vide.class)
                            || Objects.equals(entite.getClass(), Poussiere.class)
-                           || (Objects.equals(entite.getClass(), Sortie.class) && ((Sortie) entite).isOuvert());
+                           || (Objects.equals(entite.getClass(), Sortie.class) && Sortie.isOuvert());
     }
 
     @Override
