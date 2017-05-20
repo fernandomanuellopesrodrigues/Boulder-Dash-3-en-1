@@ -160,7 +160,7 @@ public class Controleur {
      * @param e La touche enfoncée.
      */
     public void keyPressed(KeyEvent e) {
-        if (!Partie.IA && !Partie.lecture) {
+        if (!Partie.iaValid && !Partie.lecture) {
 
             int max = getMax();
             if (e.getKeyCode() == toucheHaut) {

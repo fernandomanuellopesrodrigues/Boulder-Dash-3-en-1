@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import entitees.abstraites.Entitee.Type;
 import entitees.abstraites.Tickable;
 import entitees.fixes.Amibe;
 import entitees.tickables.Diamant;
@@ -13,32 +14,55 @@ import loader.Niveau;
 import outils.Paire;
 import outils.Score;
 
+import static main.Coeur.CONTROLEUR;
+import static main.Partie.SONS;
+
 public class GererNiveau {
 
-    private static long   compteurReset;
-    private boolean tourParTour = true, demandeReset, demandeFin;
-    private       int score;
-    private       int nbDiamants;
-    private       int tempsRestant;
-    private final int tempsTotal;
-    private       int compteurTicks;
+    private static long compteurReset;
+    private boolean tourParTour = true;
+    private       boolean demandeReset;
+    private       boolean demandeFin;
+    private       int     score;
+    private       int     nbDiamants;
+    private       int     tempsRestant;
+    private final int     tempsTotal;
+    private       int     compteurTicks;
     private final long tempsAuDebut = System.currentTimeMillis();
     private Niveau  niveau;
     private boolean finiSuccess;
     private char    toucheClavier;
-    private       String                     trajet             = "";
-    private final List<Amibe>                listeAmibes        = new ArrayList<Amibe>();
-    private final List<Tickable>             listeTickable      = new ArrayList<Tickable>();
-    private final List<Amibe>                listeAmibesAjout   = new ArrayList<Amibe>();
-    private final List<Tickable>             listeTickableAjout = new ArrayList<Tickable>();
-    private final List<Paire<Integer, Long>> listeDiamants      = new ArrayList<Paire<Integer, Long>>();
-    public GererNiveau(Niveau niveau) {
+    private       StringBuilder              trajet             = new StringBuilder();
+    private final List<Amibe>                listeAmibes        = new ArrayList<>(10);
+    private final List<Tickable>             listeTickable      = new ArrayList<>(10);
+    private final List<Amibe>                listeAmibesAjout   = new ArrayList<>(10);
+    private final List<Tickable>             listeTickableAjout = new ArrayList<>(10);
+    private final List<Paire<Integer, Long>> listeDiamants      = new ArrayList<>(10);
+
+    public GererNiveau(final Niveau niveau) {
         this.niveau = niveau;
         if (niveau.getCaveDelay() >= 1 && Coeur.tempsReel) {
             tourParTour = false;
         }
         tempsRestant = niveau.getCaveTime();
         tempsTotal = tempsRestant;
+        buildTickables(niveau);
+        buildAmibes(niveau);
+        Collections.sort(listeTickable);
+        Collections.shuffle(listeAmibes);
+    }
+
+    private void buildAmibes(final Niveau niveau) {
+        for (int i = 0; i < niveau.getMap().length; i++) {
+            for (int j = 0; j < niveau.getMap()[i].length; j++) {
+                if (niveau.getMap()[i][j].getType() == Type.Amibe) {
+                    listeAmibes.add((Amibe) niveau.getMap()[i][j]);
+                }
+            }
+        }
+    }
+
+    private void buildTickables(final Niveau niveau) {
         for (int i = 0; i < niveau.getMap().length; i++) {
             for (int j = 0; j < niveau.getMap()[i].length; j++) {
                 if (niveau.getMap()[i][j] instanceof Tickable) {
@@ -46,54 +70,43 @@ public class GererNiveau {
                 }
             }
         }
-        for (int i = 0; i < niveau.getMap().length; i++) {
-            for (int j = 0; j < niveau.getMap()[i].length; j++) {
-                if (niveau.getMap()[i][j] instanceof Amibe) {
-                    listeAmibes.add((Amibe) niveau.getMap()[i][j]);
-                }
-            }
-        }
-        Collections.sort(listeTickable);
-        Collections.shuffle(listeAmibes);
     }
 
     public List<Amibe> getListeAmibesAjout() {
         return listeAmibesAjout;
     }
 
-    public boolean tickIa(Ia ia) {
-        Score s = null;
+    public boolean tickIa(final Ia ia) {
+        Score sc = null;
         while (!finiSuccess) {
             compteurTicks++;
             toucheClavier = ia.direction(niveau.getMap());
-            trajet += toucheClavier;
-
+            trajet.append(toucheClavier);
             if (compteurTicks >= niveau.getCaveTime() * niveau.getCaveDelay()) {
                 compteurReset++;
                 if (ia.getClass().equals(IaEvolue.class)) {
-                    s = ((IaEvolue) ia).ajouterScore();
+                    sc = ((IaEvolue) ia).ajouterScore();
                 }
                 Partie.resetNiveau();
                 break;
             }
             tickInterne();
         }
-        if (!finiSuccess) {
-            if (ia.getClass().equals(IaEvolue.class)) {
-                ((IaEvolue) ia).ajouterScore(s);
-            }
-            return false;
-        } else {
+        if (finiSuccess) {
             return true;
         }
+        if (ia.getClass().equals(IaEvolue.class)) {
+            ((IaEvolue) ia).ajouterScore(sc);
+        }
+        return false;
+
     }
 
-    public boolean tickIaDirevol(Ia ia) {
+    public boolean tickIaDirevol(final Ia ia) {
         if (!finiSuccess) {
             compteurTicks++;
             toucheClavier = ia.direction(niveau.getMap());
-            trajet += toucheClavier;
-
+            trajet.append(toucheClavier);
             if (compteurTicks >= niveau.getCaveTime() * niveau.getCaveDelay()) {
                 compteurReset++;
                 if (ia.getClass().equals(IaEvolue.class)) {
@@ -103,22 +116,20 @@ public class GererNiveau {
             }
             tickInterne();
         }
-        if (!finiSuccess) {
-            if (ia.getClass().equals(IaEvolue.class)) {
-                ((IaEvolue) ia).ajouterScore();
-            }
-            return false;
-        } else {
+        if (finiSuccess) {
             return true;
         }
+        if (ia.getClass().equals(IaEvolue.class)) {
+            ((IaEvolue) ia).ajouterScore();
+        }
+        return false;
     }
 
-    public boolean tickIaController(Ia ia, char c) {
+    public boolean tickIaController(final Ia ia, final char touche) {
         if (!finiSuccess) {
             compteurTicks++;
-            toucheClavier = c;
-            trajet += c;
-
+            toucheClavier = touche;
+            trajet.append(touche);
             if (compteurTicks >= niveau.getCaveTime() * niveau.getCaveDelay()) {
                 compteurReset++;
                 if (ia.getClass().equals(IaEvolue.class)) {
@@ -128,34 +139,33 @@ public class GererNiveau {
             }
             tickInterne();
         }
-        if (!finiSuccess) {
-            if (ia.getClass().equals(IaEvolue.class)) {
-                ((IaEvolue) ia).ajouterScore();
-            }
-            return false;
-        } else {
+        if (finiSuccess) {
             return true;
         }
+        if (ia.getClass().equals(IaEvolue.class)) {
+            ((IaEvolue) ia).ajouterScore();
+        }
+        return false;
     }
 
     public void tick() {
-        toucheClavier = Coeur.CONTROLEUR.getDirection();
-        trajet += toucheClavier;
+        toucheClavier = CONTROLEUR.getDirection();
+        trajet.append(toucheClavier);
         tickInterne();
     }
 
-    public void tickConsole(char touche) {
+    public void tickConsole(final char touche) {
         toucheClavier = touche;
-        trajet += toucheClavier;
+        trajet.append(touche);
         tickInterne();
     }
 
-    public boolean tickLecture(char touche) {
+    public boolean tickLecture(final char touche) {
         toucheClavier = touche;
         return tickInterne();
     }
 
-    public boolean tickInterne() {
+    private boolean tickInterne() {
         gererLesTickables();
         gererLesAmibes();
         ajouterAll();
@@ -170,28 +180,30 @@ public class GererNiveau {
 
         }
         gererTemps();
-        Coeur.CONTROLEUR.tick();
+        CONTROLEUR.tick();
         return false;
     }
 
-    public void gererLesTickables() {
-        for (Tickable t : listeTickable) {
-            if (!t.isMort()) { t.tick(); }
+    private void gererLesTickables() {
+        for (final Tickable tickable : listeTickable) {
+            if (!tickable.isMort()) {
+                tickable.tick();
+            }
         }
     }
 
-    public void gererLesAmibes() {
+    private void gererLesAmibes() {
         // son
         if (listeAmibes.isEmpty()) {
-            Partie.SONS.stopSon1();
+            SONS.stopSon1();
         }
-        if (!getListeAmibes().isEmpty()) {
-            Partie.SONS.jouerSonAmoeba();
+        if (!listeAmibes.isEmpty()) {
+            SONS.jouerSonAmoeba();
         }
         // fin son
-        if (listeAmibes.size() > 0 && niveau.getAmoeba_time() != -1 && compteurTicks % niveau.getAmoeba_time() == 0) {
+        if (!listeAmibes.isEmpty() && niveau.getAmoebaTime() != -1 && compteurTicks % niveau.getAmoebaTime() == 0) {
             Collections.shuffle(listeAmibes);
-            for (Amibe amibe : listeAmibes) {
+            for (final Amibe amibe : listeAmibes) {
                 if (amibe.sePropager()) {
                     return;
                 }
@@ -201,7 +213,7 @@ public class GererNiveau {
     }
 
     public void gererTemps() {
-        long temps = System.currentTimeMillis();
+        final long temps = System.currentTimeMillis();
         if (temps - tempsAuDebut > tempsTotal * 1000) {
             demandeReset = true;
             niveau.getRockford().mourir();
@@ -209,29 +221,33 @@ public class GererNiveau {
         tempsRestant = (int) (tempsTotal - (temps - tempsAuDebut) / 1000);
     }
 
-    public void ajouterAmibe(Amibe e) {
+    public void ajouterAmibe(final Amibe amibe) {
         boolean ok = true;
-        for (Amibe a : listeAmibes) {
-            if (a.getIdentitifant() == e.getIdentitifant()) {
+        for (final Amibe unAmibe : listeAmibes) {
+            if (unAmibe.getIdentitifant() == amibe.getIdentitifant()) {
                 ok = false;
                 break;
             }
         }
-        if (ok) { listeAmibesAjout.add(e); }
+        if (ok) {
+            listeAmibesAjout.add(amibe);
+        }
     }
 
-    public void ajouterTickable(Tickable e) {
+    public void ajouterTickable(final Tickable e) {
         boolean ok = true;
-        for (Tickable a : listeTickable) {
-            if (a.getIdentitifant() == e.getIdentitifant()) {
+        for (final Tickable tickable : listeTickable) {
+            if (tickable.getIdentitifant() == e.getIdentitifant()) {
                 ok = false;
                 break;
             }
         }
-        if (ok) { listeTickableAjout.add(e); }
+        if (ok) {
+            listeTickableAjout.add(e);
+        }
     }
 
-    public void ajouterAll() {
+    private void ajouterAll() {
         listeAmibes.addAll(listeAmibesAjout);
         listeAmibesAjout.clear();
         for (int i = 0; i < listeAmibes.size(); i++) {
@@ -260,9 +276,9 @@ public class GererNiveau {
         niveau = null;
     }
 
-    public void incrementerNbDiamants(Diamant d) {
-        d.getSons().jouerSonExplosionDiamant();
-        listeDiamants.add(new Paire<Integer, Long>(compteurTicks, d.getIdentitifant()));
+    public void incrementerNbDiamants(final Diamant diamant) {
+        SONS.jouerSonExplosionDiamant();
+        listeDiamants.add(new Paire<>(compteurTicks, diamant.getIdentitifant()));
         nbDiamants++;
     }
 
@@ -274,7 +290,7 @@ public class GererNiveau {
         return tourParTour;
     }
 
-    public void setTourParTour(boolean tourParTour) {
+    public void setTourParTour(final boolean tourParTour) {
         this.tourParTour = tourParTour;
     }
 
@@ -290,7 +306,7 @@ public class GererNiveau {
         return finiSuccess;
     }
 
-    public void setFiniSuccess(boolean finiSuccess) {
+    public void setFiniSuccess(final boolean finiSuccess) {
         this.finiSuccess = finiSuccess;
     }
 
@@ -298,7 +314,7 @@ public class GererNiveau {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(final int score) {
         this.score = score;
     }
 
@@ -326,7 +342,7 @@ public class GererNiveau {
         return demandeReset;
     }
 
-    public void setDemandeReset(boolean demandeReset) {
+    public void setDemandeReset(final boolean demandeReset) {
         this.demandeReset = demandeReset;
     }
 
@@ -334,16 +350,16 @@ public class GererNiveau {
         return demandeFin;
     }
 
-    public void setDemandeFin(boolean demandeFin) {
+    public void setDemandeFin(final boolean demandeFin) {
         this.demandeFin = demandeFin;
     }
 
     public String getTrajet() {
-        return trajet;
+        return trajet.toString();
     }
 
-    public void setTrajet(String trajet) {
-        this.trajet = trajet;
+    public void setTrajet(final String trajet) {
+        this.trajet = new StringBuilder(trajet);
     }
 
     public int getCompteurTicks() {
@@ -359,7 +375,7 @@ public class GererNiveau {
     }
 
     public void resetTrajet() {
-        trajet = "";
+        trajet =  new StringBuilder(10);
     }
 
     public List<Paire<Integer, Long>> getListeDiamants() {

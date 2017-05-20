@@ -26,7 +26,7 @@ public class Totaux {
         final Totaux totaux = new Totaux();
         totaux.nombrePartie = nombrePartie;
         totaux.strat = strat;
-        afficherMessage(format("\nIA : %s", strat));
+        afficherMessage(format("\niaValid : %s", strat));
         for (int i = 0; i < totaux.nombrePartie; i++) {
             afficherMessage(format("\n\nPartie %d/%d\n", i + 1, totaux.nombrePartie));
             final Score score = stratValid

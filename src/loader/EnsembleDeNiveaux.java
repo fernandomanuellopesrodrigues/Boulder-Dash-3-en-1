@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Murloc
  */
-public class EnsembleDeNiveaux {
+public final class EnsembleDeNiveaux {
 
     /**
      * La liste des niveaux.

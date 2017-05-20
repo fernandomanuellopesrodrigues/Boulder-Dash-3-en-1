@@ -54,25 +54,25 @@ public final class GraphiqueConsole {
          * Concatene diverses informations.
 		 */
         builder.append("Diamants : ")
-         .append(Partie.gererNiveau.getNbDiamants())
-         .append("/")
-         .append(Partie.gererNiveau.getNiveau().getDiamondsRequired())
-         .append("\n")
-         .append("Score : ")
-         .append(Partie.gererNiveau.getScore())
-         .append("			Temps restant : ")
-         .append(Partie.gererNiveau.getTempsRestant())
-         .append(" 		")
-         .append("Niveau : ")
-         .append(Partie.niveau)
-         .append("/")
-         .append(Partie.ensembleDeNiveau.getNombreDeNiveaux())
-         .append("\n")
-         .append("Points/diamant : ")
-         .append(Partie.gererNiveau.getNiveau().getDiamondValue())
-         .append("	  (diamants bonus) : ")
-         .append(Partie.gererNiveau.getNiveau().getDiamondValueBonus())
-         .append("\n\n");
+               .append(Partie.gererNiveau.getNbDiamants())
+               .append("/")
+               .append(Partie.gererNiveau.getNiveau().getDiamondsRequired())
+               .append("\n")
+               .append("Score : ")
+               .append(Partie.gererNiveau.getScore())
+               .append("			Temps restant : ")
+               .append(Partie.gererNiveau.getTempsRestant())
+               .append(" 		")
+               .append("Niveau : ")
+               .append(Partie.niveau)
+               .append("/")
+               .append(Partie.ensembleDeNiveau.getNombreDeNiveaux())
+               .append("\n")
+               .append("Points/diamant : ")
+               .append(Partie.gererNiveau.getNiveau().getDiamondValue())
+               .append("	  (diamants bonus) : ")
+               .append(Partie.gererNiveau.getNiveau().getDiamondValueBonus())
+               .append("\n\n");
 
         // Parcours de toutes les entitees de la map.
         for (int i = 0; i < map[0].length; i++) {
@@ -143,7 +143,7 @@ public final class GraphiqueConsole {
     public static void afficherScoreTousLesNiveaux(List<Integer> scores) {
         out.println("FIN DU JEU , SCORE DES NIVEAUX : \n");
         for (int i = 0; i < scores.size(); i++) {
-            out.println("                         Niveau " + (i + 1) + " : " + scores.get(i) + "\n");
+            out.printf("                         Niveau %d : %d\n%n", i + 1, scores.get(i));
         }
         out.println("\n");
     }

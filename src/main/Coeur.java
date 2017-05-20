@@ -2,7 +2,6 @@ package main;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import controleurs.Controleur;
 import controleurs.ControleurConsole;
@@ -10,8 +9,12 @@ import tasks.FrameTask;
 import tasks.TickTask;
 import vue.Fenetre;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static main.Constantes.FPS;
+
 /**
- * La classe Coeur n'est jamais instanci�e.
+ * La classe Coeur n'est jamais instanciee.
  * Elle dispose de plusieurs objets static essentiels au fonctionnement du
  * programme.
  *
@@ -20,7 +23,7 @@ import vue.Fenetre;
 public class Coeur {
 
     /**
-     * La fen�tre de jeu servant si le jeu est en mode graphique.
+     * La fenetre de jeu servant si le jeu est en mode graphique.
      */
     public static final Fenetre FENETRE = new Fenetre();
 
@@ -32,51 +35,52 @@ public class Coeur {
     /**
      * Le controleur console servant si le jeu n'est pas en mode graphique.
      */
-    public static final ControleurConsole CONTROLEUR_CONSOLE = new ControleurConsole();
+    public static final ControleurConsole        CONTROLEUR_CONSOLE = new ControleurConsole();
     /**
-     * L'objet permettant d'effectuer des frames de jeu � un rythme r�gulier
+     * L'objet permettant d'effectuer des frames de jeu a un rythme regulier
      * dans un thread quand le jeu est en mode graphique.
      */
-    public static final ScheduledExecutorService FRAME_TASK = Executors.newScheduledThreadPool(1);
+    public static final ScheduledExecutorService FRAME_TASK         = Executors.newScheduledThreadPool(1);
     /**
-     * L'objet permettant de r�aliser des tours de jeu � un rythme r�gulier dans
-     * un thread quand le jeu est en mode temps r�el.
+     * L'objet permettant de realiser des tours de jeu a un rythme regulier dans
+     * un thread quand le jeu est en mode temps reel.
      */
-    public static ScheduledExecutorService tickTask = Executors.newScheduledThreadPool(1);
+    public static       ScheduledExecutorService TICKTASK           = Executors.newScheduledThreadPool(1);
     /**
-     * Bool�an d�finissant si une partie est en train d'avoir lieu ou pas.
+     * Boolean definissant si une partie est en train d'avoir lieu ou pas.
      * Si le joueur est en train de jouer il est vrai.
-     * Si le programme calcule une strat�gie ou alors qu'il est en train
+     * Si le programme calcule une strategie ou alors qu'il est en train
      * d'effectuer un changement de niveau il est en faux.
      */
     public static boolean running;
 
     /**
-     * Bool�an d�finissant si une partie est en mode temps graphique ou console.
+     * Boolean definissant si une partie est en mode temps graphique ou console.
      */
     public static boolean graphique;
 
     /**
-     * Bool�an d�finissant si une partie est en mode temps r�el.
+     * Boolean definissant si une partie est en mode temps r�el.
      */
     public static boolean tempsReel;
 
     /**
      * On initialsie l'objet qui effectue des FPS tout en limitant les FPS si
-     * ceux-ci sont absurdes. (Oui 120 FPS pour ce jeu c'est d�j� absurde.)
+     * ceux-ci sont absurdes. (Oui 120 FPS pour ce jeu c'est deja absurde.)
      */
     static {
-        if (Constantes.FPS >= 1 && Constantes.FPS <= 120) {
-            FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / Constantes.FPS, TimeUnit.MILLISECONDS);
-        } else { FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / 30, TimeUnit.MILLISECONDS); }
-
+        if (FPS >= 1 && FPS <= 120) {
+            FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / FPS, MILLISECONDS);
+        } else {
+            FRAME_TASK.scheduleAtFixedRate(new FrameTask(), 0, 1000 / 30, MILLISECONDS);
+        }
     }
 
     /**
-     * M�thode servant � lancer l'objet qui effectue des tours de jeu dans un
-     * thread ({@link Coeur#tickTask}.
-     * Elle prend en param�tre le nombre de tours par secondes qu'elle doit
-     * effetuer et cr�e un nouvel objet en fonction.
+     * Methode servant a lancer l'objet qui effectue des tours de jeu dans un
+     * thread ({@link Coeur#TICKTASK}.
+     * Elle prend en parametre le nombre de tours par secondes qu'elle doit
+     * effetuer et cree un nouvel objet en fonction.
      *
      * @param ticks Le nombre de tours par secondes voulu.
      */
@@ -84,8 +88,10 @@ public class Coeur {
         if (ticks > 1000) {
             ticks = 1000;
         }
-        if (tickTask != null) { tickTask.shutdown(); }
-        tickTask = Executors.newScheduledThreadPool(1);
-        tickTask.scheduleAtFixedRate(new TickTask(), 0, (long) (1000000000 / (double) ticks), TimeUnit.NANOSECONDS);
+        if (TICKTASK != null) {
+            TICKTASK.shutdown();
+        }
+        TICKTASK = Executors.newScheduledThreadPool(1);
+        TICKTASK.scheduleAtFixedRate(new TickTask(), 0, (long) (1000000000 / (double) ticks), NANOSECONDS);
     }
 }

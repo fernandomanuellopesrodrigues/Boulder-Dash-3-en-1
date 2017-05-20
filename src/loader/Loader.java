@@ -18,6 +18,7 @@ import entitees.tickables.Luciole;
 import entitees.tickables.Pierre;
 import entitees.tickables.Rockford;
 
+import static java.lang.Integer.valueOf;
 import static java.lang.System.err;
 import static java.lang.System.exit;
 
@@ -29,6 +30,8 @@ import static java.lang.System.exit;
  * @see EnsembleDeNiveaux
  */
 public final class Loader {
+
+    private static final String SLASHN = "\n";
 
     private Loader() {}
 
@@ -58,7 +61,7 @@ public final class Loader {
 
             // recuperation des infromations de l'ensemble de niveaux
             final String ensembleDeNiveauxInformations = niveaux[0];
-            final int nombreDeNiveaux = Integer.valueOf(getStr(ensembleDeNiveauxInformations, "Caves=", "\n"));
+            final int nombreDeNiveaux = valueOf(getStr(ensembleDeNiveauxInformations, "Caves=", "\n"));
             final EnsembleDeNiveaux ensemble = new EnsembleDeNiveaux(nombreDeNiveaux);
             // recuperation des niveaux
             for (int i = 1; i <= ensemble.getNombreDeNiveaux(); i++) {
@@ -78,157 +81,131 @@ public final class Loader {
     }
 
     /**
-     * M�thode qui prend en parametre un string contenant un niveau boulder dash
+     * Methode qui prend en parametre un string contenant un niveau boulder dash
      * et en fait un objet {@link Niveau}.
      *
      * @param niveau Le string contenant un niveau boulder dash.
      *
-     * @return Le niveau mode lis à partir du string.
+     * @return Le niveau mode lis \u00E0 partir du string.
      */
     private static Niveau chargerNiveau(final String niveau) {
-        final String diamond = getStr(niveau, "DiamondValue=", "\n");
-        final String maps = getStr(niveau, "[map]\n", "[/map]");
-        int caveDelay;
-        try {
-            caveDelay = Integer.valueOf(getStr(niveau, "CaveDelay=", "\n"));
-            if (caveDelay == 0) {
-                caveDelay = 1;
-            }
-        } catch (Exception e) {
-            caveDelay = 7;
-        }
-        int cave_time;
-        try {
-            cave_time = Integer.valueOf(getStr(niveau, "CaveTime=", "\n"));
-        } catch (Exception e) {
-            cave_time = 1000;
-        }
-        int diamonds_required;
-        try {
-            diamonds_required = Integer.valueOf(getStr(niveau, "DiamondsRequired=", "\n"));
-        } catch (Exception e) {
-            diamonds_required = 0;
-        }
-        int diamond_value;
-        try {
-            diamond_value = Integer.valueOf(getStr(niveau, "DiamondValue=", " "));
-        } catch (Exception e) {
-            diamond_value = Integer.valueOf(getStr(niveau, "DiamondValue=", "\n"));
-        }
-
-        int diamond_value_bonus;
-        try {
-            diamond_value_bonus = Integer.valueOf(getStr(diamond, " "));
-        } catch (Exception e) {
-            diamond_value_bonus = 0;
-        }
-        int amoeba_time;
-        try {
-            amoeba_time = Integer.valueOf(getStr(niveau, "AmoebaTime=", "\n"));
-        } catch (Exception e) {
-            amoeba_time = -1;
-        }
-        int magic_wall_time;
-        try {
-            magic_wall_time = Integer.valueOf(getStr(niveau, "MagicWallTime=", "\n"));
-        } catch (Exception e) {
-            magic_wall_time = -1;
-        }
-
-        String[] lignes = maps.split("\n");
-        int mapHauteur = lignes.length;
-        int mapLongueur = lignes[1].length();
-        Entitee[][] map = new Entitee[mapLongueur][mapHauteur];
+        final String diamond = getValue(niveau, "DiamondValue=", SLASHN, String.class, "");
+        final String maps = getValue(niveau, "[map]\n", "[/map]", String.class, "");
+        final int caveDelay = getValue(niveau, "CaveDelay=", SLASHN, Integer.class, 7);
+        final int caveTime = getValue(niveau, "CaveTime=", SLASHN, Integer.class, 1000);
+        final int diamondsRequired = getValue(niveau, "DiamondsRequired=", SLASHN, Integer.class, 0);
+        final int diamondValue = getValue(niveau, "DiamondValue=", " ", Integer.class, valueOf(diamond));
+        final int diamondValueBonus = getValue(diamond, " ", Integer.class, 0);
+        final int amoebaTime = getValue(niveau, "AmoebaTime=", SLASHN, Integer.class, -1);
+        final int magicWallTime = getValue(niveau, "MagicWallTime=", SLASHN, Integer.class, -1);
+        final String[] lignes = maps.split(SLASHN);
+        final int mapHauteur = lignes.length;
+        final int mapLongueur = lignes[1].length();
+        final Entitee[][] map = new Entitee[mapLongueur][mapHauteur];
         for (int j = 0; j < mapHauteur; j++) {
-            char[] ligne = lignes[j].toCharArray();
+            final char[] ligne = lignes[j].toCharArray();
             for (int i = 0; i < mapLongueur; i++) {
-                map[i][j] = creerEntitee(ligne[i], i, j, magic_wall_time);
+                map[i][j] = creerEntitee(ligne[i], i, j, magicWallTime);
             }
         }
-        return new Niveau(map, caveDelay, cave_time, diamonds_required, diamond_value, diamond_value_bonus, amoeba_time,
-                          magic_wall_time);
+        return new Niveau(map, caveDelay, caveTime, diamondsRequired, diamondValue, diamondValueBonus, amoebaTime,
+                          magicWallTime);
     }
 
     /**
-     * Cette m�thode prend en param�tre un fichier BDCFF et les infos de ce
+     * Cette methode prend en parametre un fichier BDCFF et les infos de ce
      * fichier.
      *
      * @param chemin Le chemin du fichier BDCFF.
      *
      * @return Les infos de ce fichier.
      */
-    public static String lireInfos(String chemin) {
-        String[] niveaux;
-
-        try {
-            // lecture du fichier
-            FileReader lecteur = new FileReader(chemin);
-            BufferedReader in = new BufferedReader(lecteur);
-
-            // r�cup�ration du fichier
-            String ensemble_du_fichier = "";
+    public static String lireInfos(final String chemin) {
+        try (BufferedReader in = new BufferedReader(new FileReader(chemin))) {
+            // recuperation du fichier
+            final StringBuilder builder = new StringBuilder(10);
             String s;
             while ((s = in.readLine()) != null) {
-                ensemble_du_fichier += "\n" + s;
+                builder.append(SLASHN).append(s);
             }
-            in.close();
-            ensemble_du_fichier = ensemble_du_fichier.replace("-", "");
-            ensemble_du_fichier = ensemble_du_fichier.replace("[cave]", "-[cave]");
-
-            niveaux = ensemble_du_fichier.split("-");
-
-            // r�cup�ration des infromations de l'ensemble de niveaux
-            String ensemble_de_niveaux_informations = niveaux[0];
-            return ensemble_de_niveaux_informations;
-        } catch (Exception e) {
+            final String ensembleDuFichier = builder.toString().replace("-", "").replace("[cave]", "-[cave]");
+            final String[] niveaux = ensembleDuFichier.split("-");
+            // recuperation des infromations de l'ensemble de niveaux
+            return niveaux[0];
+        } catch (final IOException ignored) {
             err.println("Impossible de charger le niveau");
-            return "\n";
+            exit(-1);
+            return null;
         }
     }
 
     /**
-     * Cette m�thode cr�e un objet {@link Entitee} � partir de diverses
+     * Cette methode cree un objet {@link Entitee} a partir de diverses
      * informations.
-     * Elle est appel�e par {@link Loader#chargerNiveau(String)} pour cr�er la
+     * Elle est appelee par {@link Loader#chargerNiveau(String)} pour creer la
      * carte du niveau.
      *
-     * @param car Le caract�re repr�sentant l'entit�e.
-     * @param x La coordonn�e en x de l'entit�e.
-     * @param y La coordonn�e en y de l'entit�e.
-     * @param magicWallTime Le nombre d'utilisations limites de l'entit�e si celle si est
+     * @param car Le caractere representant l'entite.
+     * @param x La coordonne en x de l'entite.
+     * @param y La coordonne en y de l'entite.
+     * @param magicWallTime Le nombre d'utilisations limites de l'entitee si celle si est
      * un mur magique.
      *
-     * @return L'entit�e voulue.
+     * @return L'entitee voulue.
      */
-    public static Entitee creerEntitee(char car, int x, int y, int magicWallTime) {
-        if (car == 'w') {
-            return new Mur(x, y);
-        } else if (car == 'd') {
-            return new Diamant(x, y);
-        } else if (car == 'a') {
-            return new Amibe(x, y);
-        } else if (car == 'q' || car == 'Q' || car == 'F' || car == 'o' || car == 'O') {
-            return new Luciole(x, y);
-        } else if (car == 'b' || car == 'B' || car == 'c' || car == 'C') {
-            return new Libellule(x, y);
-        } else if (car == 'W') {
-            return new MurEnTitane(x, y);
-        } else if (car == 'r') {
-            return new Pierre(x, y);
-        } else if (car == '.') {
-            return new Poussiere(x, y);
-        } else if (car == 'P') {
-            return new Rockford(x, y);
-        } else if (car == 'X') {
-            return new Sortie(x, y);
-        } else if (car == 'M') {
-            return new MurMagique(x, y, magicWallTime);
-        } else if (car == ' ') {
-            return new Vide(x, y);
-        } else {
-            return new Diamant(x, y);
+    private static Entitee creerEntitee(final char car, final int x, final int y, final int magicWallTime) {
+        final Entitee entitee;
+        switch (car) {
+            case 'w':
+                entitee = new Mur(x, y);
+                break;
+            case 'd':
+                entitee = new Diamant(x, y);
+                break;
+            case 'a':
+                entitee = new Amibe(x, y);
+                break;
+            case 'q':
+            case 'Q':
+            case 'F':
+            case 'o':
+            case 'O':
+                entitee = new Luciole(x, y);
+                break;
+            case 'b':
+            case 'B':
+            case 'c':
+            case 'C':
+                entitee = new Libellule(x, y);
+                break;
+            case 'W':
+                entitee = new MurEnTitane(x, y);
+                break;
+            case 'r':
+                entitee = new Pierre(x, y);
+                break;
+            case '.':
+                entitee = new Poussiere(x, y);
+                break;
+            case 'P':
+                entitee = new Rockford(x, y);
+                break;
+            case 'X':
+                entitee = new Sortie(x, y);
+                break;
+            case 'M':
+                entitee = new MurMagique(x, y, magicWallTime);
+                break;
+            case ' ':
+                entitee = new Vide(x, y);
+                break;
+            default:
+                entitee = new Diamant(x, y);
         }
+        return entitee;
     }
+
+
 
     /**
      * Prend un string en parametre et renvoit un sous-string se trouvant dans
@@ -259,4 +236,26 @@ public final class Loader {
         return texte.substring(texte.indexOf(baliseEntrante) + baliseEntrante.length());
     }
 
+    private static <T> T getValue(final String texte,
+                                  final String basliseEntrante,
+                                  final String baliseSortant,
+                                  final Class<T> type,
+                                  final T defaultValue) {
+        try {
+            return type.cast(getStr(texte, basliseEntrante, baliseSortant));
+        } catch (final ClassCastException ignored) {
+            return defaultValue;
+        }
+    }
+
+    private static <T> T getValue(final String texte,
+                                  final String basliseEntrante,
+                                  final Class<T> type,
+                                  final T defaultValue) {
+        try {
+            return type.cast(getStr(texte, basliseEntrante));
+        } catch (final ClassCastException ignored) {
+            return defaultValue;
+        }
+    }
 }

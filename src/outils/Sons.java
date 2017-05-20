@@ -42,7 +42,7 @@ public class Sons {
      * @throws IOException Si la lecture du son est impossible.
      */
     private void charger(final String nom) throws IOException {
-        if (Constantes.SONS && Coeur.graphique && !Partie.IA) {
+        if (Constantes.SONS && Coeur.graphique && !Partie.iaValid) {
             final String gongFile = PATH + nom;
             final InputStream in = new FileInputStream(gongFile);
             audioStream = new AudioStream(in);

@@ -35,7 +35,7 @@ public final class Ecrivain {
             final File destinationFile = new File(repertoire + nom);
             destinationFile.createNewFile();
             ecrivain.print(aEcrire);
-            if (Partie.IA) {
+            if (Partie.iaValid) {
                 out.printf("\nMeilleur trajet enregistr\u00E9 sous : %s%s%n", repertoire, nom);
             } else {
                 out.printf("\nChemin parcouru enregistre sous : %s%s%n", repertoire, nom);

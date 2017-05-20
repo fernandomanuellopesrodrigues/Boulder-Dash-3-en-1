@@ -39,7 +39,7 @@ public class FrameTask implements Runnable {
         if (Coeur.graphique && Coeur.running) {
             try {
                 Coeur.FENETRE.repaint();
-                compteur3++
+                compteur3++;
                 /*
       Un compteur qui sert a compter le nombre de ticks (tours) par secondes en
       temps reel.

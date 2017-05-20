@@ -8,7 +8,7 @@ import static main.Coeur.running;
 import static main.Partie.gererNiveau;
 
 /**
- * La classe TickTask est une classe utilisee par l'objet {@link Coeur#tickTask}
+ * La classe TickTask est une classe utilisee par l'objet {@link Coeur#TICKTASK}
  * afin d'effectuer les tours de jeu automatiquement quand celui-ci est en temps
  * reel.
  * Elle dispose de plusieurs atributs qui servent a compter le nombre de ticks
@@ -31,7 +31,7 @@ public class TickTask implements Runnable {
     private static int compteur3;
 
     /**
-     * La methode que l'objet {@link Coeur#tickTask} appelle un certain nombre
+     * La methode que l'objet {@link Coeur#TICKTASK} appelle un certain nombre
      * de fois par secondes.
      * Elle effectue un {@link Partie#tick()} si le booleen
      * {@link Coeur#running} est vrai et que le jeu est en mode temps reel.

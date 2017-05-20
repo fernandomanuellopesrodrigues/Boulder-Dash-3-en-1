@@ -165,7 +165,7 @@ public class Sprites {
      * @param compteurFPS Le compteur de FPS.
      * @param rockford L'instance de Rockford de la partie actuelle.
      */
-    public static void oneFrame(long compteurFPS, Rockford rockford) {
+    public static void oneFrame(final long compteurFPS, final Rockford rockford) {
         gererSpritesEntitees(compteurFPS);
         gererSpriteRockford(compteurFPS, rockford);
     }
@@ -180,9 +180,9 @@ public class Sprites {
     private static void gererSpritesEntitees(long compteurFPS) {
         // Parcourt la liste de paires de listes de l'objet SPRITES ANIMES et y
         // change le premier element, tout cela en fonction du compteur de FPS.
-        for (Paire<Integer, List<Image>> map : SPRITES_ANIMES.get()) {
-            Integer vitesse = map.getLeft();
-            List<Image> liste = map.getRight();
+        for (final Paire<Integer, List<Image>> map : SPRITES_ANIMES) {
+            final Integer vitesse = map.getLeft();
+            final List<Image> liste = map.getRight();
             if (compteurFPS % (vitesse <= FPS ? FPS / vitesse : 1) == 0) {
                 liste.add(liste.get(0));
                 liste.remove(0);

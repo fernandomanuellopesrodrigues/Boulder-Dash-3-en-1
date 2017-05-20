@@ -124,7 +124,7 @@ public final class SousMenu {
             do {
                 final Scanner sc = new Scanner(System.in);
                 try {
-                    afficherMessage("Combien voulez-vous de générations pour les IA's évolutives ?");
+                    afficherMessage("Combien voulez-vous de générations pour les iaValid's évolutives ?");
                     nbGenerations = sc.nextInt();
                 } catch (final InputMismatchException ignored) {
                     nbGenerations = -1;

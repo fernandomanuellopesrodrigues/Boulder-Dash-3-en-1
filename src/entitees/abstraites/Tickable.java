@@ -72,19 +72,6 @@ public abstract class Tickable extends Entitee implements Comparable<Tickable> {
         super(positionX, positionY, type, destructible);
         deplacementsPossibles.add(Vide);
     }
-
-    /**
-     * Constructeur Tickable.
-     * Prend des coordonn\u00E9es en param\u00E8tre.
-     *
-     * @param positionX Coordonn\u00E9e en x.
-     * @param positionY Coordonn\u00E9e en y.
-     */
-    public Tickable(final int positionX, final int positionY) {
-        super(positionX, positionY);
-        deplacementsPossibles.add(Vide);
-    }
-
     // return -1 si l'autre entitee nous mange,0 si deplacement impossible,1si
     // on mange l'entitee
 

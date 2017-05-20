@@ -64,7 +64,7 @@ public final class Menu {
                 checkSimuler(args);
                 break;
             case "-parfait":
-                quitterAvecMessageErreur("\nL'IA parfaite n'est pas encore pr\u00E9sente dans cette version.");
+                quitterAvecMessageErreur("\nL'iaValid parfaite n'est pas encore pr\u00E9sente dans cette version.");
                 break;
             default:
                 quitterArgumentsInvalides();

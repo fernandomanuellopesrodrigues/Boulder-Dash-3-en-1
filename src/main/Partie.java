@@ -1,13 +1,12 @@
 package main;
 
 import java.awt.BorderLayout;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import controleurs.ControleurConsole;
 import entitees.abstraites.Entitee;
 import entitees.abstraites.Entitee.Type;
 import ia.Ia;
@@ -26,27 +25,34 @@ import vue.GraphiqueConsole;
 import vue.JeuPanel;
 import vue.ScorePanel;
 
+import static controleurs.ControleurConsole.prochainNiveau;
+import static java.lang.String.format;
+import static java.lang.System.err;
 import static java.lang.System.out;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static loader.Loader.chargerEnsembleDeNiveaux;
+import static vue.GraphiqueConsole.afficherScoreTousLesNiveaux;
 
-public class Partie {
+public final class Partie {
 
-    public static final List<Integer> SCORES = new ArrayList<>(10);
+    public static final  List<Integer>     SCORES    = new ArrayList<>(10);
+    public static final  SonToolKit        SONS      = new SonToolKit();
+    private static final DateTimeFormatter DF        = ofPattern("dd:MM:yyyy_HH:mm:ss");
+    private static final LocalDateTime     TODAY     = LocalDateTime.now();
+    private static final String            DATEDEBUT = DF.format(TODAY);
     public static String            cheminFichier;
     public static boolean           finiEvolution;
     public static EnsembleDeNiveaux ensembleDeNiveau;
     public static int               niveau;
     public static GererNiveau       gererNiveau;
     public static boolean           tousLesNiveaux;
-    public static boolean           IA;
+    public static boolean           iaValid;
     public static Ia                ia;
     public static boolean           lecture;
     public static boolean           simulation;
     public static String            parcours;
-    public static final  SonToolKit SONS = new SonToolKit();
-    private static final DateFormat DF   = SimpleDateFormat.("dd:MM:yyyy_HH:mm:ss");
-    private static final LocalDateTime TODAY     = LocalDateTime.now();
-    private static final String        DATEDEBUT = DF.format(TODAY);
+
+    private Partie() {}
 
     private static void initialiserNiveaux(final String chemin) {
         cheminFichier = chemin;
@@ -93,15 +99,15 @@ public class Partie {
         lecture = true;
         parcours = parc;
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1));
-        String parcoursParcouru = "";
+        final StringBuilder parcoursParcouru = new StringBuilder(10);
         int scores = 0;
         List<Paire<Integer, Long>> liste = null;
         while (!parcours.isEmpty() && !gererNiveau.isDemandeReset() && !gererNiveau.isDemandeFin()) {
             final char direction = parcours.charAt(0);
             parcours = parcours.substring(1, parcours.length());
-            parcoursParcouru += direction;
+            parcoursParcouru.append(direction);
             liste = gererNiveau.getListeDiamants();
-            score = gererNiveau.getScore();
+            scores = gererNiveau.getScore();
             if (gererNiveau.tickLecture(direction) || gererNiveau.getNiveau().getRockford().isMort()) {
                 break;
             }
@@ -113,13 +119,17 @@ public class Partie {
     }
 
     public static void resetNiveau() {
-        if (IA) {
+        if (iaValid) {
             gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
-            if (ia != null) { ia.reset(); }
+            if (ia != null) {
+                ia.reset();
+            }
         } else if (lecture) {
             if (gererNiveau.getNiveau().getRockford().isMort()) {
-                System.out.println("Mort de Rockford. Mauvais parcours. Fin du Programme.");
-            } else { System.out.println("Fin du temps. Fin Du programme."); }
+                out.println("Mort de Rockford. Mauvais parcours. Fin du Programme.");
+            } else {
+                out.println("Fin du temps. Fin Du programme.");
+            }
             System.exit(1);
         } else {
             Coeur.running = false;
@@ -128,48 +138,48 @@ public class Partie {
 
     }
 
-    public static Score calculerStrategie(String strategie, String cheminFichierBDCFF, int niveau) {
-        IA = true;
+    public static Score calculerStrategie(final String strategie,
+                                          final String cheminFichierBDCFF,
+                                          final int niveau) {
+        iaValid = true;
         ensembleDeNiveau = chargerEnsembleDeNiveaux(cheminFichierBDCFF);
         Partie.niveau = niveau;
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
-        if (strategie.equals("-simplet")) {
+        if (Objects.equals(strategie, "-simplet")) {
             ia = new IaRandom();
-        } else if (strategie.equals("-directif")) {
+        } else if (Objects.equals(strategie, "-directif")) {
             ia = new IaDirective();
         }
-
         if (ia != null) {
             while (!gererNiveau.tickIa(ia)) { }
         }
 
-        Score score = new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks(), gererNiveau.getListeDiamants());
-
+        final Score score =
+          new Score(gererNiveau.getScore(), gererNiveau.getCompteurTicks(), gererNiveau.getListeDiamants());
         SousMenu.finIA(score);
         return score;
     }
 
-    public static Score calculerStrategieEvolue(String strategie, int nbGenerations, String cheminFichierBDCFF,
-                                                int niveau) {
-        IA = true;
+    public static Score calculerStrategieEvolue(final String strategie,
+                                                final int nbGenerations,
+                                                final String cheminFichierBDCFF,
+                                                final int niveau) {
+        iaValid = true;
         cheminFichier = cheminFichierBDCFF;
         ensembleDeNiveau = chargerEnsembleDeNiveaux(cheminFichierBDCFF);
         Partie.niveau = niveau;
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
-
         if (strategie.equals("-evolue")) {
             ia = new IaEvolue(nbGenerations);
         } else if (strategie.equals("-direvol")) {
             ia = new IaDirectiveEvolue(nbGenerations);
         }
         Score score = null;
-
         if (ia instanceof IaEvolue) {
             score = ((IaEvolue) ia).debut();
         } else if (ia instanceof IaDirectiveEvolue) {
             score = ((IaDirectiveEvolue) ia).computeScores();
         }
-
         SousMenu.finIA(score);
         return score;
     }
@@ -186,7 +196,7 @@ public class Partie {
         }
         if (tousLesNiveaux && niveau < ensembleDeNiveau.getNombreDeNiveaux()) {
             if (!Coeur.graphique) {
-                ControleurConsole.prochainNiveau(niveau, gererNiveau.getScore());
+                prochainNiveau(niveau, gererNiveau.getScore());
             }
             niveau++;
             lancerNiveau();
@@ -195,7 +205,7 @@ public class Partie {
         }
     }
 
-    public static void fin() {
+    private static void fin() {
         Coeur.running = false;
         if (Coeur.graphique) {
             Coeur.FENETRE.getContentPane().removeAll();
@@ -204,15 +214,14 @@ public class Partie {
             Coeur.FENETRE.repaint();
         } else if (!simulation) {
             if (tousLesNiveaux) {
-                GraphiqueConsole.afficherScoreTousLesNiveaux(SCORES);
-
+                afficherScoreTousLesNiveaux(SCORES);
             } else {
                 afficherScoreUnNiveau(niveau, gererNiveau.getScore());
             }
         }
     }
 
-    public static void lancerNiveau() {
+    private static void lancerNiveau() {
         if (gererNiveau != null) { gererNiveau.stop(); }
         gererNiveau = new GererNiveau(ensembleDeNiveau.getNiveaux().get(niveau - 1).clone());
         Coeur.running = true;
@@ -252,9 +261,8 @@ public class Partie {
                 parcours = parcours.substring(1, parcours.length());
             } else {
                 finiEvolution = true;
-                if (!IA) {
-                    System.err
-                      .println("Chemin du fichier terminé or le niveau n'est pas fini, fermeture du programme.");
+                if (!iaValid) {
+                    err.println("Chemin du fichier terminé or le niveau n'est pas fini, fermeture du programme.");
                     System.exit(0);
                 }
             }
@@ -264,7 +272,7 @@ public class Partie {
 
     }
 
-    public static void preparerFenetre() {
+    private static void preparerFenetre() {
         Coeur.FENETRE.getContentPane().removeAll();
         Coeur.FENETRE.getContentPane().setLayout(new BorderLayout());
         Coeur.FENETRE.getContentPane().add(new JeuPanel(), BorderLayout.CENTER);
@@ -273,25 +281,16 @@ public class Partie {
     }
 
     public static String enregistrerEssai(String trajet) {
-        String essai = "Trajet : " + trajet + "\nScore : " + gererNiveau.getScore() + "     Diamants : "
-                       + gererNiveau.getNbDiamants() + "      Temps : ";
-        if (gererNiveau.isTourParTour() || IA) {
-            essai += gererNiveau.getCompteurTicks() + " tours\n";
-        } else {
-            essai += (double) gererNiveau.getCompteurTicks() / (double) gererNiveau.getNiveau().getCaveDelay()
-                     + " secondes\n";
-        }
-
+        String essai = format("Trajet : %s\nScore : %d     Diamants : %d      Temps : ", trajet, gererNiveau.getScore(),
+                              gererNiveau.getNbDiamants());
+        essai += gererNiveau.isTourParTour() || iaValid
+                 ? gererNiveau.getCompteurTicks() + " tours\n" :
+                 gererNiveau.getCompteurTicks() / (double) gererNiveau.getNiveau().getCaveDelay() + " secondes\n";
         String chemin = "";
-        if (IA) {
-            chemin += "Essais_IA/";
-        } else {
-            chemin += "Essais_Humain/";
-        }
-        chemin += DATEDEBUT + "/";
-
-        Ecrivain.ecrire(essai, "Niveau_" + niveau + ".dash", chemin);
-        return chemin + "Niveau_" + niveau + ".dash";
+        chemin += iaValid ? "Essais_IA/" : "Essais_Humain/";
+        chemin += format("%s/", DATEDEBUT);
+        Ecrivain.ecrire(essai, format("Niveau_%d.dash", niveau), chemin);
+        return format("%sNiveau_%d.dash", chemin, niveau);
     }
 
     /**
@@ -300,8 +299,8 @@ public class Partie {
      * @param niveau Le niveau fini.
      * @param score Le score a afficher.
      */
-    public static void afficherScoreUnNiveau(final int niveau, final int score) {
-        if (!IA && !lecture) {
+    private static void afficherScoreUnNiveau(final int niveau, final int score) {
+        if (!iaValid && !lecture) {
             out.printf("FIN DU JEU , SCORE DU NIVEAU %d : %d.\n%n", niveau, score);
         }
     }
