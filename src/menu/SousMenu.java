@@ -15,7 +15,6 @@ import static java.lang.System.out;
 import static main.Partie.calculerStrategieEvolue;
 import static main.Partie.commencerPartie;
 import static main.Partie.enregistrerEssai;
-import static main.Partie.jouerFichier;
 import static menu.Menu.poserQuestionOuiNon;
 import static menu.Totaux.CalculTotaux;
 
@@ -101,7 +100,7 @@ public final class SousMenu {
     public static void rejouerNiveau(final String cheminFichierDASH,
                                      final String cheminFichierBDCFF,
                                      final int niveau) {
-        jouerFichier(cheminFichierBDCFF, niveau, Ecrivain.lireParcours(cheminFichierDASH));
+        commencerPartie(cheminFichierBDCFF, niveau, Ecrivain.lireParcours(cheminFichierDASH));
     }
 
     /**
