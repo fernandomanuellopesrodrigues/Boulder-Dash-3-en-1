@@ -3,70 +3,72 @@ package outils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import main.Partie;
 
+import static java.lang.System.err;
+import static java.lang.System.out;
+
 /**
- * La classe Ecrivain est une classe qui n'est jamais instanci�e, elle dipose de
- * m�thodes statiques servant � cr�er et lire des fichier DASH.
+ * La classe Ecrivain est une classe qui n'est jamais instanci\u00E9e, elle dipose de
+ * m\u00E9thodes statiques servant \u00E0 cr\u00E9er et lire des fichier DASH.
  *
  * @author Murloc
  */
-public class Ecrivain {
+public final class Ecrivain {
+
+    private Ecrivain() {}
 
     /**
-     * Cette methode cr�e un fichier et �crit du texte dedans.
+     * Cette methode cree un fichier et \u00E9crit du texte dedans.
      *
-     * @param aEcrire Le texte qui sera �crit dans le fichier.
-     * @param nom Le nom du fichier futurement cr��.
-     * @param repertoire Le nom du dossier o� le fichier doit �tre cr��.
+     * @param aEcrire Le texte qui sera \u00E9crit dans le fichier.
+     * @param nom Le nom du fichier futurement cr\u00E9e.
+     * @param repertoire Le nom du dossier ou le fichier doit \u00E9tre cr\u00E9e.
      */
-    public static void ecrire(String aEcrire, String nom, String repertoire) {
-        try {
-            File dir = new File(repertoire);
+    public static void ecrire(final String aEcrire, final String nom, final String repertoire) {
+        try (PrintWriter ecrivain = new PrintWriter(repertoire + nom, "UTF-8")) {
+            final File dir = new File(repertoire);
             dir.mkdirs();
-            File destinationFile = new File(repertoire + nom);
+            final File destinationFile = new File(repertoire + nom);
             destinationFile.createNewFile();
-            PrintWriter ecrivain = new PrintWriter(repertoire + nom, "UTF-8");
             ecrivain.print(aEcrire);
             if (Partie.IA) {
-                System.out.println("\nMeilleur trajet enregistré sous : " + repertoire + nom);
-            } else { System.out.println("\nChemin parcouru enregistre sous : " + repertoire + nom); }
-            ecrivain.close();
-        } catch (Exception e) {
-            System.err.println("Impossible d'enregistrer le chemin parcouru");
+                out.printf("\nMeilleur trajet enregistr\u00E9 sous : %s%s%n", repertoire, nom);
+            } else {
+                out.printf("\nChemin parcouru enregistre sous : %s%s%n", repertoire, nom);
+            }
+        } catch (final IOException e) {
+            e.printStackTrace();
+            err.println("Impossible d'enregistrer le chemin parcouru");
         }
     }
 
     /**
-     * Cette m�thode prend en param�tre le chemin d'un fichier DASH et renvoie
-     * le parcours �crit dans le fichier.
+     * Cette methode prend en parametre le chemin d'un fichier DASH et renvoie
+     * le parcours ecrit dans le fichier.
      *
      * @param cheminFichierBD Chemin du fichier DASH.
      *
-     * @return Le parcours �crit dans le fichier.
+     * @return Le parcours ecrit dans le fichier.
      */
-    public static String lireParcours(String cheminFichierBD) {
-        try {
-            FileReader lecteur = new FileReader(cheminFichierBD);
-            BufferedReader in = new BufferedReader(lecteur);
-
-            // r�cup�ration du fichier
-            String ensemble_du_fichier = "";
-            String s;
-
-            while ((s = in.readLine()) != null) {
-                ensemble_du_fichier += "\n" + s;
+    public static String lireParcours(final String cheminFichierBD) {
+        try (final BufferedReader in = new BufferedReader(new FileReader(cheminFichierBD))) {
+            // recupuration du fichier
+            final StringBuilder contenuLu = new StringBuilder(10);
+            String line;
+            while ((line = in.readLine()) != null) {
+                contenuLu.append("\n").append(line);
             }
-            in.close();
-            ensemble_du_fichier = ensemble_du_fichier.replace("Trajet : ", "-");
-            ensemble_du_fichier = ensemble_du_fichier.replace("\nScore :", "-");
-            String[] parcours;
-            parcours = ensemble_du_fichier.split("-");
+            final String[] parcours = contenuLu.toString()
+                                               .replace("Trajet : ", "-")
+                                               .replace("\nScore :", "-")
+                                               .split("-");
             return parcours[1];
-        } catch (Exception e) {
-            System.err.println("Impossible de lire le fichier indiqué, mode aléatoire lancé.");
+        } catch (final IOException ignored) {
+            err.println("Impossible de lire le fichier indiqu\u00E9, mode al\u00E9atoire lanc\u00E9.");
             return "";
         }
     }

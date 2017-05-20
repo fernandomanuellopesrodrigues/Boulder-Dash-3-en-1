@@ -26,7 +26,7 @@ public class Paire<L, R> {
      * @param left Objet 1.
      * @param right Objet 2.
      */
-    public Paire(L left, R right) {
+    public Paire(final L left, final R right) {
         this.left = left;
         this.right = right;
     }

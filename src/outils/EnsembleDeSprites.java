@@ -7,34 +7,20 @@ import java.util.List;
 import vue.Sprites;
 
 /**
- * Classe permettant de g�rer quel sprites doivent s'afficher � quelle frame.
+ * Classe permettant de gerer quel sprites doivent s'afficher \u00E0 quelle frame.
  *
  * @see Sprites
  */
 
-public class EnsembleDeSprites {
+public class EnsembleDeSprites extends  ArrayList<Paire<Integer, List<Image>>> {
 
     /**
-     * La liste qui stock les sprites.
-     */
-    private final List<Paire<Integer, List<Image>>> sprites = new ArrayList<Paire<Integer, List<Image>>>();
-
-    /**
-     * M�thode qui ajoute un objet � la liste.
+     * Methode qui ajoute un objet \u00E0 la liste.
      *
-     * @param vitesse La cl� de l'objet � ajouter.
-     * @param liste La valeur de l'objet � ajouter.
+     * @param vitesse La cl\u00E9 de l'objet \u00E0 ajouter.
+     * @param liste La valeur de l'objet \u00E0 ajouter.
      */
-    public void add(int vitesse, List<Image> liste) {
-        sprites.add(new Paire<Integer, List<Image>>(vitesse, liste));
-    }
-
-    /**
-     * Getter de la liste.
-     *
-     * @return La liste {@link EnsembleDeSprites#sprites}
-     */
-    public List<Paire<Integer, List<Image>>> get() {
-        return sprites;
+    public void add(final int vitesse, final List<Image> liste) {
+        add(new Paire<>(vitesse, liste));
     }
 }

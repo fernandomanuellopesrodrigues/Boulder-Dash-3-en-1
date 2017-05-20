@@ -1,5 +1,7 @@
 package outils;
 
+import java.util.Objects;
+
 import entitees.abstraites.Entitee;
 import entitees.fixes.Poussiere;
 import entitees.fixes.Sortie;
@@ -7,9 +9,9 @@ import entitees.fixes.Vide;
 import entitees.tickables.Diamant;
 
 /**
- * Classe repr�sentant un noeud d'un graphe.
- * Le contenu d'un noeud est une entit�e.
- * Elle poss�de les atributs utiles pour effectuer des algorithmes dans les
+ * Classe representant un noeud d'un graphe.
+ * Le contenu d'un noeud est une entitee.
+ * Elle possede les atributs utiles pour effectuer des algorithmes dans les
  * graphes.
  *
  * @author Murloc
@@ -23,57 +25,59 @@ public class Noeud implements Comparable<Noeud> {
     private final Entitee entite;
 
     /**
-     * Les coordon�es du Noeud.
+     * Les coordonees du Noeud.
      */
-    private int x, y;
+    private int positionX;
+    private int positionY;
 
     /**
-     * Le cout du noeud (utilis� en algorithmique de graphes).
+     * Le cout du noeud (utilise en algorithmique de graphes).
      */
     private int cout;
 
     /**
-     * L'heuristique du noeud (utilis� en algorithmique de graphes).
+     * L'heuristique du noeud (utilise en algorithmique de graphes).
      */
     private int heuristique;
 
     /**
-     * La traversabilit� du noeud (utilis� en algorithmique de graphes).
+     * La traversabilite du noeud (utilise en algorithmique de graphes).
      */
     private final boolean traversable;
 
     /**
-     * Le noeud p�re (utilis� en algorithmique de graphes).
+     * Le noeud pere (utilise en algorithmique de graphes).
      */
     private Noeud pere;
 
     /**
-     * L'�tat du noeud (utilis� en algorithmique de graphes).
+     * L'etat du noeud (utilise en algorithmique de graphes).
      */
     private char etat;
 
     /**
      * Constructeur Noeud.
-     * Prend en param�tre une entit�e et cr�e un noeud.
+     * Prend en parametre une entitee et cree un noeud.
      *
      * @param entite Le contenu du noeud.
      */
-    public Noeud(Entitee entite) {
+    public Noeud(final Entitee entite) {
         this.entite = entite;
-        this.x = entite.getX();
-        this.y = entite.getY();
+        this.positionX = entite.getX();
+        this.positionY = entite.getY();
         this.cout = 0;
         this.heuristique = 0;
-        this.traversable = entite.getClass().equals(Diamant.class) || entite.getClass().equals(Vide.class)
-                           || entite.getClass().equals(Poussiere.class)
-                           || entite.getClass().equals(Sortie.class) && ((Sortie) entite).isOuvert();
+        this.traversable = Objects.equals(entite.getClass(), Diamant.class)
+                           || Objects.equals(entite.getClass(), Vide.class)
+                           || Objects.equals(entite.getClass(), Poussiere.class)
+                           || (Objects.equals(entite.getClass(), Sortie.class) && ((Sortie) entite).isOuvert());
     }
 
     @Override
-    public int compareTo(Noeud n) {
-        if (heuristique > n.heuristique) {
+    public int compareTo(final Noeud another) {
+        if (heuristique > another.heuristique) {
             return 1;
-        } else if (heuristique == n.heuristique) {
+        } else if (heuristique == another.heuristique) {
             return 0;
         } else {
             return -1;
@@ -130,17 +134,17 @@ public class Noeud implements Comparable<Noeud> {
      *
      * @return L'objet en question.
      */
-    public int getX() {
-        return x;
+    public int getPositionX() {
+        return positionX;
     }
 
     /**
      * Un setter.
      *
-     * @param x L'objet en question.
+     * @param positionX L'objet en question.
      */
-    public void setX(int x) {
-        this.x = x;
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
     }
 
     /**
@@ -148,17 +152,17 @@ public class Noeud implements Comparable<Noeud> {
      *
      * @return L'objet en question.
      */
-    public int getY() {
-        return y;
+    public int getPositionY() {
+        return positionY;
     }
 
     /**
      * Un setter.
      *
-     * @param y L'objet en question.
+     * @param positionY L'objet en question.
      */
-    public void setY(int y) {
-        this.y = y;
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
 
     /**
